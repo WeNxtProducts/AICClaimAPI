@@ -1,4 +1,4 @@
-package com.example.aicbaseCrud.serviceImpl;
+package com.wenxt.claims.serviceImpl;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,9 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.example.aicbaseCrud.model.LT_CLAIM;
-import com.example.aicbaseCrud.repository.LtClaimRepository;
-import com.example.aicbaseCrud.service.LtClaimService;
+import com.wenxt.claims.model.LT_CLAIM;
+import com.wenxt.claims.repository.LtClaimRepository;
+import com.wenxt.claims.service.LtClaimService;
 
 @Service
 public class LtClaimServiceImpl implements LtClaimService{

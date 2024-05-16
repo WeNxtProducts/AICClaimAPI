@@ -1,4 +1,4 @@
-package com.example.aicbaseCrud.serviceImpl;
+package com.wenxt.claims.serviceImpl;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,9 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.example.aicbaseCrud.model.LT_CLAIM_PYMT;
-import com.example.aicbaseCrud.repository.LtClaimPymtRepository;
-import com.example.aicbaseCrud.service.LtClaimPymtService;
+import com.wenxt.claims.model.LT_CLAIM_PYMT;
+import com.wenxt.claims.repository.LtClaimPymtRepository;
+import com.wenxt.claims.service.LtClaimPymtService;
 
 @Service
 public class LtClaimPymtServiceImpl implements LtClaimPymtService{

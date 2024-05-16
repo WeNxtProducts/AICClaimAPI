@@ -1,4 +1,4 @@
-package com.example.aicbaseCrud.model;
+package com.wenxt.claims.model;
 import java.math.BigDecimal;
 import java.util.Date;
 

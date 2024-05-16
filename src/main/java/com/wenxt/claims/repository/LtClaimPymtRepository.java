@@ -1,9 +1,9 @@
-package com.example.aicbaseCrud.repository;
+package com.wenxt.claims.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.aicbaseCrud.model.LT_CLAIM_PYMT;
+import com.wenxt.claims.model.LT_CLAIM_PYMT;
 
 @Repository
 public interface LtClaimPymtRepository extends JpaRepository<LT_CLAIM_PYMT, Long> {

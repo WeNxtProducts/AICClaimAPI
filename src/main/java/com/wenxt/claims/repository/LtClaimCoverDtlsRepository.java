@@ -1,9 +1,9 @@
-package com.example.aicbaseCrud.repository;
+package com.wenxt.claims.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.aicbaseCrud.model.LT_CLAIM_COVER_DTLS;
+import com.wenxt.claims.model.LT_CLAIM_COVER_DTLS;
 
 @Repository
 public interface LtClaimCoverDtlsRepository extends JpaRepository<LT_CLAIM_COVER_DTLS, Long> {

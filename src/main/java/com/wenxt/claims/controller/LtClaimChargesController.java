@@ -1,4 +1,4 @@
-package com.example.aicbaseCrud.controller;
+package com.wenxt.claims.controller;
 
 import java.sql.SQLException;
 
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.aicbaseCrud.model.LT_CLAIM_CHARGES;
-import com.example.aicbaseCrud.service.LtClaimChargesService;
+import com.wenxt.claims.model.LT_CLAIM_CHARGES;
+import com.wenxt.claims.service.LtClaimChargesService;
 
 @RestController
 @RequestMapping("/claimchrgs")

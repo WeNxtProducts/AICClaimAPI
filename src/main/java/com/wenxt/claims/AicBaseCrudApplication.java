@@ -1,4 +1,4 @@
-package com.example.aicbaseCrud;
+package com.wenxt.claims;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

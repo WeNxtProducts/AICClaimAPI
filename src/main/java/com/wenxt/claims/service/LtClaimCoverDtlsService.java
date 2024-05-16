@@ -1,8 +1,8 @@
-package com.example.aicbaseCrud.service;
+package com.wenxt.claims.service;
 
 import java.sql.SQLException;
 
-import com.example.aicbaseCrud.model.LT_CLAIM_COVER_DTLS;
+import com.wenxt.claims.model.LT_CLAIM_COVER_DTLS;
 
 public interface LtClaimCoverDtlsService {
 

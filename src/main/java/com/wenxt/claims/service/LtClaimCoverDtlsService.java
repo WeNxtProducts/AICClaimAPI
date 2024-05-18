@@ -1,12 +1,10 @@
 package com.wenxt.claims.service;
 
-import java.sql.SQLException;
-
-import com.wenxt.claims.model.LT_CLAIM_COVER_DTLS;
+import com.wenxt.claims.model.ClaimsRequestDTO;
 
 public interface LtClaimCoverDtlsService {
 
-	String createCcdtls(LT_CLAIM_COVER_DTLS ltccdtls);
+	String createCcdtls(ClaimsRequestDTO claimRequestDTO);
 
 //	String getAllCcdtlslist() throws SQLException;
 

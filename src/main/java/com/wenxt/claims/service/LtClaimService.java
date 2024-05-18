@@ -2,11 +2,12 @@ package com.wenxt.claims.service;
 
 import java.sql.SQLException;
 
+import com.wenxt.claims.model.ClaimsRequestDTO;
 import com.wenxt.claims.model.LT_CLAIM;
 
 public interface LtClaimService {
 
-	String createLtClaim(LT_CLAIM ltclaim);
+	String createLtClaim(ClaimsRequestDTO claimsRequestDto);
 
 //	String getAllLtClaimlist() throws SQLException;
 

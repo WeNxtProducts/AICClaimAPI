@@ -3,7 +3,10 @@ import java.math.BigDecimal;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
@@ -11,115 +14,116 @@ import jakarta.persistence.Table;
 public class LT_CLAIM_CHARGES {
 
 	@Id
-    @Column(name="cc_TRAN_id")
-	private Long cc_TRAN_id;
+    @SequenceGenerator(name = "ClaimChargesTranIdSeq", sequenceName = "CC_TRAN_ID_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ClaimChargesTranIdSeq")
+    @Column(name="CC_TRAN_ID")
+	private Long CC_TRAN_ID;
 	
-	@Column(name="cc_CLAIM_TRAN_id")
-	private Long cc_CLAIM_TRAN_id;
+	@Column(name="CC_CLAIM_TRAN_ID")
+	private Integer CC_CLAIM_TRAN_ID;
 	
-	@Column(name="cc_chrg_code")
-	private String cc_chrg_code;
+	@Column(name="CC_CHRG_CODE")
+	private String CC_CHRG_CODE;
 	
-	@Column(name="cc_rate")
-	private BigDecimal cc_rate;
+	@Column(name="CC_RATE")
+	private Integer CC_RATE;
 	
-	@Column(name="cc_rate_per")
-	private BigDecimal cc_rate_per;
+	@Column(name="CC_RATE_PER")
+	private Integer CC_RATE_PER;
 	
-	@Column(name="cc_chrg_fc_value")
-	private BigDecimal cc_chrg_fc_value;
+	@Column(name="CC_CHRG_FC_VALUE")
+	private BigDecimal CC_CHRG_FC_VALUE;
 	
-	@Column(name="cc_chrg_lc_value")
-	private BigDecimal cc_chrg_lc_value;
+	@Column(name="CC_CHRG_LC_VALUE")
+	private BigDecimal CC_CHRG_LC_VALUE;
 	
-	@Column(name="cc_remarks")
-	private String cc_remarks;
+	@Column(name="CC_REMARKS")
+	private String CC_REMARKS;
 	
-	@Column(name="cc_paid_to")
-	private String cc_paid_to;
+	@Column(name="CC_PAID_TO")
+	private String CC_PAID_TO;
 	
-	@Column(name="cc_benf_code")
-	private String cc_benf_code;
+	@Column(name="CC_BENF_CODE")
+	private String CC_BENF_CODE;
 
-	public Long getCc_TRAN_id() {
-		return cc_TRAN_id;
+	public Long getCC_TRAN_ID() {
+		return CC_TRAN_ID;
 	}
 
-	public void setCc_TRAN_id(Long cc_TRAN_id) {
-		this.cc_TRAN_id = cc_TRAN_id;
+	public Integer getCC_CLAIM_TRAN_ID() {
+		return CC_CLAIM_TRAN_ID;
 	}
 
-	public Long getCc_CLAIM_TRAN_id() {
-		return cc_CLAIM_TRAN_id;
+	public void setCC_CLAIM_TRAN_ID(Integer cC_CLAIM_TRAN_ID) {
+		CC_CLAIM_TRAN_ID = cC_CLAIM_TRAN_ID;
 	}
 
-	public void setCc_CLAIM_TRAN_id(Long cc_CLAIM_TRAN_id) {
-		this.cc_CLAIM_TRAN_id = cc_CLAIM_TRAN_id;
+	public String getCC_CHRG_CODE() {
+		return CC_CHRG_CODE;
 	}
 
-	public String getCc_chrg_code() {
-		return cc_chrg_code;
+	public void setCC_CHRG_CODE(String cC_CHRG_CODE) {
+		CC_CHRG_CODE = cC_CHRG_CODE;
 	}
 
-	public void setCc_chrg_code(String cc_chrg_code) {
-		this.cc_chrg_code = cc_chrg_code;
+	public Integer getCC_RATE() {
+		return CC_RATE;
 	}
 
-	public BigDecimal getCc_rate() {
-		return cc_rate;
+	public void setCC_RATE(Integer cC_RATE) {
+		CC_RATE = cC_RATE;
 	}
 
-	public void setCc_rate(BigDecimal cc_rate) {
-		this.cc_rate = cc_rate;
+	public Integer getCC_RATE_PER() {
+		return CC_RATE_PER;
 	}
 
-	public BigDecimal getCc_rate_per() {
-		return cc_rate_per;
+	public void setCC_RATE_PER(Integer cC_RATE_PER) {
+		CC_RATE_PER = cC_RATE_PER;
 	}
 
-	public void setCc_rate_per(BigDecimal cc_rate_per) {
-		this.cc_rate_per = cc_rate_per;
+	public BigDecimal getCC_CHRG_FC_VALUE() {
+		return CC_CHRG_FC_VALUE;
 	}
 
-	public BigDecimal getCc_chrg_fc_value() {
-		return cc_chrg_fc_value;
+	public void setCC_CHRG_FC_VALUE(BigDecimal cC_CHRG_FC_VALUE) {
+		CC_CHRG_FC_VALUE = cC_CHRG_FC_VALUE;
 	}
 
-	public void setCc_chrg_fc_value(BigDecimal cc_chrg_fc_value) {
-		this.cc_chrg_fc_value = cc_chrg_fc_value;
+	public BigDecimal getCC_CHRG_LC_VALUE() {
+		return CC_CHRG_LC_VALUE;
 	}
 
-	public BigDecimal getCc_chrg_lc_value() {
-		return cc_chrg_lc_value;
+	public void setCC_CHRG_LC_VALUE(BigDecimal cC_CHRG_LC_VALUE) {
+		CC_CHRG_LC_VALUE = cC_CHRG_LC_VALUE;
 	}
 
-	public void setCc_chrg_lc_value(BigDecimal cc_chrg_lc_value) {
-		this.cc_chrg_lc_value = cc_chrg_lc_value;
+	public String getCC_REMARKS() {
+		return CC_REMARKS;
 	}
 
-	public String getCc_remarks() {
-		return cc_remarks;
+	public void setCC_REMARKS(String cC_REMARKS) {
+		CC_REMARKS = cC_REMARKS;
 	}
 
-	public void setCc_remarks(String cc_remarks) {
-		this.cc_remarks = cc_remarks;
+	public String getCC_PAID_TO() {
+		return CC_PAID_TO;
 	}
 
-	public String getCc_paid_to() {
-		return cc_paid_to;
+	public void setCC_PAID_TO(String cC_PAID_TO) {
+		CC_PAID_TO = cC_PAID_TO;
 	}
 
-	public void setCc_paid_to(String cc_paid_to) {
-		this.cc_paid_to = cc_paid_to;
+	public String getCC_BENF_CODE() {
+		return CC_BENF_CODE;
 	}
 
-	public String getCc_benf_code() {
-		return cc_benf_code;
+	public void setCC_BENF_CODE(String cC_BENF_CODE) {
+		CC_BENF_CODE = cC_BENF_CODE;
 	}
 
-	public void setCc_benf_code(String cc_benf_code) {
-		this.cc_benf_code = cc_benf_code;
+	public void setCC_TRAN_ID(Long cC_TRAN_ID) {
+		CC_TRAN_ID = cC_TRAN_ID;
 	}
 
-	
 }

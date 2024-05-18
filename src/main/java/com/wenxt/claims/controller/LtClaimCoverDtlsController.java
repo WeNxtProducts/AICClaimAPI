@@ -1,8 +1,5 @@
 package com.wenxt.claims.controller;
 
-import java.sql.SQLException;
-
-import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wenxt.claims.model.LT_CLAIM_COVER_DTLS;
+import com.wenxt.claims.model.ClaimsRequestDTO;
 import com.wenxt.claims.service.LtClaimCoverDtlsService;
 
 @RestController
@@ -22,9 +19,9 @@ public class LtClaimCoverDtlsController {
 	@Autowired
 	private LtClaimCoverDtlsService ccdtlservice;
 	
-	@PostMapping("/ccdtls_creates")
-	public String createCcdtls(@RequestBody LT_CLAIM_COVER_DTLS ltccdtls) {
-		return ccdtlservice.createCcdtls(ltccdtls);
+	@PostMapping("/claimCoverSave")
+	public String createCcdtls(@RequestBody ClaimsRequestDTO claimRequestDTO) {
+		return ccdtlservice.createCcdtls(claimRequestDTO);
 	}
 
 //	@GetMapping("/ccdtls_List")

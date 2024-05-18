@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wenxt.claims.model.ClaimsRequestDTO;
 import com.wenxt.claims.model.LT_CLAIM_CHARGES;
 import com.wenxt.claims.service.LtClaimChargesService;
 
@@ -22,9 +23,9 @@ public class LtClaimChargesController {
 	@Autowired
 	private LtClaimChargesService claimchrgstservice;
 
-	@PostMapping("/claimchrgs_creates")
-	public String createClaimCharges(@RequestBody LT_CLAIM_CHARGES ltclaimChrgs) {
-		return claimchrgstservice.createClaimCharges(ltclaimChrgs);
+	@PostMapping("/claimChrgsSave")
+	public String createClaimCharges(@RequestBody ClaimsRequestDTO claimsRequestDTO) {
+		return claimchrgstservice.createClaimCharges(claimsRequestDTO);
 	}
 
 //	@GetMapping("/claimchrgs_List")

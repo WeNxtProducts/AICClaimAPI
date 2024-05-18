@@ -5,7 +5,10 @@ import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
@@ -13,290 +16,292 @@ import jakarta.persistence.Table;
 public class LT_CLAIM_COVER_DTLS {
 
 	@Id
-	@Column(name = "ccd_TRAN_id")
-	private long ccd_TRAN_id;
+    @SequenceGenerator(name = "ClaimCoverTranIdSeq", sequenceName = "CCD_TRAN_ID_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ClaimCoverTranIdSeq")
+	@Column(name = "CCD_TRAN_ID")
+	private long CCD_TRAN_ID;
 
-	@Column(name = "ccd_claim_TRAN_id")
-	private long ccd_claim_TRAN_id;
+	@Column(name = "CCD_CLAIM_TRAN_ID")
+	private Integer CCD_CLAIM_TRAN_ID;
 
-	@Column(name = "ccd_cover_code")
-	private String ccd_cover_code;
+	@Column(name = "CCD_COVER_CODE")
+	private String CCD_COVER_CODE;
 
-	@Column(name = "ccd_loss_type")
-	private String ccd_loss_type;
+	@Column(name = "CCD_LOSS_TYPE")
+	private String CCD_LOSS_TYPE;
 
-	@Column(name = "ccd_disab_type")
-	private String ccd_disab_type;
+	@Column(name = "CCD_DISAB_TYPE")
+	private String CCD_DISAB_TYPE;
 
-	@Column(name = "ccd_fc_est_amt")
-	private BigDecimal ccd_fc_est_amt;
+	@Column(name = "CCD_FC_EST_AMT")
+	private BigDecimal CCD_FC_EST_AMT;
 
-	@Column(name = "ccd_lc_est_amt")
-	private BigDecimal ccd_lc_est_amt;
+	@Column(name = "CCD_LC_EST_AMT")
+	private BigDecimal CCD_LC_EST_AMT;
 
-	@Column(name = "ccd_frz_flag")
-	private String ccd_frz_flag;
+	@Column(name = "CCD_FRZ_FLAG")
+	private String CCD_FRZ_FLAG;
 
-	@Column(name = "ccd_ins_id")
-	private String ccd_ins_id;
+	@Column(name = "CCD_INS_ID")
+	private String CCD_INS_ID;
 
-	@Column(name = "ccd_ins_dt")
-	private Date ccd_ins_dt;
+	@Column(name = "CCD_INS_DT")
+	private Date CCD_INS_DT;
 
-	@Column(name = "ccd_mod_uid")
-	private String ccd_mod_uid;
+	@Column(name = "CCD_MOD_UID")
+	private String CCD_MOD_UID;
 
-	@Column(name = "ccd_mod_dt")
-	private Date ccd_mod_dt;
+	@Column(name = "CCD_MOD_DT")
+	private Date CCD_MOD_DT;
 
-	@Column(name = "ccd_close_flag")
-	private String ccd_close_flag;
+	@Column(name = "CCD_CLOSE_FLAG")
+	private String CCD_CLOSE_FLAG;
 
-	@Column(name = "ccd_close_dt")
-	private Date ccd_close_dt;
+	@Column(name = "CCD_CLOSE_DT")
+	private Date CCD_CLOSE_DT;
 
-	@Column(name = "ccd_period_unit")
-	private String ccd_period_unit;
+	@Column(name = "CCD_PERIOD_UNIT")
+	private String CCD_PERIOD_UNIT;
 
-	@Column(name = "ccd_period")
-	private Integer ccd_period;
+	@Column(name = "CCD_PERIOD")
+	private Integer CCD_PERIOD;
 
-	@Column(name = "ccd_rate")
-	private BigDecimal ccd_rate;
+	@Column(name = "CCD_RATE")
+	private BigDecimal CCD_RATE;
 
-	@Column(name = "ccd_rate_per")
-	private Long ccd_rate_per;
+	@Column(name = "CCD_RATE_PER")
+	private Long CCD_RATE_PER;
 
-	@Column(name = "ccd_confirm_flag")
-	private String ccd_confirm_flag;
+	@Column(name = "CCD_CONFIRM_FLAG")
+	private String CCD_CONFIRM_FLAG;
 
-	@Column(name = "ccd_reserve_gen_flag")
-	private String ccd_reserve_gen_flag;
+	@Column(name = "CCD_RESERVE_GEN_FLAG")
+	private String CCD_RESERVE_GEN_FLAG;
 
-	@Column(name = "ccd_set_flag")
-	private String ccd_set_flag;
+	@Column(name = "CCD_SET_FLAG")
+	private String CCD_SET_FLAG;
 
-	@Column(name = "ccd_fitr_yn")
-	private String ccd_fitr_yn;
+	@Column(name = "CCD_FITR_YN")
+	private String CCD_FITR_YN;
 
-	@Column(name = "ccd_no_of_days")
-	private Short ccd_no_of_days;
+	@Column(name = "CCD_NO_OF_DAYS")
+	private Short CCD_NO_OF_DAYS;
 
-	@Column(name = "ccd_reserve_dt")
-	private Date ccd_reserve_dt;
+	@Column(name = "CCD_RESERVE_DT")
+	private Date CCD_RESERVE_DT;
 
-	@Column(name = "ccd_claim_pay_to")
-	private String ccd_claim_pay_to;
+	@Column(name = "CCD_CLAIM_PAY_TO")
+	private String CCD_CLAIM_PAY_TO;
 
-	@Column(name = "ccd_email")
-	private String ccd_email;
+	@Column(name = "CCD_EMAIL")
+	private String CCD_EMAIL;
 
-	public long getCcd_TRAN_id() {
-		return ccd_TRAN_id;
+	public long getCCD_TRAN_ID() {
+		return CCD_TRAN_ID;
 	}
 
-	public void setCcd_TRAN_id(long ccd_TRAN_id) {
-		this.ccd_TRAN_id = ccd_TRAN_id;
+	public void setCCD_TRAN_ID(long cCD_TRAN_ID) {
+		CCD_TRAN_ID = cCD_TRAN_ID;
 	}
 
-	public long getCcd_claim_TRAN_id() {
-		return ccd_claim_TRAN_id;
+	public Integer getCCD_CLAIM_TRAN_ID() {
+		return CCD_CLAIM_TRAN_ID;
 	}
 
-	public void setCcd_claim_TRAN_id(long ccd_claim_TRAN_id) {
-		this.ccd_claim_TRAN_id = ccd_claim_TRAN_id;
+	public void setCCD_CLAIM_TRAN_ID(Integer cCD_CLAIM_TRAN_ID) {
+		CCD_CLAIM_TRAN_ID = cCD_CLAIM_TRAN_ID;
 	}
 
-	public String getCcd_cover_code() {
-		return ccd_cover_code;
+	public String getCCD_COVER_CODE() {
+		return CCD_COVER_CODE;
 	}
 
-	public void setCcd_cover_code(String ccd_cover_code) {
-		this.ccd_cover_code = ccd_cover_code;
+	public void setCCD_COVER_CODE(String cCD_COVER_CODE) {
+		CCD_COVER_CODE = cCD_COVER_CODE;
 	}
 
-	public String getCcd_loss_type() {
-		return ccd_loss_type;
+	public String getCCD_LOSS_TYPE() {
+		return CCD_LOSS_TYPE;
 	}
 
-	public void setCcd_loss_type(String ccd_loss_type) {
-		this.ccd_loss_type = ccd_loss_type;
+	public void setCCD_LOSS_TYPE(String cCD_LOSS_TYPE) {
+		CCD_LOSS_TYPE = cCD_LOSS_TYPE;
 	}
 
-	public String getCcd_disab_type() {
-		return ccd_disab_type;
+	public String getCCD_DISAB_TYPE() {
+		return CCD_DISAB_TYPE;
 	}
 
-	public void setCcd_disab_type(String ccd_disab_type) {
-		this.ccd_disab_type = ccd_disab_type;
+	public void setCCD_DISAB_TYPE(String cCD_DISAB_TYPE) {
+		CCD_DISAB_TYPE = cCD_DISAB_TYPE;
 	}
 
-	public BigDecimal getCcd_fc_est_amt() {
-		return ccd_fc_est_amt;
+	public BigDecimal getCCD_FC_EST_AMT() {
+		return CCD_FC_EST_AMT;
 	}
 
-	public void setCcd_fc_est_amt(BigDecimal ccd_fc_est_amt) {
-		this.ccd_fc_est_amt = ccd_fc_est_amt;
+	public void setCCD_FC_EST_AMT(BigDecimal cCD_FC_EST_AMT) {
+		CCD_FC_EST_AMT = cCD_FC_EST_AMT;
 	}
 
-	public BigDecimal getCcd_lc_est_amt() {
-		return ccd_lc_est_amt;
+	public BigDecimal getCCD_LC_EST_AMT() {
+		return CCD_LC_EST_AMT;
 	}
 
-	public void setCcd_lc_est_amt(BigDecimal ccd_lc_est_amt) {
-		this.ccd_lc_est_amt = ccd_lc_est_amt;
+	public void setCCD_LC_EST_AMT(BigDecimal cCD_LC_EST_AMT) {
+		CCD_LC_EST_AMT = cCD_LC_EST_AMT;
 	}
 
-	public String getCcd_frz_flag() {
-		return ccd_frz_flag;
+	public String getCCD_FRZ_FLAG() {
+		return CCD_FRZ_FLAG;
 	}
 
-	public void setCcd_frz_flag(String ccd_frz_flag) {
-		this.ccd_frz_flag = ccd_frz_flag;
+	public void setCCD_FRZ_FLAG(String cCD_FRZ_FLAG) {
+		CCD_FRZ_FLAG = cCD_FRZ_FLAG;
 	}
 
-	public String getCcd_ins_id() {
-		return ccd_ins_id;
+	public String getCCD_INS_ID() {
+		return CCD_INS_ID;
 	}
 
-	public void setCcd_ins_id(String ccd_ins_id) {
-		this.ccd_ins_id = ccd_ins_id;
+	public void setCCD_INS_ID(String cCD_INS_ID) {
+		CCD_INS_ID = cCD_INS_ID;
 	}
 
-	public Date getCcd_ins_dt() {
-		return ccd_ins_dt;
+	public Date getCCD_INS_DT() {
+		return CCD_INS_DT;
 	}
 
-	public void setCcd_ins_dt(Date ccd_ins_dt) {
-		this.ccd_ins_dt = ccd_ins_dt;
+	public void setCCD_INS_DT(Date cCD_INS_DT) {
+		CCD_INS_DT = cCD_INS_DT;
 	}
 
-	public String getCcd_mod_uid() {
-		return ccd_mod_uid;
+	public String getCCD_MOD_UID() {
+		return CCD_MOD_UID;
 	}
 
-	public void setCcd_mod_uid(String ccd_mod_uid) {
-		this.ccd_mod_uid = ccd_mod_uid;
+	public void setCCD_MOD_UID(String cCD_MOD_UID) {
+		CCD_MOD_UID = cCD_MOD_UID;
 	}
 
-	public Date getCcd_mod_dt() {
-		return ccd_mod_dt;
+	public Date getCCD_MOD_DT() {
+		return CCD_MOD_DT;
 	}
 
-	public void setCcd_mod_dt(Date ccd_mod_dt) {
-		this.ccd_mod_dt = ccd_mod_dt;
+	public void setCCD_MOD_DT(Date cCD_MOD_DT) {
+		CCD_MOD_DT = cCD_MOD_DT;
 	}
 
-	public String getCcd_close_flag() {
-		return ccd_close_flag;
+	public String getCCD_CLOSE_FLAG() {
+		return CCD_CLOSE_FLAG;
 	}
 
-	public void setCcd_close_flag(String ccd_close_flag) {
-		this.ccd_close_flag = ccd_close_flag;
+	public void setCCD_CLOSE_FLAG(String cCD_CLOSE_FLAG) {
+		CCD_CLOSE_FLAG = cCD_CLOSE_FLAG;
 	}
 
-	public Date getCcd_close_dt() {
-		return ccd_close_dt;
+	public Date getCCD_CLOSE_DT() {
+		return CCD_CLOSE_DT;
 	}
 
-	public void setCcd_close_dt(Date ccd_close_dt) {
-		this.ccd_close_dt = ccd_close_dt;
+	public void setCCD_CLOSE_DT(Date cCD_CLOSE_DT) {
+		CCD_CLOSE_DT = cCD_CLOSE_DT;
 	}
 
-	public String getCcd_period_unit() {
-		return ccd_period_unit;
+	public String getCCD_PERIOD_UNIT() {
+		return CCD_PERIOD_UNIT;
 	}
 
-	public void setCcd_period_unit(String ccd_period_unit) {
-		this.ccd_period_unit = ccd_period_unit;
+	public void setCCD_PERIOD_UNIT(String cCD_PERIOD_UNIT) {
+		CCD_PERIOD_UNIT = cCD_PERIOD_UNIT;
 	}
 
-	public Integer getCcd_period() {
-		return ccd_period;
+	public Integer getCCD_PERIOD() {
+		return CCD_PERIOD;
 	}
 
-	public void setCcd_period(Integer ccd_period) {
-		this.ccd_period = ccd_period;
+	public void setCCD_PERIOD(Integer cCD_PERIOD) {
+		CCD_PERIOD = cCD_PERIOD;
 	}
 
-	public BigDecimal getCcd_rate() {
-		return ccd_rate;
+	public BigDecimal getCCD_RATE() {
+		return CCD_RATE;
 	}
 
-	public void setCcd_rate(BigDecimal ccd_rate) {
-		this.ccd_rate = ccd_rate;
+	public void setCCD_RATE(BigDecimal cCD_RATE) {
+		CCD_RATE = cCD_RATE;
 	}
 
-	public Long getCcd_rate_per() {
-		return ccd_rate_per;
+	public Long getCCD_RATE_PER() {
+		return CCD_RATE_PER;
 	}
 
-	public void setCcd_rate_per(Long ccd_rate_per) {
-		this.ccd_rate_per = ccd_rate_per;
+	public void setCCD_RATE_PER(Long cCD_RATE_PER) {
+		CCD_RATE_PER = cCD_RATE_PER;
 	}
 
-	public String getCcd_confirm_flag() {
-		return ccd_confirm_flag;
+	public String getCCD_CONFIRM_FLAG() {
+		return CCD_CONFIRM_FLAG;
 	}
 
-	public void setCcd_confirm_flag(String ccd_confirm_flag) {
-		this.ccd_confirm_flag = ccd_confirm_flag;
+	public void setCCD_CONFIRM_FLAG(String cCD_CONFIRM_FLAG) {
+		CCD_CONFIRM_FLAG = cCD_CONFIRM_FLAG;
 	}
 
-	public String getCcd_reserve_gen_flag() {
-		return ccd_reserve_gen_flag;
+	public String getCCD_RESERVE_GEN_FLAG() {
+		return CCD_RESERVE_GEN_FLAG;
 	}
 
-	public void setCcd_reserve_gen_flag(String ccd_reserve_gen_flag) {
-		this.ccd_reserve_gen_flag = ccd_reserve_gen_flag;
+	public void setCCD_RESERVE_GEN_FLAG(String cCD_RESERVE_GEN_FLAG) {
+		CCD_RESERVE_GEN_FLAG = cCD_RESERVE_GEN_FLAG;
 	}
 
-	public String getCcd_set_flag() {
-		return ccd_set_flag;
+	public String getCCD_SET_FLAG() {
+		return CCD_SET_FLAG;
 	}
 
-	public void setCcd_set_flag(String ccd_set_flag) {
-		this.ccd_set_flag = ccd_set_flag;
+	public void setCCD_SET_FLAG(String cCD_SET_FLAG) {
+		CCD_SET_FLAG = cCD_SET_FLAG;
 	}
 
-	public String getCcd_fitr_yn() {
-		return ccd_fitr_yn;
+	public String getCCD_FITR_YN() {
+		return CCD_FITR_YN;
 	}
 
-	public void setCcd_fitr_yn(String ccd_fitr_yn) {
-		this.ccd_fitr_yn = ccd_fitr_yn;
+	public void setCCD_FITR_YN(String cCD_FITR_YN) {
+		CCD_FITR_YN = cCD_FITR_YN;
 	}
 
-	public Short getCcd_no_of_days() {
-		return ccd_no_of_days;
+	public Short getCCD_NO_OF_DAYS() {
+		return CCD_NO_OF_DAYS;
 	}
 
-	public void setCcd_no_of_days(Short ccd_no_of_days) {
-		this.ccd_no_of_days = ccd_no_of_days;
+	public void setCCD_NO_OF_DAYS(Short cCD_NO_OF_DAYS) {
+		CCD_NO_OF_DAYS = cCD_NO_OF_DAYS;
 	}
 
-	public Date getCcd_reserve_dt() {
-		return ccd_reserve_dt;
+	public Date getCCD_RESERVE_DT() {
+		return CCD_RESERVE_DT;
 	}
 
-	public void setCcd_reserve_dt(Date ccd_reserve_dt) {
-		this.ccd_reserve_dt = ccd_reserve_dt;
+	public void setCCD_RESERVE_DT(Date cCD_RESERVE_DT) {
+		CCD_RESERVE_DT = cCD_RESERVE_DT;
 	}
 
-	public String getCcd_claim_pay_to() {
-		return ccd_claim_pay_to;
+	public String getCCD_CLAIM_PAY_TO() {
+		return CCD_CLAIM_PAY_TO;
 	}
 
-	public void setCcd_claim_pay_to(String ccd_claim_pay_to) {
-		this.ccd_claim_pay_to = ccd_claim_pay_to;
+	public void setCCD_CLAIM_PAY_TO(String cCD_CLAIM_PAY_TO) {
+		CCD_CLAIM_PAY_TO = cCD_CLAIM_PAY_TO;
 	}
 
-	public String getCcd_email() {
-		return ccd_email;
+	public String getCCD_EMAIL() {
+		return CCD_EMAIL;
 	}
 
-	public void setCcd_email(String ccd_email) {
-		this.ccd_email = ccd_email;
+	public void setCCD_EMAIL(String cCD_EMAIL) {
+		CCD_EMAIL = cCD_EMAIL;
 	}
 
 }

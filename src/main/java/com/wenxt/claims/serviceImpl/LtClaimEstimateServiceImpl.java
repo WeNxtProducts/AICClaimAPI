@@ -1,12 +1,20 @@
 package com.wenxt.claims.serviceImpl;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.json.JSONObject;
@@ -14,12 +22,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.wenxt.claims.model.ClaimsRequestDTO;
+import com.wenxt.claims.model.LT_CLAIM_COVER_DTLS;
 import com.wenxt.claims.model.LT_CLAIM_ESTIMATE;
 import com.wenxt.claims.repository.LtClaimEstimateRepository;
 import com.wenxt.claims.service.LtClaimEstimateService;
 
 @Service
 public class LtClaimEstimateServiceImpl implements LtClaimEstimateService{
+
+	@Value("${spring.message.code}")
+	private String messageCode;
+
+	@Value("${spring.status.code}")
+	private String statusCode;
+
+	@Value("${spring.data.code}")
+	private String dataCode;
+
+	@Value("${spring.success.code}")
+	private String successCode;
+
+	@Value("${spring.error.code}")
+	private String errorCode;
+
+	@Value("${spring.warning.code}")
+	private String warningCode;	
 	
 	@Autowired
 	private LtClaimEstimateRepository claimEstrepo;
@@ -32,15 +60,91 @@ public class LtClaimEstimateServiceImpl implements LtClaimEstimateService{
 //	private String getallltClaimeEST;
 
 	@Override
-	public String createLtClaimEst(LT_CLAIM_ESTIMATE ltclaimest) {
+	public String createLtClaimEst(ClaimsRequestDTO claimsRequestDTO) {
+		JSONObject response = new JSONObject();
+		JSONObject data = new JSONObject();
 
-		if (claimEstrepo.existsById(ltclaimest.getCcd_TRAN_id())) {
-			claimEstrepo.save(ltclaimest);
-			return "Lt claim estimate updated successfully";
-		} else {
-			claimEstrepo.save(ltclaimest);
-			return "LT Claim Estimate created successfully";
+		try {
+//			Long claimCoverId = Long.parseLong(claimsRequestDTO.getClaimCover().getFormFields().get("CCD_TRAN_ID"));
+//			Optional<LT_CLAIM_COVER_DTLS> optionalUser = ccdtlsrepo.findById(claimCoverId);
+//			LT_CLAIM_COVER_DTLS claim = optionalUser.orElse(new LT_CLAIM_COVER_DTLS());
+			LT_CLAIM_ESTIMATE claimEstimate = new LT_CLAIM_ESTIMATE();
+			
+			Map<String, Map<String, String>> fieldMaps = new HashMap<>();
+			fieldMaps.put("frontForm", claimsRequestDTO.getClaimEstimate().getFormFields());
+			for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
+				setClaimEstimateFields(claimEstimate, entry.getValue());
+			}
+
+			try {
+				LT_CLAIM_ESTIMATE savedClaimDetails = claimEstrepo.save(claimEstimate);
+				response.put(statusCode, successCode);
+				response.put(messageCode,
+						 "User created successfully");
+				data.put("Id", savedClaimDetails.getCE_TRAN_ID());
+				response.put("data", data);
+			} catch (Exception e) {
+				response.put("statusCode", errorCode);
+				response.put("message", "An error occurred: " + e.getMessage());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.put("statusCode", errorCode);
+			response.put("message", "An error occurred: " + e.getMessage());
 		}
+
+		return response.toString();
+	}
+	
+	private void setClaimEstimateFields(LT_CLAIM_ESTIMATE claim, Map<String, String> fields) throws Exception {
+		for (Map.Entry<String, String> entry : fields.entrySet()) {
+			setClaimEstimateField(claim, entry.getKey(), entry.getValue());
+		}
+	}
+	
+	private void setClaimEstimateField(LT_CLAIM_ESTIMATE user, String fieldName, String value) throws Exception {
+		try {
+			Field field = LT_CLAIM_ESTIMATE.class.getDeclaredField(fieldName);
+			Class<?> fieldType = field.getType();
+			Object convertedValue = convertStringToObject(value, fieldType);
+			String setterMethodName = "set" + fieldName;
+			if (value != null && !value.isEmpty()) {
+				Method setter = LT_CLAIM_ESTIMATE.class.getMethod(setterMethodName, fieldType);
+				setter.invoke(user, convertedValue);
+			}
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private Object convertStringToObject(String value, Class<?> fieldType) {
+		if (fieldType.equals(Integer.class) && value.isEmpty() == false && value != null) {
+			return Integer.parseInt(value);
+		} else if (fieldType.equals(Double.class) && value.isEmpty() == false && value != null) {
+			return Double.parseDouble(value);
+		} else if (fieldType.equals(Short.class) && value.isEmpty() == false && value != null) {
+			return Short.parseShort(value);
+		} else if (fieldType.equals(LocalDateTime.class) && value.isEmpty() == false && value != null) {
+			return dateTimeConverter(value);
+		} else {
+			return value;
+		}
+	}
+	
+	private Object dateTimeConverter(String value) {
+		String dateString = value;
+		if (value.length() > 10) {
+			dateString = value.substring(0, 10);
+		}
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalTime defaultTime = LocalTime.of(0, 0, 0);
+		LocalDate localDate = LocalDate.parse(dateString, formatter);
+		LocalDateTime dateTime = LocalDateTime.of(localDate, defaultTime);
+		String formattedDateTime = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+		DateTimeFormatter formatters = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		LocalDateTime parsedDateTime = LocalDateTime.parse(formattedDateTime, formatters);
+		return parsedDateTime;
 	}
 
 //	@Override

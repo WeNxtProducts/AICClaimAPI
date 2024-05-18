@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wenxt.claims.model.ClaimsRequestDTO;
 import com.wenxt.claims.model.LT_CLAIM_BENEFICIARY;
 import com.wenxt.claims.service.LtClaimBeneficiaryService;
 
@@ -23,8 +24,8 @@ public class LtClaimBeneficiaryController {
 	private LtClaimBeneficiaryService claimBfcryservice;
 
 	@PostMapping("/claimBfcry_creates")
-	public String createLtClaimBfcry(@RequestBody LT_CLAIM_BENEFICIARY ltclaimBfcry) {
-		return claimBfcryservice.createLtClaimBfcry(ltclaimBfcry);
+	public String createLtClaimBfcry(@RequestBody ClaimsRequestDTO claimsRequestDTO) {
+		return claimBfcryservice.createLtClaimBfcry(claimsRequestDTO);
 	}
 //
 //	@GetMapping("/claimBfcry_List")

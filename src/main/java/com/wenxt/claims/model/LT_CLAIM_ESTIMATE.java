@@ -1,305 +1,395 @@
 package com.wenxt.claims.model;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name="LT_CLAIM_ESTIMATE")
 public class LT_CLAIM_ESTIMATE {
-	@Id
-    @Column(name="ccd_TRAN_id")
-    private long ccd_TRAN_id;
+	
+    @Id
+    @SequenceGenerator(name = "ClaimEstimateTranIDSeq", sequenceName = "CE_TRAN_ID_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ClaimEstimateTranIDSeq")
+    @Column(name = "CE_TRAN_ID")
+    private Long CE_TRAN_ID;
+
+    @Column(name = "CE_CLM_TRAN_ID")
+    private Integer CE_CLM_TRAN_ID;
+
+    @Column(name = "CE_LOSS_CODE")
+    private String CE_LOSS_CODE;
+
+    @Column(name = "CE_COVER_CODE")
+    private String CE_COVER_CODE;
+
+    @Column(name = "CE_REF_NO")
+    private String CE_REF_NO;
+
+    @Column(name = "CE_DISB_PERC")
+    private Double CE_DISB_PERC;
+
+    @Column(name = "CE_DISB_FM_DT")
+    private Date CE_DISB_FM_DT;
+
+    @Column(name = "CE_DISB_TO_DT")
+    private Date CE_DISB_TO_DT;
+
+    @Column(name = "CE_NO_OF_DAYS_DISB")
+    private Integer CE_NO_OF_DAYS_DISB;
+
+    @Column(name = "CE_FC_EST_AMT")
+    private Double CE_FC_EST_AMT;
+
+    @Column(name = "CE_LC_EST_AMT")
+    private Double CE_LC_EST_AMT;
+
+    @Column(name = "CE_FC_PAID_AMT")
+    private Double CE_FC_PAID_AMT;
+
+    @Column(name = "CE_LC_PAID_AMT")
+    private Double CE_LC_PAID_AMT;
+
+    @Column(name = "CE_FRZ_FLAG")
+    private String CE_FRZ_FLAG;
+
+    @Column(name = "CE_INS_DT")
+    private Date CE_INS_DT;
+
+    @Column(name = "CE_INS_ID")
+    private String CE_INS_ID;
+
+    @Column(name = "CE_MOD_DT")
+    private Date CE_MOD_DT;
+
+    @Column(name = "CE_MOD_ID")
+    private String CE_MOD_ID;
+
+    @Column(name = "CE_CLOSE_FLAG")
+    private String CE_CLOSE_FLAG;
+
+    @Column(name = "CE_CLOSE_DT")
+    private Date CE_CLOSE_DT;
+
+    @Column(name = "CE_CLOSE_REASON")
+    private String CE_CLOSE_REASON;
+
+    @Column(name = "CE_CONFIRM_FLAG")
+    private String CE_CONFIRM_FLAG;
+
+    @Column(name = "CE_RESERVE_GEN_FLAG")
+    private String CE_RESERVE_GEN_FLAG;
+
+    @Column(name = "CE_OS_LOAN_AMT")
+    private Double CE_OS_LOAN_AMT;
+
+    @Column(name = "CE_SALARY")
+    private Double CE_SALARY;
+
+    @Column(name = "CE_NO_OF_MONTHS")
+    private Integer CE_NO_OF_MONTHS;
+
+    @Column(name = "CE_ESTIMATE_DT")
+    private Date CE_ESTIMATE_DT;
+
+    @Column(name = "CE_NO_OF_YEARS")
+    private Integer CE_NO_OF_YEARS;
+
+    @Column(name = "CE_SA_CALC_FACTOR")
+    private String CE_SA_CALC_FACTOR;
+
+    @Column(name = "CE_EST_TYPE")
+    private String CE_EST_TYPE;
+
+    @Column(name = "CE_REM_AMT_TO_PAY")
+    private Double CE_REM_AMT_TO_PAY;
+
+    @Column(name = "CE_FC_COVER_AMT")
+    private Double CE_FC_COVER_AMT;
+
+    @Column(name = "CE_LC_COVER_AMT")
+    private Double CE_LC_COVER_AMT;
+
+    @Column(name = "CE_LC_REM_AMT_TO_PAY")
+    private Double CE_LC_REM_AMT_TO_PAY;
+
+	public Long getCE_TRAN_ID() {
+		return CE_TRAN_ID;
+	}
+
+	public void setCE_TRAN_ID(Long cE_TRAN_ID) {
+		CE_TRAN_ID = cE_TRAN_ID;
+	}
+
+	public Integer getCE_CLM_TRAN_ID() {
+		return CE_CLM_TRAN_ID;
+	}
+
+	public void setCE_CLM_TRAN_ID(Integer cE_CLM_TRAN_ID) {
+		CE_CLM_TRAN_ID = cE_CLM_TRAN_ID;
+	}
+
+	public String getCE_LOSS_CODE() {
+		return CE_LOSS_CODE;
+	}
+
+	public void setCE_LOSS_CODE(String cE_LOSS_CODE) {
+		CE_LOSS_CODE = cE_LOSS_CODE;
+	}
+
+	public String getCE_COVER_CODE() {
+		return CE_COVER_CODE;
+	}
+
+	public void setCE_COVER_CODE(String cE_COVER_CODE) {
+		CE_COVER_CODE = cE_COVER_CODE;
+	}
+
+	public String getCE_REF_NO() {
+		return CE_REF_NO;
+	}
+
+	public void setCE_REF_NO(String cE_REF_NO) {
+		CE_REF_NO = cE_REF_NO;
+	}
+
+	public Double getCE_DISB_PERC() {
+		return CE_DISB_PERC;
+	}
+
+	public void setCE_DISB_PERC(Double cE_DISB_PERC) {
+		CE_DISB_PERC = cE_DISB_PERC;
+	}
+
+	public Date getCE_DISB_FM_DT() {
+		return CE_DISB_FM_DT;
+	}
+
+	public void setCE_DISB_FM_DT(Date cE_DISB_FM_DT) {
+		CE_DISB_FM_DT = cE_DISB_FM_DT;
+	}
+
+	public Date getCE_DISB_TO_DT() {
+		return CE_DISB_TO_DT;
+	}
+
+	public void setCE_DISB_TO_DT(Date cE_DISB_TO_DT) {
+		CE_DISB_TO_DT = cE_DISB_TO_DT;
+	}
+
+	public Integer getCE_NO_OF_DAYS_DISB() {
+		return CE_NO_OF_DAYS_DISB;
+	}
+
+	public void setCE_NO_OF_DAYS_DISB(Integer cE_NO_OF_DAYS_DISB) {
+		CE_NO_OF_DAYS_DISB = cE_NO_OF_DAYS_DISB;
+	}
+
+	public Double getCE_FC_EST_AMT() {
+		return CE_FC_EST_AMT;
+	}
+
+	public void setCE_FC_EST_AMT(Double cE_FC_EST_AMT) {
+		CE_FC_EST_AMT = cE_FC_EST_AMT;
+	}
+
+	public Double getCE_LC_EST_AMT() {
+		return CE_LC_EST_AMT;
+	}
+
+	public void setCE_LC_EST_AMT(Double cE_LC_EST_AMT) {
+		CE_LC_EST_AMT = cE_LC_EST_AMT;
+	}
+
+	public Double getCE_FC_PAID_AMT() {
+		return CE_FC_PAID_AMT;
+	}
+
+	public void setCE_FC_PAID_AMT(Double cE_FC_PAID_AMT) {
+		CE_FC_PAID_AMT = cE_FC_PAID_AMT;
+	}
+
+	public Double getCE_LC_PAID_AMT() {
+		return CE_LC_PAID_AMT;
+	}
+
+	public void setCE_LC_PAID_AMT(Double cE_LC_PAID_AMT) {
+		CE_LC_PAID_AMT = cE_LC_PAID_AMT;
+	}
+
+	public String getCE_FRZ_FLAG() {
+		return CE_FRZ_FLAG;
+	}
+
+	public void setCE_FRZ_FLAG(String cE_FRZ_FLAG) {
+		CE_FRZ_FLAG = cE_FRZ_FLAG;
+	}
+
+	public Date getCE_INS_DT() {
+		return CE_INS_DT;
+	}
+
+	public void setCE_INS_DT(Date cE_INS_DT) {
+		CE_INS_DT = cE_INS_DT;
+	}
+
+	public String getCE_INS_ID() {
+		return CE_INS_ID;
+	}
+
+	public void setCE_INS_ID(String cE_INS_ID) {
+		CE_INS_ID = cE_INS_ID;
+	}
+
+	public Date getCE_MOD_DT() {
+		return CE_MOD_DT;
+	}
+
+	public void setCE_MOD_DT(Date cE_MOD_DT) {
+		CE_MOD_DT = cE_MOD_DT;
+	}
+
+	public String getCE_MOD_ID() {
+		return CE_MOD_ID;
+	}
+
+	public void setCE_MOD_ID(String cE_MOD_ID) {
+		CE_MOD_ID = cE_MOD_ID;
+	}
+
+	public String getCE_CLOSE_FLAG() {
+		return CE_CLOSE_FLAG;
+	}
+
+	public void setCE_CLOSE_FLAG(String cE_CLOSE_FLAG) {
+		CE_CLOSE_FLAG = cE_CLOSE_FLAG;
+	}
+
+	public Date getCE_CLOSE_DT() {
+		return CE_CLOSE_DT;
+	}
+
+	public void setCE_CLOSE_DT(Date cE_CLOSE_DT) {
+		CE_CLOSE_DT = cE_CLOSE_DT;
+	}
+
+	public String getCE_CLOSE_REASON() {
+		return CE_CLOSE_REASON;
+	}
+
+	public void setCE_CLOSE_REASON(String cE_CLOSE_REASON) {
+		CE_CLOSE_REASON = cE_CLOSE_REASON;
+	}
+
+	public String getCE_CONFIRM_FLAG() {
+		return CE_CONFIRM_FLAG;
+	}
+
+	public void setCE_CONFIRM_FLAG(String cE_CONFIRM_FLAG) {
+		CE_CONFIRM_FLAG = cE_CONFIRM_FLAG;
+	}
+
+	public String getCE_RESERVE_GEN_FLAG() {
+		return CE_RESERVE_GEN_FLAG;
+	}
+
+	public void setCE_RESERVE_GEN_FLAG(String cE_RESERVE_GEN_FLAG) {
+		CE_RESERVE_GEN_FLAG = cE_RESERVE_GEN_FLAG;
+	}
+
+	public Double getCE_OS_LOAN_AMT() {
+		return CE_OS_LOAN_AMT;
+	}
+
+	public void setCE_OS_LOAN_AMT(Double cE_OS_LOAN_AMT) {
+		CE_OS_LOAN_AMT = cE_OS_LOAN_AMT;
+	}
+
+	public Double getCE_SALARY() {
+		return CE_SALARY;
+	}
+
+	public void setCE_SALARY(Double cE_SALARY) {
+		CE_SALARY = cE_SALARY;
+	}
+
+	public Integer getCE_NO_OF_MONTHS() {
+		return CE_NO_OF_MONTHS;
+	}
+
+	public void setCE_NO_OF_MONTHS(Integer cE_NO_OF_MONTHS) {
+		CE_NO_OF_MONTHS = cE_NO_OF_MONTHS;
+	}
+
+	public Date getCE_ESTIMATE_DT() {
+		return CE_ESTIMATE_DT;
+	}
+
+	public void setCE_ESTIMATE_DT(Date cE_ESTIMATE_DT) {
+		CE_ESTIMATE_DT = cE_ESTIMATE_DT;
+	}
+
+	public Integer getCE_NO_OF_YEARS() {
+		return CE_NO_OF_YEARS;
+	}
+
+	public void setCE_NO_OF_YEARS(Integer cE_NO_OF_YEARS) {
+		CE_NO_OF_YEARS = cE_NO_OF_YEARS;
+	}
+
+	public String getCE_SA_CALC_FACTOR() {
+		return CE_SA_CALC_FACTOR;
+	}
+
+	public void setCE_SA_CALC_FACTOR(String cE_SA_CALC_FACTOR) {
+		CE_SA_CALC_FACTOR = cE_SA_CALC_FACTOR;
+	}
+
+	public String getCE_EST_TYPE() {
+		return CE_EST_TYPE;
+	}
+
+	public void setCE_EST_TYPE(String cE_EST_TYPE) {
+		CE_EST_TYPE = cE_EST_TYPE;
+	}
+
+	public Double getCE_REM_AMT_TO_PAY() {
+		return CE_REM_AMT_TO_PAY;
+	}
+
+	public void setCE_REM_AMT_TO_PAY(Double cE_REM_AMT_TO_PAY) {
+		CE_REM_AMT_TO_PAY = cE_REM_AMT_TO_PAY;
+	}
+
+	public Double getCE_FC_COVER_AMT() {
+		return CE_FC_COVER_AMT;
+	}
+
+	public void setCE_FC_COVER_AMT(Double cE_FC_COVER_AMT) {
+		CE_FC_COVER_AMT = cE_FC_COVER_AMT;
+	}
+
+	public Double getCE_LC_COVER_AMT() {
+		return CE_LC_COVER_AMT;
+	}
+
+	public void setCE_LC_COVER_AMT(Double cE_LC_COVER_AMT) {
+		CE_LC_COVER_AMT = cE_LC_COVER_AMT;
+	}
+
+	public Double getCE_LC_REM_AMT_TO_PAY() {
+		return CE_LC_REM_AMT_TO_PAY;
+	}
+
+	public void setCE_LC_REM_AMT_TO_PAY(Double cE_LC_REM_AMT_TO_PAY) {
+		CE_LC_REM_AMT_TO_PAY = cE_LC_REM_AMT_TO_PAY;
+	}
     
-    @Column(name="ccd_claim_TRAN_id")
-    private long ccd_claim_TRAN_id;
-    
-    @Column(name="ccd_cover_code")
-    private String ccd_cover_code;
-    
-    @Column(name="ccd_loss_type")
-    private String ccd_loss_type;
-    
-    @Column(name="ccd_disab_type")
-    private String ccd_disab_type;
-    
-    @Column(name="ccd_fc_est_amt")
-    private BigDecimal ccd_fc_est_amt;
-    
-    @Column(name="ccd_lc_est_amt")
-    private BigDecimal ccd_lc_est_amt;
-    
-    @Column(name="ccd_frz_flag")
-    private String ccd_frz_flag;
-    
-    @Column(name="ccd_ins_id")
-    private String ccd_ins_id;
-    
-    @Column(name="ccd_ins_dt")
-    private Date ccd_ins_dt;
-    
-    @Column(name="ccd_mod_uid")
-    private String ccd_mod_uid;
-    
-    @Column(name="ccd_mod_dt")
-    private Date ccd_mod_dt;
-    
-    @Column(name="ccd_close_flag")
-    private String ccd_close_flag;
-    
-    @Column(name="ccd_close_dt")
-    private Date ccd_close_dt;
-    
-    @Column(name="ccd_period_unit")
-    private String ccd_period_unit;
-    
-    @Column(name="ccd_period")
-    private Integer ccd_period;
-    
-    @Column(name="ccd_rate")
-    private BigDecimal ccd_rate;
-    
-    @Column(name="ccd_rate_per")
-    private Long ccd_rate_per;
-    
-    @Column(name="ccd_confirm_flag")
-    private String ccd_confirm_flag;
-    
-    @Column(name="ccd_reserve_gen_flag")
-    private String ccd_reserve_gen_flag;
-    
-    @Column(name="ccd_set_flag")
-    private String ccd_set_flag;
-    
-    @Column(name="ccd_fitr_yn")
-    private String ccd_fitr_yn;
-    
-    @Column(name="ccd_no_of_days")
-    private Short ccd_no_of_days;
-    
-    @Column(name="ccd_reserve_dt")
-    private Date ccd_reserve_dt;
-    
-    @Column(name="ccd_claim_pay_to")
-    private String ccd_claim_pay_to;
-    
-    @Column(name="ccd_email")
-    private String ccd_email;
-
-	public long getCcd_TRAN_id() {
-		return ccd_TRAN_id;
-	}
-
-	public void setCcd_TRAN_id(long ccd_TRAN_id) {
-		this.ccd_TRAN_id = ccd_TRAN_id;
-	}
-
-	public long getCcd_claim_TRAN_id() {
-		return ccd_claim_TRAN_id;
-	}
-
-	public void setCcd_claim_TRAN_id(long ccd_claim_TRAN_id) {
-		this.ccd_claim_TRAN_id = ccd_claim_TRAN_id;
-	}
-
-	public String getCcd_cover_code() {
-		return ccd_cover_code;
-	}
-
-	public void setCcd_cover_code(String ccd_cover_code) {
-		this.ccd_cover_code = ccd_cover_code;
-	}
-
-	public String getCcd_loss_type() {
-		return ccd_loss_type;
-	}
-
-	public void setCcd_loss_type(String ccd_loss_type) {
-		this.ccd_loss_type = ccd_loss_type;
-	}
-
-	public String getCcd_disab_type() {
-		return ccd_disab_type;
-	}
-
-	public void setCcd_disab_type(String ccd_disab_type) {
-		this.ccd_disab_type = ccd_disab_type;
-	}
-
-	public BigDecimal getCcd_fc_est_amt() {
-		return ccd_fc_est_amt;
-	}
-
-	public void setCcd_fc_est_amt(BigDecimal ccd_fc_est_amt) {
-		this.ccd_fc_est_amt = ccd_fc_est_amt;
-	}
-
-	public BigDecimal getCcd_lc_est_amt() {
-		return ccd_lc_est_amt;
-	}
-
-	public void setCcd_lc_est_amt(BigDecimal ccd_lc_est_amt) {
-		this.ccd_lc_est_amt = ccd_lc_est_amt;
-	}
-
-	public String getCcd_frz_flag() {
-		return ccd_frz_flag;
-	}
-
-	public void setCcd_frz_flag(String ccd_frz_flag) {
-		this.ccd_frz_flag = ccd_frz_flag;
-	}
-
-	public String getCcd_ins_id() {
-		return ccd_ins_id;
-	}
-
-	public void setCcd_ins_id(String ccd_ins_id) {
-		this.ccd_ins_id = ccd_ins_id;
-	}
-
-	public Date getCcd_ins_dt() {
-		return ccd_ins_dt;
-	}
-
-	public void setCcd_ins_dt(Date ccd_ins_dt) {
-		this.ccd_ins_dt = ccd_ins_dt;
-	}
-
-	public String getCcd_mod_uid() {
-		return ccd_mod_uid;
-	}
-
-	public void setCcd_mod_uid(String ccd_mod_uid) {
-		this.ccd_mod_uid = ccd_mod_uid;
-	}
-
-	public Date getCcd_mod_dt() {
-		return ccd_mod_dt;
-	}
-
-	public void setCcd_mod_dt(Date ccd_mod_dt) {
-		this.ccd_mod_dt = ccd_mod_dt;
-	}
-
-	public String getCcd_close_flag() {
-		return ccd_close_flag;
-	}
-
-	public void setCcd_close_flag(String ccd_close_flag) {
-		this.ccd_close_flag = ccd_close_flag;
-	}
-
-	public Date getCcd_close_dt() {
-		return ccd_close_dt;
-	}
-
-	public void setCcd_close_dt(Date ccd_close_dt) {
-		this.ccd_close_dt = ccd_close_dt;
-	}
-
-	public String getCcd_period_unit() {
-		return ccd_period_unit;
-	}
-
-	public void setCcd_period_unit(String ccd_period_unit) {
-		this.ccd_period_unit = ccd_period_unit;
-	}
-
-	public Integer getCcd_period() {
-		return ccd_period;
-	}
-
-	public void setCcd_period(Integer ccd_period) {
-		this.ccd_period = ccd_period;
-	}
-
-	public BigDecimal getCcd_rate() {
-		return ccd_rate;
-	}
-
-	public void setCcd_rate(BigDecimal ccd_rate) {
-		this.ccd_rate = ccd_rate;
-	}
-
-	public Long getCcd_rate_per() {
-		return ccd_rate_per;
-	}
-
-	public void setCcd_rate_per(Long ccd_rate_per) {
-		this.ccd_rate_per = ccd_rate_per;
-	}
-
-	public String getCcd_confirm_flag() {
-		return ccd_confirm_flag;
-	}
-
-	public void setCcd_confirm_flag(String ccd_confirm_flag) {
-		this.ccd_confirm_flag = ccd_confirm_flag;
-	}
-
-	public String getCcd_reserve_gen_flag() {
-		return ccd_reserve_gen_flag;
-	}
-
-	public void setCcd_reserve_gen_flag(String ccd_reserve_gen_flag) {
-		this.ccd_reserve_gen_flag = ccd_reserve_gen_flag;
-	}
-
-	public String getCcd_set_flag() {
-		return ccd_set_flag;
-	}
-
-	public void setCcd_set_flag(String ccd_set_flag) {
-		this.ccd_set_flag = ccd_set_flag;
-	}
-
-	public String getCcd_fitr_yn() {
-		return ccd_fitr_yn;
-	}
-
-	public void setCcd_fitr_yn(String ccd_fitr_yn) {
-		this.ccd_fitr_yn = ccd_fitr_yn;
-	}
-
-	public Short getCcd_no_of_days() {
-		return ccd_no_of_days;
-	}
-
-	public void setCcd_no_of_days(Short ccd_no_of_days) {
-		this.ccd_no_of_days = ccd_no_of_days;
-	}
-
-	public Date getCcd_reserve_dt() {
-		return ccd_reserve_dt;
-	}
-
-	public void setCcd_reserve_dt(Date ccd_reserve_dt) {
-		this.ccd_reserve_dt = ccd_reserve_dt;
-	}
-
-	public String getCcd_claim_pay_to() {
-		return ccd_claim_pay_to;
-	}
-
-	public void setCcd_claim_pay_to(String ccd_claim_pay_to) {
-		this.ccd_claim_pay_to = ccd_claim_pay_to;
-	}
-
-	public String getCcd_email() {
-		return ccd_email;
-	}
-
-	public void setCcd_email(String ccd_email) {
-		this.ccd_email = ccd_email;
-	}
-    
-    
-    
-
 }
 

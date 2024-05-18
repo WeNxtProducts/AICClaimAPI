@@ -2,6 +2,7 @@ package com.wenxt.claims.model;
 
 import java.util.Date;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -10,388 +11,281 @@ import jakarta.persistence.Table;
 @Table(name = "LT_CLAIM_BENEFICIARY")
 public class LT_CLAIM_BENEFICIARY {
 
-	@Id
-	private long cben_pben_TRAN_id;
-	private long cben_TRAN_id;
-	private long cben_claim_TRAN_id;
-	private long cben_cp_TRAN_id;
-	private String cben_bnf_type;
-	private String cben_relation_code;
-	private String cben_bnf_name;
-	private String cben_bnf_name_bl;
-	private double cben_perc;
-	private String cben_INS_id;
-	private Date cben_INS_dt;
-	private String cben_MOD_id;
-	private Date cben_MOD_dt;
-	private double cben_lc_paid_amt;
-	private double cben_fc_paid_amt;
-	private String cben_bank_code;
-	private String cben_acct_code;
-	private String cben_ref_id1;
-	private String cben_ref_id2;
-	private String cben_address1;
-	private String cben_address2;
-	private String cben_address3;
-	private String cben_stat_code;
-	private String cben_postal_code;
-	private String cben_city_code;
-	private String cben_address4;
-	private String cben_address5;
-	private String cben_remarks;
-	private String cben_catg_code;
-	private short cben_age;
-	private String cben_guardian_name;
-	private long cben_micr_code;
-	private String cben_divn_code;
-	private int cben_sr_no;
-	private Date cben_dob;
-	private String cben_bnf_code;
-	private String cben_flex_01;
-	private String cben_flex_02;
-	private String cben_flex_03;
-	private String cben_flex_04;
-	private String cben_flex_05;
-	private String cben_flex_06;
 
-	// Constructor, Getters, and Setters
-	public LT_CLAIM_BENEFICIARY() {
-	}
-
-	public long getCben_TRAN_id() {
-		return cben_TRAN_id;
-	}
-
-	public void setCben_TRAN_id(long cben_TRAN_id) {
-		this.cben_TRAN_id = cben_TRAN_id;
-	}
-
-	public long getCben_claim_TRAN_id() {
-		return cben_claim_TRAN_id;
-	}
-
-	public void setCben_claim_TRAN_id(long cben_claim_TRAN_id) {
-		this.cben_claim_TRAN_id = cben_claim_TRAN_id;
-	}
-
-	public long getCben_cp_TRAN_id() {
-		return cben_cp_TRAN_id;
-	}
+    @Id
+    @Column(name = "CBEN_TRAN_ID")
+    private Long CBEN_TRAN_ID;
 
-	public void setCben_cp_TRAN_id(long cben_cp_TRAN_id) {
-		this.cben_cp_TRAN_id = cben_cp_TRAN_id;
-	}
-
-	public long getCben_pben_TRAN_id() {
-		return cben_pben_TRAN_id;
-	}
-
-	public void setCben_pben_TRAN_id(long cben_pben_TRAN_id) {
-		this.cben_pben_TRAN_id = cben_pben_TRAN_id;
-	}
-
-	public String getCben_bnf_type() {
-		return cben_bnf_type;
-	}
-
-	public void setCben_bnf_type(String cben_bnf_type) {
-		this.cben_bnf_type = cben_bnf_type;
-	}
-
-	public String getCben_relation_code() {
-		return cben_relation_code;
-	}
+    @Column(name = "CBEN_CLAIM_TRAN_ID")
+    private Long CBEN_CLAIM_TRAN_ID;
 
-	public void setCben_relation_code(String cben_relation_code) {
-		this.cben_relation_code = cben_relation_code;
-	}
+    @Column(name = "CBEN_CP_TRAN_ID")
+    private Long CBEN_CP_TRAN_ID;
 
-	public String getCben_bnf_name() {
-		return cben_bnf_name;
-	}
+    @Column(name = "CBEN_BANK_CODE")
+    private String CBEN_BANK_CODE;
 
-	public void setCben_bnf_name(String cben_bnf_name) {
-		this.cben_bnf_name = cben_bnf_name;
-	}
+    @Column(name = "CBEN_ACCOUNT_CODE")
+    private String CBEN_ACCOUNT_CODE;
 
-	public String getCben_bnf_name_bl() {
-		return cben_bnf_name_bl;
-	}
+    @Column(name = "CBEN_RELATION_CODE")
+    private String CBEN_RELATION_CODE;
 
-	public void setCben_bnf_name_bl(String cben_bnf_name_bl) {
-		this.cben_bnf_name_bl = cben_bnf_name_bl;
-	}
+    @Column(name = "CBEN_BNF_NAME")
+    private String CBEN_BNF_NAME;
 
-	public double getCben_perc() {
-		return cben_perc;
-	}
+    @Column(name = "CBEN_BNF_NAME_BL")
+    private String CBEN_BNF_NAME_BL;
 
-	public void setCben_perc(double cben_perc) {
-		this.cben_perc = cben_perc;
-	}
+    @Column(name = "CBEN_LC_PAID_AMT")
+    private Double CBEN_LC_PAID_AMT;
 
-	public String getCben_INS_id() {
-		return cben_INS_id;
-	}
+    @Column(name = "CBEN_FC_PAID_AMT")
+    private Double CBEN_FC_PAID_AMT;
 
-	public void setCben_INS_id(String cben_INS_id) {
-		this.cben_INS_id = cben_INS_id;
-	}
+    @Column(name = "CBEN_INS_UID")
+    private String CBEN_INS_UID;
 
-	public Date getCben_INS_dt() {
-		return cben_INS_dt;
-	}
+    @Column(name = "CBEN_INS_DT")
+    private Date CBEN_INS_DT;
 
-	public void setCben_INS_dt(Date cben_INS_dt) {
-		this.cben_INS_dt = cben_INS_dt;
-	}
+    @Column(name = "CBEN_MOD_UID")
+    private String CBEN_MOD_UID;
 
-	public String getCben_MOD_id() {
-		return cben_MOD_id;
-	}
+    @Column(name = "CBEN_MOD_DT")
+    private Date CBEN_MOD_DT;
 
-	public void setCben_MOD_id(String cben_MOD_id) {
-		this.cben_MOD_id = cben_MOD_id;
-	}
+    @Column(name = "CBEN_PBEN_TRAN_ID")
+    private Long CBEN_PBEN_TRAN_ID;
 
-	public Date getCben_MOD_dt() {
-		return cben_MOD_dt;
-	}
+    @Column(name = "CBEN_BNF_TYPE")
+    private String CBEN_BNF_TYPE;
 
-	public void setCben_MOD_dt(Date cben_MOD_dt) {
-		this.cben_MOD_dt = cben_MOD_dt;
-	}
+    @Column(name = "CBEN_PERC")
+    private Double CBEN_PERC;
 
-	public double getCben_lc_paid_amt() {
-		return cben_lc_paid_amt;
-	}
+    @Column(name = "CBEN_REF_ID1")
+    private String CBEN_REF_ID1;
 
-	public void setCben_lc_paid_amt(double cben_lc_paid_amt) {
-		this.cben_lc_paid_amt = cben_lc_paid_amt;
-	}
+    @Column(name = "CBEN_REF_ID2")
+    private String CBEN_REF_ID2;
 
-	public double getCben_fc_paid_amt() {
-		return cben_fc_paid_amt;
-	}
+    @Column(name = "CBEN_ADDRESS1")
+    private String CBEN_ADDRESS1;
 
-	public void setCben_fc_paid_amt(double cben_fc_paid_amt) {
-		this.cben_fc_paid_amt = cben_fc_paid_amt;
-	}
+    @Column(name = "CBEN_ADDRESS2")
+    private String CBEN_ADDRESS2;
 
-	public String getCben_bank_code() {
-		return cben_bank_code;
-	}
+    @Column(name = "CBEN_ADDRESS3")
+    private String CBEN_ADDRESS3;
 
-	public void setCben_bank_code(String cben_bank_code) {
-		this.cben_bank_code = cben_bank_code;
-	}
+    @Column(name = "CBEN_STAT_CODE")
+    private String CBEN_STAT_CODE;
 
-	public String getCben_acct_code() {
-		return cben_acct_code;
-	}
+    @Column(name = "CBEN_POSTAL_CODE")
+    private String CBEN_POSTAL_CODE;
 
-	public void setCben_acct_code(String cben_acct_code) {
-		this.cben_acct_code = cben_acct_code;
-	}
+    @Column(name = "CBEN_CITY_CODE")
+    private String CBEN_CITY_CODE;
 
-	public String getCben_ref_id1() {
-		return cben_ref_id1;
+	public Long getCBEN_TRAN_ID() {
+		return CBEN_TRAN_ID;
 	}
 
-	public void setCben_ref_id1(String cben_ref_id1) {
-		this.cben_ref_id1 = cben_ref_id1;
+	public void setCBEN_TRAN_ID(Long cBEN_TRAN_ID) {
+		CBEN_TRAN_ID = cBEN_TRAN_ID;
 	}
 
-	public String getCben_ref_id2() {
-		return cben_ref_id2;
+	public Long getCBEN_CLAIM_TRAN_ID() {
+		return CBEN_CLAIM_TRAN_ID;
 	}
 
-	public void setCben_ref_id2(String cben_ref_id2) {
-		this.cben_ref_id2 = cben_ref_id2;
+	public void setCBEN_CLAIM_TRAN_ID(Long cBEN_CLAIM_TRAN_ID) {
+		CBEN_CLAIM_TRAN_ID = cBEN_CLAIM_TRAN_ID;
 	}
 
-	public String getCben_address1() {
-		return cben_address1;
+	public Long getCBEN_CP_TRAN_ID() {
+		return CBEN_CP_TRAN_ID;
 	}
 
-	public void setCben_address1(String cben_address1) {
-		this.cben_address1 = cben_address1;
+	public void setCBEN_CP_TRAN_ID(Long cBEN_CP_TRAN_ID) {
+		CBEN_CP_TRAN_ID = cBEN_CP_TRAN_ID;
 	}
 
-	public String getCben_address2() {
-		return cben_address2;
+	public String getCBEN_BANK_CODE() {
+		return CBEN_BANK_CODE;
 	}
 
-	public void setCben_address2(String cben_address2) {
-		this.cben_address2 = cben_address2;
+	public void setCBEN_BANK_CODE(String cBEN_BANK_CODE) {
+		CBEN_BANK_CODE = cBEN_BANK_CODE;
 	}
 
-	public String getCben_address3() {
-		return cben_address3;
+	public String getCBEN_ACCOUNT_CODE() {
+		return CBEN_ACCOUNT_CODE;
 	}
 
-	public void setCben_address3(String cben_address3) {
-		this.cben_address3 = cben_address3;
+	public void setCBEN_ACCOUNT_CODE(String cBEN_ACCOUNT_CODE) {
+		CBEN_ACCOUNT_CODE = cBEN_ACCOUNT_CODE;
 	}
 
-	public String getCben_stat_code() {
-		return cben_stat_code;
+	public String getCBEN_RELATION_CODE() {
+		return CBEN_RELATION_CODE;
 	}
 
-	public void setCben_stat_code(String cben_stat_code) {
-		this.cben_stat_code = cben_stat_code;
+	public void setCBEN_RELATION_CODE(String cBEN_RELATION_CODE) {
+		CBEN_RELATION_CODE = cBEN_RELATION_CODE;
 	}
 
-	public String getCben_postal_code() {
-		return cben_postal_code;
+	public String getCBEN_BNF_NAME() {
+		return CBEN_BNF_NAME;
 	}
 
-	public void setCben_postal_code(String cben_postal_code) {
-		this.cben_postal_code = cben_postal_code;
+	public void setCBEN_BNF_NAME(String cBEN_BNF_NAME) {
+		CBEN_BNF_NAME = cBEN_BNF_NAME;
 	}
 
-	public String getCben_city_code() {
-		return cben_city_code;
+	public String getCBEN_BNF_NAME_BL() {
+		return CBEN_BNF_NAME_BL;
 	}
 
-	public void setCben_city_code(String cben_city_code) {
-		this.cben_city_code = cben_city_code;
+	public void setCBEN_BNF_NAME_BL(String cBEN_BNF_NAME_BL) {
+		CBEN_BNF_NAME_BL = cBEN_BNF_NAME_BL;
 	}
 
-	public String getCben_address4() {
-		return cben_address4;
+	public Double getCBEN_LC_PAID_AMT() {
+		return CBEN_LC_PAID_AMT;
 	}
 
-	public void setCben_address4(String cben_address4) {
-		this.cben_address4 = cben_address4;
+	public void setCBEN_LC_PAID_AMT(Double cBEN_LC_PAID_AMT) {
+		CBEN_LC_PAID_AMT = cBEN_LC_PAID_AMT;
 	}
 
-	public String getCben_address5() {
-		return cben_address5;
+	public Double getCBEN_FC_PAID_AMT() {
+		return CBEN_FC_PAID_AMT;
 	}
 
-	public void setCben_address5(String cben_address5) {
-		this.cben_address5 = cben_address5;
+	public void setCBEN_FC_PAID_AMT(Double cBEN_FC_PAID_AMT) {
+		CBEN_FC_PAID_AMT = cBEN_FC_PAID_AMT;
 	}
 
-	public String getCben_remarks() {
-		return cben_remarks;
+	public String getCBEN_INS_UID() {
+		return CBEN_INS_UID;
 	}
 
-	public void setCben_remarks(String cben_remarks) {
-		this.cben_remarks = cben_remarks;
+	public void setCBEN_INS_UID(String cBEN_INS_UID) {
+		CBEN_INS_UID = cBEN_INS_UID;
 	}
 
-	public String getCben_catg_code() {
-		return cben_catg_code;
+	public Date getCBEN_INS_DT() {
+		return CBEN_INS_DT;
 	}
 
-	public void setCben_catg_code(String cben_catg_code) {
-		this.cben_catg_code = cben_catg_code;
+	public void setCBEN_INS_DT(Date cBEN_INS_DT) {
+		CBEN_INS_DT = cBEN_INS_DT;
 	}
 
-	public short getCben_age() {
-		return cben_age;
+	public String getCBEN_MOD_UID() {
+		return CBEN_MOD_UID;
 	}
 
-	public void setCben_age(short cben_age) {
-		this.cben_age = cben_age;
+	public void setCBEN_MOD_UID(String cBEN_MOD_UID) {
+		CBEN_MOD_UID = cBEN_MOD_UID;
 	}
 
-	public String getCben_guardian_name() {
-		return cben_guardian_name;
+	public Date getCBEN_MOD_DT() {
+		return CBEN_MOD_DT;
 	}
 
-	public void setCben_guardian_name(String cben_guardian_name) {
-		this.cben_guardian_name = cben_guardian_name;
+	public void setCBEN_MOD_DT(Date cBEN_MOD_DT) {
+		CBEN_MOD_DT = cBEN_MOD_DT;
 	}
 
-	public long getCben_micr_code() {
-		return cben_micr_code;
+	public Long getCBEN_PBEN_TRAN_ID() {
+		return CBEN_PBEN_TRAN_ID;
 	}
 
-	public void setCben_micr_code(long cben_micr_code) {
-		this.cben_micr_code = cben_micr_code;
+	public void setCBEN_PBEN_TRAN_ID(Long cBEN_PBEN_TRAN_ID) {
+		CBEN_PBEN_TRAN_ID = cBEN_PBEN_TRAN_ID;
 	}
 
-	public String getCben_divn_code() {
-		return cben_divn_code;
+	public String getCBEN_BNF_TYPE() {
+		return CBEN_BNF_TYPE;
 	}
 
-	public void setCben_divn_code(String cben_divn_code) {
-		this.cben_divn_code = cben_divn_code;
+	public void setCBEN_BNF_TYPE(String cBEN_BNF_TYPE) {
+		CBEN_BNF_TYPE = cBEN_BNF_TYPE;
 	}
 
-	public int getCben_sr_no() {
-		return cben_sr_no;
+	public Double getCBEN_PERC() {
+		return CBEN_PERC;
 	}
 
-	public void setCben_sr_no(int cben_sr_no) {
-		this.cben_sr_no = cben_sr_no;
+	public void setCBEN_PERC(Double cBEN_PERC) {
+		CBEN_PERC = cBEN_PERC;
 	}
 
-	public Date getCben_dob() {
-		return cben_dob;
+	public String getCBEN_REF_ID1() {
+		return CBEN_REF_ID1;
 	}
 
-	public void setCben_dob(Date cben_dob) {
-		this.cben_dob = cben_dob;
+	public void setCBEN_REF_ID1(String cBEN_REF_ID1) {
+		CBEN_REF_ID1 = cBEN_REF_ID1;
 	}
 
-	public String getCben_bnf_code() {
-		return cben_bnf_code;
+	public String getCBEN_REF_ID2() {
+		return CBEN_REF_ID2;
 	}
 
-	public void setCben_bnf_code(String cben_bnf_code) {
-		this.cben_bnf_code = cben_bnf_code;
+	public void setCBEN_REF_ID2(String cBEN_REF_ID2) {
+		CBEN_REF_ID2 = cBEN_REF_ID2;
 	}
 
-	public String getCben_flex_01() {
-		return cben_flex_01;
+	public String getCBEN_ADDRESS1() {
+		return CBEN_ADDRESS1;
 	}
 
-	public void setCben_flex_01(String cben_flex_01) {
-		this.cben_flex_01 = cben_flex_01;
+	public void setCBEN_ADDRESS1(String cBEN_ADDRESS1) {
+		CBEN_ADDRESS1 = cBEN_ADDRESS1;
 	}
 
-	public String getCben_flex_02() {
-		return cben_flex_02;
+	public String getCBEN_ADDRESS2() {
+		return CBEN_ADDRESS2;
 	}
 
-	public void setCben_flex_02(String cben_flex_02) {
-		this.cben_flex_02 = cben_flex_02;
+	public void setCBEN_ADDRESS2(String cBEN_ADDRESS2) {
+		CBEN_ADDRESS2 = cBEN_ADDRESS2;
 	}
 
-	public String getCben_flex_03() {
-		return cben_flex_03;
+	public String getCBEN_ADDRESS3() {
+		return CBEN_ADDRESS3;
 	}
 
-	public void setCben_flex_03(String cben_flex_03) {
-		this.cben_flex_03 = cben_flex_03;
+	public void setCBEN_ADDRESS3(String cBEN_ADDRESS3) {
+		CBEN_ADDRESS3 = cBEN_ADDRESS3;
 	}
 
-	public String getCben_flex_04() {
-		return cben_flex_04;
+	public String getCBEN_STAT_CODE() {
+		return CBEN_STAT_CODE;
 	}
 
-	public void setCben_flex_04(String cben_flex_04) {
-		this.cben_flex_04 = cben_flex_04;
+	public void setCBEN_STAT_CODE(String cBEN_STAT_CODE) {
+		CBEN_STAT_CODE = cBEN_STAT_CODE;
 	}
 
-	public String getCben_flex_05() {
-		return cben_flex_05;
+	public String getCBEN_POSTAL_CODE() {
+		return CBEN_POSTAL_CODE;
 	}
 
-	public void setCben_flex_05(String cben_flex_05) {
-		this.cben_flex_05 = cben_flex_05;
+	public void setCBEN_POSTAL_CODE(String cBEN_POSTAL_CODE) {
+		CBEN_POSTAL_CODE = cBEN_POSTAL_CODE;
 	}
 
-	public String getCben_flex_06() {
-		return cben_flex_06;
+	public String getCBEN_CITY_CODE() {
+		return CBEN_CITY_CODE;
 	}
 
-	public void setCben_flex_06(String cben_flex_06) {
-		this.cben_flex_06 = cben_flex_06;
+	public void setCBEN_CITY_CODE(String cBEN_CITY_CODE) {
+		CBEN_CITY_CODE = cBEN_CITY_CODE;
 	}
 
 }

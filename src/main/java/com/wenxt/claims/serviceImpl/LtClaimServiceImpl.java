@@ -1,12 +1,13 @@
 package com.wenxt.claims.serviceImpl;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.List;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.json.JSONObject;
@@ -14,12 +15,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.wenxt.claims.model.ClaimsRequestDTO;
 import com.wenxt.claims.model.LT_CLAIM;
 import com.wenxt.claims.repository.LtClaimRepository;
 import com.wenxt.claims.service.LtClaimService;
 
 @Service
 public class LtClaimServiceImpl implements LtClaimService{
+
+	@Value("${spring.message.code}")
+	private String messageCode;
+
+	@Value("${spring.status.code}")
+	private String statusCode;
+
+	@Value("${spring.data.code}")
+	private String dataCode;
+
+	@Value("${spring.success.code}")
+	private String successCode;
+
+	@Value("${spring.error.code}")
+	private String errorCode;
+
+	@Value("${spring.warning.code}")
+	private String warningCode;	
 
 	@Autowired
 	private LtClaimRepository ltclaimrepo;
@@ -32,15 +52,91 @@ public class LtClaimServiceImpl implements LtClaimService{
 //	private String getallltClaim;
 
 	@Override
-	public String createLtClaim(LT_CLAIM ltclaim) {
+	public String createLtClaim(ClaimsRequestDTO claimsRequestDTO) {
+		JSONObject response = new JSONObject();
+		JSONObject data = new JSONObject();
 
-		if (ltclaimrepo.existsById(ltclaim.getClaim_TRAN_id())) {
-			ltclaimrepo.save(ltclaim);
-			return "Lt claim updated successfully";
-		} else {
-			ltclaimrepo.save(ltclaim);
-			return "LT Claim created successfully";
+		try {
+			Integer claimId = Integer.parseInt(claimsRequestDTO.getFrontForm().getFormFields().get("CLM_SYS_ID"));
+			Optional<LT_CLAIM> optionalUser = ltclaimrepo.findById(claimId);
+			LT_CLAIM claim = optionalUser.orElse(new LT_CLAIM());
+//			LT_CLAIM claim = new LT_CLAIM();
+
+			Map<String, Map<String, String>> fieldMaps = new HashMap<>();
+			fieldMaps.put("frontForm", claimsRequestDTO.getFrontForm().getFormFields());
+			for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
+				setClaimFields(claim, entry.getValue());
+			}
+
+			try {
+				LT_CLAIM savedClaimDetails = ltclaimrepo.save(claim);
+				response.put(statusCode, successCode);
+				response.put(messageCode,
+						 "User created successfully");
+				data.put("Id", savedClaimDetails.getCLM_SYS_ID());
+				response.put("data", data);
+			} catch (Exception e) {
+				response.put("statusCode", errorCode);
+				response.put("message", "An error occurred: " + e.getMessage());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.put("statusCode", errorCode);
+			response.put("message", "An error occurred: " + e.getMessage());
 		}
+
+		return response.toString();
+	}
+	
+	private void setClaimFields(LT_CLAIM claim, Map<String, String> fields) throws Exception {
+		for (Map.Entry<String, String> entry : fields.entrySet()) {
+			setClaimField(claim, entry.getKey(), entry.getValue());
+		}
+	}
+	
+	private void setClaimField(LT_CLAIM user, String fieldName, String value) throws Exception {
+		try {
+			Field field = LT_CLAIM.class.getDeclaredField(fieldName);
+			Class<?> fieldType = field.getType();
+			Object convertedValue = convertStringToObject(value, fieldType);
+			String setterMethodName = "set" + fieldName;
+			if (value != null && !value.isEmpty()) {
+				Method setter = LT_CLAIM.class.getMethod(setterMethodName, fieldType);
+				setter.invoke(user, convertedValue);
+			}
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private Object convertStringToObject(String value, Class<?> fieldType) {
+		if (fieldType.equals(Integer.class) && value.isEmpty() == false && value != null) {
+			return Integer.parseInt(value);
+		} else if (fieldType.equals(Double.class) && value.isEmpty() == false && value != null) {
+			return Double.parseDouble(value);
+		} else if (fieldType.equals(Short.class) && value.isEmpty() == false && value != null) {
+			return Short.parseShort(value);
+		} else if (fieldType.equals(LocalDateTime.class) && value.isEmpty() == false && value != null) {
+			return dateTimeConverter(value);
+		} else {
+			return value;
+		}
+	}
+	
+	private Object dateTimeConverter(String value) {
+		String dateString = value;
+		if (value.length() > 10) {
+			dateString = value.substring(0, 10);
+		}
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalTime defaultTime = LocalTime.of(0, 0, 0);
+		LocalDate localDate = LocalDate.parse(dateString, formatter);
+		LocalDateTime dateTime = LocalDateTime.of(localDate, defaultTime);
+		String formattedDateTime = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+		DateTimeFormatter formatters = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		LocalDateTime parsedDateTime = LocalDateTime.parse(formattedDateTime, formatters);
+		return parsedDateTime;
 	}
 
 //	@Override
@@ -89,41 +185,42 @@ public class LtClaimServiceImpl implements LtClaimService{
 //
 	@Override
 	public String getLtClaimById(Long claim_TRAN_id) {
-		LT_CLAIM polchager = ltclaimrepo.findById(claim_TRAN_id)
-				.orElseThrow(() -> new RuntimeException("POL CHARGER not found"));
-
-		JSONObject response = new JSONObject(polchager);
-
-		response.put("Status", "SUCCESS");
-		response.put("Message", "Record with ID " + claim_TRAN_id + " retrived successfully");
-		return response.toString();
+//		LT_CLAIM polchager = ltclaimrepo.findById(claim_TRAN_id)
+//				.orElseThrow(() -> new RuntimeException("POL CHARGER not found"));
+//
+//		JSONObject response = new JSONObject(polchager);
+//
+//		response.put("Status", "SUCCESS");
+//		response.put("Message", "Record with ID " + claim_TRAN_id + " retrived successfully");
+		return "SUCCESS";
 	}
 
 	@Override
 	public String deleteLtClaimByid(Long claim_TRAN_id) {
-		try {
-			Optional<LT_CLAIM> optionalEntity = ltclaimrepo.findById(claim_TRAN_id);
-
-			if (optionalEntity.isPresent()) {
-				ltclaimrepo.deleteById(claim_TRAN_id);
-
-				JSONObject response = new JSONObject();
-				response.put("Status", "SUCCESS");
-				response.put("Message", "Record with ID " + claim_TRAN_id + " deleted successfully");
-				return response.toString();
-
-			} else {
-				JSONObject response = new JSONObject();
-				response.put("Status", "ERROR");
-				response.put("Message", "Record with ID " + claim_TRAN_id + " not found");
-				return response.toString();
-			}
-		} catch (Exception e) {
-			JSONObject response = new JSONObject();
-			response.put("Status", "ERROR");
-			response.put("Message", "Error deleting record with ID " + claim_TRAN_id + ": " + e.getMessage());
-			return response.toString();
-		}
+//		try {
+//			Optional<LT_CLAIM> optionalEntity = ltclaimrepo.findById(claim_TRAN_id);
+//
+//			if (optionalEntity.isPresent()) {
+//				ltclaimrepo.deleteById(claim_TRAN_id);
+//
+//				JSONObject response = new JSONObject();
+//				response.put("Status", "SUCCESS");
+//				response.put("Message", "Record with ID " + claim_TRAN_id + " deleted successfully");
+//				return response.toString();
+//
+//			} else {
+//				JSONObject response = new JSONObject();
+//				response.put("Status", "ERROR");
+//				response.put("Message", "Record with ID " + claim_TRAN_id + " not found");
+//				return response.toString();
+//			}
+//		} catch (Exception e) {
+//			JSONObject response = new JSONObject();
+//			response.put("Status", "ERROR");
+//			response.put("Message", "Error deleting record with ID " + claim_TRAN_id + ": " + e.getMessage());
+//			return response.toString();
+//		}
+		return "SUCCESS";
 	}
 
 }

@@ -1,665 +1,955 @@
 package com.wenxt.claims.model;
-import java.math.BigDecimal;
 import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name="LT_CLAIM")
 public class LT_CLAIM {
 	
-	@Id
-    @Column(name="claim_TRAN_id")
-    private long claim_TRAN_id;
-    
-    @Column(name="claim_pol_TRAN_id")
-    private long claim_pol_TRAN_id;
-    
-    @Column(name="claim_pol_no")
-    private String claim_pol_no;
-    
-    @Column(name="claim_ds_code")
-    private String claim_ds_code;
-    
-    @Column(name="claim_poad_serial_no")
-    private short claim_poad_serial_no;
-    
-    @Column(name="claim_assr_code")
-    private String claim_assr_code;
-    
-    @Column(name="claim_curr_code")
-    private String claim_curr_code;
-    
-    @Column(name="claim_exch_rate")
-    private BigDecimal claim_exch_rate;
-    
-    @Column(name="claim_loss_dt")
-    private Date claim_loss_dt;
-    
-    @Column(name="claim_intm_dt")
-    private Date claim_intm_dt;
-    
-    @Column(name="claim_no")
-    private String claim_no;
-    
-    @Column(name="claim_type")
-    private String claim_type;
-    
-    @Column(name="claim_remarks")
-    private String claim_remarks;
-    
-    @Column(name="claim_ref_no")
-    private String claim_ref_no;
-    
-    @Column(name="claim_pay_to")
-    private String claim_pay_to;
-    
-    @Column(name="claim_close_flag")
-    private String claim_close_flag;
-    
-    @Column(name="claim_status")
-    private String claim_status;
-    
-    @Column(name="claim_frz_flag")
-    private String claim_frz_flag;
-    
-    @Column(name="claim_INS_id")
-    private String claim_INS_id;
-    
-    @Column(name="claim_INS_dt")
-    private Date claim_INS_dt;
-    
-    @Column(name="claim_MOD_id")
-    private String claim_MOD_id;
-    
-    @Column(name="claim_MOD_dt")
-    private Date claim_MOD_dt;
-    
-    @Column(name="claim_cust_code")
-    private String claim_cust_code;
-    
-    @Column(name="claim_accnt_pay_code")
-    private String claim_accnt_pay_code;
-    
-    @Column(name="claim_addl_status")
-    private String claim_addl_status;
-    
-    @Column(name="claim_rev_res_flag")
-    private String claim_rev_res_flag;
-    
-    @Column(name="claim_resv_amt")
-    private BigDecimal claim_resv_amt;
-    
-    @Column(name="claim_util_amt")
-    private BigDecimal claim_util_amt;
-    
-    @Column(name="claim_apprv_dt")
-    private Date claim_apprv_dt;
-    
-    @Column(name="claim_apprv_status")
-    private String claim_apprv_status;
-    
-    @Column(name="claim_unit_sell_yn")
-    private String claim_unit_sell_yn;
-    
-    @Column(name="claim_reopen_dt")
-    private Date claim_reopen_dt;
-    
-    @Column(name="claim_reopen_reason")
-    private String claim_reopen_reason;
-    
-    @Column(name="claim_pol_valid_yn")
-    private String claim_pol_valid_yn;
-    
-    @Column(name="claim_med_code")
-    private String claim_med_code;
-    
-    @Column(name="claim_lc_rla_amount")
-    private BigDecimal claim_lc_rla_amount;
-    
-    @Column(name="claim_pci_ref_no")
-    private String claim_pci_ref_no;
-    
-    @Column(name="claim_lc_wak_amt")
-    private BigDecimal claim_lc_wak_amt;
-    
-    @Column(name="claim_lc_serv_fee")
-    private BigDecimal claim_lc_serv_fee;
-    
-    @Column(name="claim_lc_risk_prem")
-    private BigDecimal claim_lc_risk_prem;
-    
-    @Column(name="claim_dis_cert_dt")
-    private Date claim_dis_cert_dt;
-    
-    @Column(name="claim_med_exp_dt")
-    private Date claim_med_exp_dt;
-    
-    @Column(name="claim_sickness_dt")
-    private Date claim_sickness_dt;
-    
-    @Column(name="claim_excl_typ")
-    private String claim_excl_typ;
-    
-    @Column(name="claim_excl_reason")
-    private String claim_excl_reason;
-    
-    @Column(name="claim_memb_code")
-    private String claim_memb_code;
-    
-    @Column(name="claim_diseases_code")
-    private String claim_diseases_code;
-    
-    @Column(name="claim_diseases_remarks")
-    private String claim_diseases_remarks;
-    
-    @Column(name="claim_assrd_ref_id1")
-    private String claim_assrd_ref_id1;
-    
-    @Column(name="claim_fee_hospitals")
-    private BigDecimal claim_fee_hospitals;
-    
-    @Column(name="claim_icd_diseases_dtl")
-    private String claim_icd_diseases_dtl;
-    
-    @Column(name="claim_hosp_addm_dt")
-    private Date claim_hosp_addm_dt;
-    
-    @Column(name="claim_hosp_dschg_dt")
-    private Date claim_hosp_dschg_dt;
-    
-    @Column(name="clm_excl_yn")
-    private String clm_excl_yn;
-    
-    @Column(name="claim_claimant_code")
-    private String claim_claimant_code;
-    
-    @Column(name="claim_int_email")
-    private String claim_int_email;
-    
-    @Column(name="claim_int_mobile")
-    private String claim_int_mobile;
-    
-    @Column(name="claim_pay_method")
-    private String claim_pay_method;
-    
-    @Column(name="claim_pay_rate")
-    private BigDecimal claim_pay_rate;
-
-	public long getClaim_TRAN_id() {
-		return claim_TRAN_id;
-	}
-
-	public void setClaim_TRAN_id(long claim_TRAN_id) {
-		this.claim_TRAN_id = claim_TRAN_id;
-	}
-
-	public long getClaim_pol_TRAN_id() {
-		return claim_pol_TRAN_id;
-	}
-
-	public void setClaim_pol_TRAN_id(long claim_pol_TRAN_id) {
-		this.claim_pol_TRAN_id = claim_pol_TRAN_id;
-	}
-
-	public String getClaim_pol_no() {
-		return claim_pol_no;
-	}
-
-	public void setClaim_pol_no(String claim_pol_no) {
-		this.claim_pol_no = claim_pol_no;
-	}
-
-	public String getClaim_ds_code() {
-		return claim_ds_code;
-	}
-
-	public void setClaim_ds_code(String claim_ds_code) {
-		this.claim_ds_code = claim_ds_code;
-	}
-
-	public short getClaim_poad_serial_no() {
-		return claim_poad_serial_no;
-	}
-
-	public void setClaim_poad_serial_no(short claim_poad_serial_no) {
-		this.claim_poad_serial_no = claim_poad_serial_no;
-	}
-
-	public String getClaim_assr_code() {
-		return claim_assr_code;
-	}
-
-	public void setClaim_assr_code(String claim_assr_code) {
-		this.claim_assr_code = claim_assr_code;
-	}
-
-	public String getClaim_curr_code() {
-		return claim_curr_code;
-	}
-
-	public void setClaim_curr_code(String claim_curr_code) {
-		this.claim_curr_code = claim_curr_code;
-	}
-
-	public BigDecimal getClaim_exch_rate() {
-		return claim_exch_rate;
-	}
-
-	public void setClaim_exch_rate(BigDecimal claim_exch_rate) {
-		this.claim_exch_rate = claim_exch_rate;
-	}
-
-	public Date getClaim_loss_dt() {
-		return claim_loss_dt;
-	}
-
-	public void setClaim_loss_dt(Date claim_loss_dt) {
-		this.claim_loss_dt = claim_loss_dt;
-	}
-
-	public Date getClaim_intm_dt() {
-		return claim_intm_dt;
-	}
-
-	public void setClaim_intm_dt(Date claim_intm_dt) {
-		this.claim_intm_dt = claim_intm_dt;
-	}
-
-	public String getClaim_no() {
-		return claim_no;
-	}
-
-	public void setClaim_no(String claim_no) {
-		this.claim_no = claim_no;
-	}
-
-	public String getClaim_type() {
-		return claim_type;
-	}
-
-	public void setClaim_type(String claim_type) {
-		this.claim_type = claim_type;
-	}
-
-	public String getClaim_remarks() {
-		return claim_remarks;
-	}
-
-	public void setClaim_remarks(String claim_remarks) {
-		this.claim_remarks = claim_remarks;
-	}
-
-	public String getClaim_ref_no() {
-		return claim_ref_no;
-	}
-
-	public void setClaim_ref_no(String claim_ref_no) {
-		this.claim_ref_no = claim_ref_no;
-	}
-
-	public String getClaim_pay_to() {
-		return claim_pay_to;
-	}
-
-	public void setClaim_pay_to(String claim_pay_to) {
-		this.claim_pay_to = claim_pay_to;
-	}
-
-	public String getClaim_close_flag() {
-		return claim_close_flag;
-	}
-
-	public void setClaim_close_flag(String claim_close_flag) {
-		this.claim_close_flag = claim_close_flag;
-	}
-
-	public String getClaim_status() {
-		return claim_status;
-	}
-
-	public void setClaim_status(String claim_status) {
-		this.claim_status = claim_status;
-	}
-
-	public String getClaim_frz_flag() {
-		return claim_frz_flag;
-	}
-
-	public void setClaim_frz_flag(String claim_frz_flag) {
-		this.claim_frz_flag = claim_frz_flag;
-	}
-
-	public String getClaim_INS_id() {
-		return claim_INS_id;
-	}
-
-	public void setClaim_INS_id(String claim_INS_id) {
-		this.claim_INS_id = claim_INS_id;
-	}
-
-	public Date getClaim_INS_dt() {
-		return claim_INS_dt;
-	}
-
-	public void setClaim_INS_dt(Date claim_INS_dt) {
-		this.claim_INS_dt = claim_INS_dt;
-	}
-
-	public String getClaim_MOD_id() {
-		return claim_MOD_id;
-	}
-
-	public void setClaim_MOD_id(String claim_MOD_id) {
-		this.claim_MOD_id = claim_MOD_id;
-	}
-
-	public Date getClaim_MOD_dt() {
-		return claim_MOD_dt;
-	}
-
-	public void setClaim_MOD_dt(Date claim_MOD_dt) {
-		this.claim_MOD_dt = claim_MOD_dt;
-	}
-
-	public String getClaim_cust_code() {
-		return claim_cust_code;
-	}
-
-	public void setClaim_cust_code(String claim_cust_code) {
-		this.claim_cust_code = claim_cust_code;
-	}
-
-	public String getClaim_accnt_pay_code() {
-		return claim_accnt_pay_code;
-	}
-
-	public void setClaim_accnt_pay_code(String claim_accnt_pay_code) {
-		this.claim_accnt_pay_code = claim_accnt_pay_code;
-	}
-
-	public String getClaim_addl_status() {
-		return claim_addl_status;
-	}
-
-	public void setClaim_addl_status(String claim_addl_status) {
-		this.claim_addl_status = claim_addl_status;
-	}
-
-	public String getClaim_rev_res_flag() {
-		return claim_rev_res_flag;
-	}
-
-	public void setClaim_rev_res_flag(String claim_rev_res_flag) {
-		this.claim_rev_res_flag = claim_rev_res_flag;
-	}
-
-	public BigDecimal getClaim_resv_amt() {
-		return claim_resv_amt;
-	}
-
-	public void setClaim_resv_amt(BigDecimal claim_resv_amt) {
-		this.claim_resv_amt = claim_resv_amt;
-	}
-
-	public BigDecimal getClaim_util_amt() {
-		return claim_util_amt;
-	}
-
-	public void setClaim_util_amt(BigDecimal claim_util_amt) {
-		this.claim_util_amt = claim_util_amt;
-	}
-
-	public Date getClaim_apprv_dt() {
-		return claim_apprv_dt;
-	}
-
-	public void setClaim_apprv_dt(Date claim_apprv_dt) {
-		this.claim_apprv_dt = claim_apprv_dt;
-	}
-
-	public String getClaim_apprv_status() {
-		return claim_apprv_status;
-	}
-
-	public void setClaim_apprv_status(String claim_apprv_status) {
-		this.claim_apprv_status = claim_apprv_status;
-	}
-
-	public String getClaim_unit_sell_yn() {
-		return claim_unit_sell_yn;
-	}
-
-	public void setClaim_unit_sell_yn(String claim_unit_sell_yn) {
-		this.claim_unit_sell_yn = claim_unit_sell_yn;
-	}
-
-	public Date getClaim_reopen_dt() {
-		return claim_reopen_dt;
-	}
-
-	public void setClaim_reopen_dt(Date claim_reopen_dt) {
-		this.claim_reopen_dt = claim_reopen_dt;
-	}
-
-	public String getClaim_reopen_reason() {
-		return claim_reopen_reason;
-	}
-
-	public void setClaim_reopen_reason(String claim_reopen_reason) {
-		this.claim_reopen_reason = claim_reopen_reason;
-	}
-
-	public String getClaim_pol_valid_yn() {
-		return claim_pol_valid_yn;
-	}
-
-	public void setClaim_pol_valid_yn(String claim_pol_valid_yn) {
-		this.claim_pol_valid_yn = claim_pol_valid_yn;
-	}
-
-	public String getClaim_med_code() {
-		return claim_med_code;
-	}
-
-	public void setClaim_med_code(String claim_med_code) {
-		this.claim_med_code = claim_med_code;
-	}
-
-	public BigDecimal getClaim_lc_rla_amount() {
-		return claim_lc_rla_amount;
-	}
-
-	public void setClaim_lc_rla_amount(BigDecimal claim_lc_rla_amount) {
-		this.claim_lc_rla_amount = claim_lc_rla_amount;
-	}
-
-	public String getClaim_pci_ref_no() {
-		return claim_pci_ref_no;
-	}
-
-	public void setClaim_pci_ref_no(String claim_pci_ref_no) {
-		this.claim_pci_ref_no = claim_pci_ref_no;
-	}
-
-	public BigDecimal getClaim_lc_wak_amt() {
-		return claim_lc_wak_amt;
-	}
-
-	public void setClaim_lc_wak_amt(BigDecimal claim_lc_wak_amt) {
-		this.claim_lc_wak_amt = claim_lc_wak_amt;
-	}
-
-	public BigDecimal getClaim_lc_serv_fee() {
-		return claim_lc_serv_fee;
-	}
-
-	public void setClaim_lc_serv_fee(BigDecimal claim_lc_serv_fee) {
-		this.claim_lc_serv_fee = claim_lc_serv_fee;
-	}
-
-	public BigDecimal getClaim_lc_risk_prem() {
-		return claim_lc_risk_prem;
-	}
-
-	public void setClaim_lc_risk_prem(BigDecimal claim_lc_risk_prem) {
-		this.claim_lc_risk_prem = claim_lc_risk_prem;
-	}
-
-	public Date getClaim_dis_cert_dt() {
-		return claim_dis_cert_dt;
-	}
-
-	public void setClaim_dis_cert_dt(Date claim_dis_cert_dt) {
-		this.claim_dis_cert_dt = claim_dis_cert_dt;
-	}
-
-	public Date getClaim_med_exp_dt() {
-		return claim_med_exp_dt;
-	}
-
-	public void setClaim_med_exp_dt(Date claim_med_exp_dt) {
-		this.claim_med_exp_dt = claim_med_exp_dt;
-	}
-
-	public Date getClaim_sickness_dt() {
-		return claim_sickness_dt;
-	}
-
-	public void setClaim_sickness_dt(Date claim_sickness_dt) {
-		this.claim_sickness_dt = claim_sickness_dt;
-	}
-
-	public String getClaim_excl_typ() {
-		return claim_excl_typ;
-	}
-
-	public void setClaim_excl_typ(String claim_excl_typ) {
-		this.claim_excl_typ = claim_excl_typ;
-	}
-
-	public String getClaim_excl_reason() {
-		return claim_excl_reason;
-	}
-
-	public void setClaim_excl_reason(String claim_excl_reason) {
-		this.claim_excl_reason = claim_excl_reason;
-	}
-
-	public String getClaim_memb_code() {
-		return claim_memb_code;
-	}
-
-	public void setClaim_memb_code(String claim_memb_code) {
-		this.claim_memb_code = claim_memb_code;
-	}
-
-	public String getClaim_diseases_code() {
-		return claim_diseases_code;
-	}
-
-	public void setClaim_diseases_code(String claim_diseases_code) {
-		this.claim_diseases_code = claim_diseases_code;
-	}
-
-	public String getClaim_diseases_remarks() {
-		return claim_diseases_remarks;
-	}
-
-	public void setClaim_diseases_remarks(String claim_diseases_remarks) {
-		this.claim_diseases_remarks = claim_diseases_remarks;
-	}
-
-	public String getClaim_assrd_ref_id1() {
-		return claim_assrd_ref_id1;
-	}
-
-	public void setClaim_assrd_ref_id1(String claim_assrd_ref_id1) {
-		this.claim_assrd_ref_id1 = claim_assrd_ref_id1;
-	}
-
-	public BigDecimal getClaim_fee_hospitals() {
-		return claim_fee_hospitals;
-	}
-
-	public void setClaim_fee_hospitals(BigDecimal claim_fee_hospitals) {
-		this.claim_fee_hospitals = claim_fee_hospitals;
-	}
-
-	public String getClaim_icd_diseases_dtl() {
-		return claim_icd_diseases_dtl;
-	}
-
-	public void setClaim_icd_diseases_dtl(String claim_icd_diseases_dtl) {
-		this.claim_icd_diseases_dtl = claim_icd_diseases_dtl;
-	}
-
-	public Date getClaim_hosp_addm_dt() {
-		return claim_hosp_addm_dt;
-	}
-
-	public void setClaim_hosp_addm_dt(Date claim_hosp_addm_dt) {
-		this.claim_hosp_addm_dt = claim_hosp_addm_dt;
-	}
-
-	public Date getClaim_hosp_dschg_dt() {
-		return claim_hosp_dschg_dt;
-	}
-
-	public void setClaim_hosp_dschg_dt(Date claim_hosp_dschg_dt) {
-		this.claim_hosp_dschg_dt = claim_hosp_dschg_dt;
-	}
-
-	public String getClm_excl_yn() {
-		return clm_excl_yn;
-	}
-
-	public void setClm_excl_yn(String clm_excl_yn) {
-		this.clm_excl_yn = clm_excl_yn;
-	}
-
-	public String getClaim_claimant_code() {
-		return claim_claimant_code;
-	}
-
-	public void setClaim_claimant_code(String claim_claimant_code) {
-		this.claim_claimant_code = claim_claimant_code;
-	}
-
-	public String getClaim_int_email() {
-		return claim_int_email;
-	}
-
-	public void setClaim_int_email(String claim_int_email) {
-		this.claim_int_email = claim_int_email;
-	}
-
-	public String getClaim_int_mobile() {
-		return claim_int_mobile;
-	}
-
-	public void setClaim_int_mobile(String claim_int_mobile) {
-		this.claim_int_mobile = claim_int_mobile;
-	}
-
-	public String getClaim_pay_method() {
-		return claim_pay_method;
-	}
-
-	public void setClaim_pay_method(String claim_pay_method) {
-		this.claim_pay_method = claim_pay_method;
-	}
-
-	public BigDecimal getClaim_pay_rate() {
-		return claim_pay_rate;
-	}
-
-	public void setClaim_pay_rate(BigDecimal claim_pay_rate) {
-		this.claim_pay_rate = claim_pay_rate;
-	}
+		@Id
+	    @SequenceGenerator(name = "ClaimSysIdSeq", sequenceName = "CLM_SYS_ID_SEQ", allocationSize = 1)
+	    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ClaimSysIdSeq")
+	    @Column(name = "CLM_SYS_ID")
+	    private Long CLM_SYS_ID;
+
+	    @Column(name = "CLM_TRAN_ID")
+	    private Long CLM_TRAN_ID;
+
+	    @Column(name = "CLM_POL_TRAN_ID")
+	    private Long CLM_POL_TRAN_ID;
+
+	    @Column(name = "CLM_DIVN_CODE")
+	    private String CLM_DIVN_CODE;
+
+	    @Column(name = "CLM_DEPT_CODE")
+	    private String CLM_DEPT_CODE;
+
+	    @Column(name = "CLM_CLASS_CODE")
+	    private String CLM_CLASS_CODE;
+
+	    @Column(name = "CLM_UW_YEAR")
+	    private Integer CLM_UW_YEAR;
+
+	    @Column(name = "CLM_CDS_CODE")
+	    private String CLM_CDS_CODE;
+
+	    @Column(name = "CLM_CUST_CODE")
+	    private String CLM_CUST_CODE;
+
+	    @Column(name = "CLM_PEMP_ID")
+	    private String CLM_PEMP_ID;
+
+	    @Column(name = "CLM_CLAIM_NO")
+	    private String CLM_CLAIM_NO;
+
+	    @Column(name = "CLM_INWARD_CLM_REF_NO")
+	    private String CLM_INWARD_CLM_REF_NO;
+
+	    @Column(name = "CLM_POL_NO")
+	    private String CLM_POL_NO;
+
+	    @Column(name = "CLM_LOSS_DT")
+	    private Date CLM_LOSS_DT;
+
+	    @Column(name = "CLM_INTM_DT")
+	    private Date CLM_INTM_DT;
+
+	    @Column(name = "CLM_CURR_CODE")
+	    private String CLM_CURR_CODE;
+
+	    @Column(name = "CLM_CURR_RATE")
+	    private Double CLM_CURR_RATE;
+
+	    @Column(name = "CLM_TYPE")
+	    private String CLM_TYPE;
+
+	    @Column(name = "CLM_FC_EST_AMT")
+	    private Double CLM_FC_EST_AMT;
+
+	    @Column(name = "CLM_LC_EST_AMT")
+	    private Double CLM_LC_EST_AMT;
+
+	    @Column(name = "CLM_FC_PAID_AMT")
+	    private Double CLM_FC_PAID_AMT;
+
+	    @Column(name = "CLM_LC_PAID_AMT")
+	    private Double CLM_LC_PAID_AMT;
+
+	    @Column(name = "CLM_REMARKS")
+	    private String CLM_REMARKS;
+
+	    @Column(name = "CLM_CLOSE_FLAG")
+	    private String CLM_CLOSE_FLAG;
+
+	    @Column(name = "CLM_INS_DT")
+	    private Date CLM_INS_DT;
+
+	    @Column(name = "CLM_INS_ID")
+	    private String CLM_INS_ID;
+
+	    @Column(name = "CLM_MOD_DT")
+	    private Date CLM_MOD_DT;
+
+	    @Column(name = "CLM_MOD_ID")
+	    private String CLM_MOD_ID;
+
+	    @Column(name = "CLM_CLOSE_DT")
+	    private Date CLM_CLOSE_DT;
+
+	    @Column(name = "CLM_CLOSE_REASON")
+	    private String CLM_CLOSE_REASON;
+
+	    @Column(name = "CLM_REOPEN_DT")
+	    private Date CLM_REOPEN_DT;
+
+	    @Column(name = "CLM_REOPEN_REASON")
+	    private String CLM_REOPEN_REASON;
+
+	    @Column(name = "CLM_STATUS")
+	    private String CLM_STATUS;
+
+	    @Column(name = "CLM_LEGAL_YN")
+	    private String CLM_LEGAL_YN;
+
+	    @Column(name = "CLM_LEGAL_DTLS")
+	    private String CLM_LEGAL_DTLS;
+
+	    @Column(name = "CLM_ADDL_STATUS")
+	    private String CLM_ADDL_STATUS;
+
+	    @Column(name = "CLM_MASTER_POL_NO")
+	    private String CLM_MASTER_POL_NO;
+
+	    @Column(name = "CLM_POL_REN_COUNT")
+	    private Integer CLM_POL_REN_COUNT;
+
+	    @Column(name = "CLM_STATUS_CODE")
+	    private String CLM_STATUS_CODE;
+
+	    @Column(name = "CLM_REASON_CODE")
+	    private String CLM_REASON_CODE;
+
+	    @Column(name = "CLM_APPRV_STATUS")
+	    private String CLM_APPRV_STATUS;
+
+	    @Column(name = "CLM_APPRV_DT")
+	    private Date CLM_APPRV_DT;
+
+	    @Column(name = "CLM_APPRV_UID")
+	    private String CLM_APPRV_UID;
+
+	    @Column(name = "CLM_DP_YN")
+	    private String CLM_DP_YN;
+
+	    @Column(name = "CLM_MOD_OF_COMM")
+	    private String CLM_MOD_OF_COMM;
+
+	    @Column(name = "CLM_INFORMANT")
+	    private String CLM_INFORMANT;
+
+	    @Column(name = "CLM_ADDRESS1")
+	    private String CLM_ADDRESS1;
+
+	    @Column(name = "CLM_ADDRESS2")
+	    private String CLM_ADDRESS2;
+
+	    @Column(name = "CLM_ADDRESS3")
+	    private String CLM_ADDRESS3;
+
+	    @Column(name = "CLM_PHONE")
+	    private String CLM_PHONE;
+
+	    @Column(name = "CLM_MOBILE")
+	    private String CLM_MOBILE;
+
+	    @Column(name = "CLM_EMAIL")
+	    private String CLM_EMAIL;
+
+	    @Column(name = "CLM_RELATION")
+	    private String CLM_RELATION;
+
+	    @Column(name = "CLM_MED_CODE")
+	    private String CLM_MED_CODE;
+
+	    @Column(name = "CLM_MED_PRAC")
+	    private String CLM_MED_PRAC;
+
+	    @Column(name = "CLM_MED_PRAC_DTLS")
+	    private String CLM_MED_PRAC_DTLS;
+
+	    @Column(name = "CLM_ACCI_DATE")
+	    private Date CLM_ACCI_DATE;
+
+	    @Column(name = "CLM_STA_CODE")
+	    private String CLM_STA_CODE;
+
+	    @Column(name = "CLM_ACC_CODE")
+	    private String CLM_ACC_CODE;
+
+	    @Column(name = "CLM_ACCI_TIME")
+	    private String CLM_ACCI_TIME;
+
+	    @Column(name = "CLM_ACCI_DESC")
+	    private String CLM_ACCI_DESC;
+
+	    @Column(name = "CLM_ACCI_INJU")
+	    private String CLM_ACCI_INJU;
+
+	    @Column(name = "CLM_PLAN_CODE")
+	    private String CLM_PLAN_CODE;
+
+	    @Column(name = "CLM_HEAD_COUNT_VALUE")
+	    private String CLM_HEAD_COUNT_VALUE;
+
+	    @Column(name = "CLM_NEW_IC_NO")
+	    private String CLM_NEW_IC_NO;
+
+	    @Column(name = "CLM_OLD_IC_NO")
+	    private String CLM_OLD_IC_NO;
+
+	    @Column(name = "CLM_EMP_NAME")
+	    private String CLM_EMP_NAME;
+
+	    @Column(name = "CLM_PCI_REF_NO")
+	    private String CLM_PCI_REF_NO;
+
+	    @Column(name = "CLM_CATG_CODE")
+	    private String CLM_CATG_CODE;
+
+	    @Column(name = "CLM_OS_PREM_FLAG", columnDefinition = "VARCHAR2(1 BYTE) DEFAULT 'Y'")
+	    private String CLM_OS_PREM_FLAG = "Y";
+
+	    @Column(name = "CLM_INVEST")
+	    private String CLM_INVEST;
+
+	    @Column(name = "CLM_DISC")
+	    private String CLM_DISC;
+
+	    @Column(name = "CLM_MED_HIS")
+	    private String CLM_MED_HIS;
+
+	    @Column(name = "CLM_HSPTL")
+	    private String CLM_HSPTL;
+
+	    @Column(name = "CLM_CRIM_SUS")
+	    private String CLM_CRIM_SUS;
+
+	    @Column(name = "CLM_LITI")
+	    private String CLM_LITI;
+
+	    @Column(name = "CLM_EX_GRA")
+	    private String CLM_EX_GRA;
+
+	    @Column(name = "CLM_OTH_COV")
+	    private String CLM_OTH_COV;
+
+	    @Column(name = "CLM_LOAN_AMT")
+	    private Double CLM_LOAN_AMT;
+
+	    @Column(name = "CLM_ARREAR_AMT")
+	    private Double CLM_ARREAR_AMT;
+
+	    @Column(name = "CLM_DECL_AMT")
+	    private Double CLM_DECL_AMT;
+
+	    @Column(name = "CLM_PEMP_DESC")
+	    private String CLM_PEMP_DESC;
+
+	    @Column(name = "CLM_REF_NO")
+	    private String CLM_REF_NO;
+
+	    @Column(name = "CLM_FIN_PAID_YN", columnDefinition = "CHAR(1 BYTE) DEFAULT 'N'")
+	    private String CLM_FIN_PAID_YN = "N";
+
+	    @Column(name = "CLM_FIN_PAID_STATUS", columnDefinition = "CHAR(1 BYTE) DEFAULT 'O'")
+	    private String CLM_FIN_PAID_STATUS = "O";
+
+		public Long getCLM_SYS_ID() {
+			return CLM_SYS_ID;
+		}
+
+		public void setCLM_SYS_ID(Long cLM_SYS_ID) {
+			CLM_SYS_ID = cLM_SYS_ID;
+		}
+
+		public Long getCLM_TRAN_ID() {
+			return CLM_TRAN_ID;
+		}
+
+		public void setCLM_TRAN_ID(Long cLM_TRAN_ID) {
+			CLM_TRAN_ID = cLM_TRAN_ID;
+		}
+
+		public Long getCLM_POL_TRAN_ID() {
+			return CLM_POL_TRAN_ID;
+		}
+
+		public void setCLM_POL_TRAN_ID(Long cLM_POL_TRAN_ID) {
+			CLM_POL_TRAN_ID = cLM_POL_TRAN_ID;
+		}
+
+		public String getCLM_DIVN_CODE() {
+			return CLM_DIVN_CODE;
+		}
+
+		public void setCLM_DIVN_CODE(String cLM_DIVN_CODE) {
+			CLM_DIVN_CODE = cLM_DIVN_CODE;
+		}
+
+		public String getCLM_DEPT_CODE() {
+			return CLM_DEPT_CODE;
+		}
+
+		public void setCLM_DEPT_CODE(String cLM_DEPT_CODE) {
+			CLM_DEPT_CODE = cLM_DEPT_CODE;
+		}
+
+		public String getCLM_CLASS_CODE() {
+			return CLM_CLASS_CODE;
+		}
+
+		public void setCLM_CLASS_CODE(String cLM_CLASS_CODE) {
+			CLM_CLASS_CODE = cLM_CLASS_CODE;
+		}
+
+		public Integer getCLM_UW_YEAR() {
+			return CLM_UW_YEAR;
+		}
+
+		public void setCLM_UW_YEAR(Integer cLM_UW_YEAR) {
+			CLM_UW_YEAR = cLM_UW_YEAR;
+		}
+
+		public String getCLM_CDS_CODE() {
+			return CLM_CDS_CODE;
+		}
+
+		public void setCLM_CDS_CODE(String cLM_CDS_CODE) {
+			CLM_CDS_CODE = cLM_CDS_CODE;
+		}
+
+		public String getCLM_CUST_CODE() {
+			return CLM_CUST_CODE;
+		}
+
+		public void setCLM_CUST_CODE(String cLM_CUST_CODE) {
+			CLM_CUST_CODE = cLM_CUST_CODE;
+		}
+
+		public String getCLM_PEMP_ID() {
+			return CLM_PEMP_ID;
+		}
+
+		public void setCLM_PEMP_ID(String cLM_PEMP_ID) {
+			CLM_PEMP_ID = cLM_PEMP_ID;
+		}
+
+		public String getCLM_CLAIM_NO() {
+			return CLM_CLAIM_NO;
+		}
+
+		public void setCLM_CLAIM_NO(String cLM_CLAIM_NO) {
+			CLM_CLAIM_NO = cLM_CLAIM_NO;
+		}
+
+		public String getCLM_INWARD_CLM_REF_NO() {
+			return CLM_INWARD_CLM_REF_NO;
+		}
+
+		public void setCLM_INWARD_CLM_REF_NO(String cLM_INWARD_CLM_REF_NO) {
+			CLM_INWARD_CLM_REF_NO = cLM_INWARD_CLM_REF_NO;
+		}
+
+		public String getCLM_POL_NO() {
+			return CLM_POL_NO;
+		}
+
+		public void setCLM_POL_NO(String cLM_POL_NO) {
+			CLM_POL_NO = cLM_POL_NO;
+		}
+
+		public Date getCLM_LOSS_DT() {
+			return CLM_LOSS_DT;
+		}
+
+		public void setCLM_LOSS_DT(Date cLM_LOSS_DT) {
+			CLM_LOSS_DT = cLM_LOSS_DT;
+		}
+
+		public Date getCLM_INTM_DT() {
+			return CLM_INTM_DT;
+		}
+
+		public void setCLM_INTM_DT(Date cLM_INTM_DT) {
+			CLM_INTM_DT = cLM_INTM_DT;
+		}
+
+		public String getCLM_CURR_CODE() {
+			return CLM_CURR_CODE;
+		}
+
+		public void setCLM_CURR_CODE(String cLM_CURR_CODE) {
+			CLM_CURR_CODE = cLM_CURR_CODE;
+		}
+
+		public Double getCLM_CURR_RATE() {
+			return CLM_CURR_RATE;
+		}
+
+		public void setCLM_CURR_RATE(Double cLM_CURR_RATE) {
+			CLM_CURR_RATE = cLM_CURR_RATE;
+		}
+
+		public String getCLM_TYPE() {
+			return CLM_TYPE;
+		}
+
+		public void setCLM_TYPE(String cLM_TYPE) {
+			CLM_TYPE = cLM_TYPE;
+		}
+
+		public Double getCLM_FC_EST_AMT() {
+			return CLM_FC_EST_AMT;
+		}
+
+		public void setCLM_FC_EST_AMT(Double cLM_FC_EST_AMT) {
+			CLM_FC_EST_AMT = cLM_FC_EST_AMT;
+		}
+
+		public Double getCLM_LC_EST_AMT() {
+			return CLM_LC_EST_AMT;
+		}
+
+		public void setCLM_LC_EST_AMT(Double cLM_LC_EST_AMT) {
+			CLM_LC_EST_AMT = cLM_LC_EST_AMT;
+		}
+
+		public Double getCLM_FC_PAID_AMT() {
+			return CLM_FC_PAID_AMT;
+		}
+
+		public void setCLM_FC_PAID_AMT(Double cLM_FC_PAID_AMT) {
+			CLM_FC_PAID_AMT = cLM_FC_PAID_AMT;
+		}
+
+		public Double getCLM_LC_PAID_AMT() {
+			return CLM_LC_PAID_AMT;
+		}
+
+		public void setCLM_LC_PAID_AMT(Double cLM_LC_PAID_AMT) {
+			CLM_LC_PAID_AMT = cLM_LC_PAID_AMT;
+		}
+
+		public String getCLM_REMARKS() {
+			return CLM_REMARKS;
+		}
+
+		public void setCLM_REMARKS(String cLM_REMARKS) {
+			CLM_REMARKS = cLM_REMARKS;
+		}
+
+		public String getCLM_CLOSE_FLAG() {
+			return CLM_CLOSE_FLAG;
+		}
+
+		public void setCLM_CLOSE_FLAG(String cLM_CLOSE_FLAG) {
+			CLM_CLOSE_FLAG = cLM_CLOSE_FLAG;
+		}
+
+		public Date getCLM_INS_DT() {
+			return CLM_INS_DT;
+		}
+
+		public void setCLM_INS_DT(Date cLM_INS_DT) {
+			CLM_INS_DT = cLM_INS_DT;
+		}
+
+		public String getCLM_INS_ID() {
+			return CLM_INS_ID;
+		}
+
+		public void setCLM_INS_ID(String cLM_INS_ID) {
+			CLM_INS_ID = cLM_INS_ID;
+		}
+
+		public Date getCLM_MOD_DT() {
+			return CLM_MOD_DT;
+		}
+
+		public void setCLM_MOD_DT(Date cLM_MOD_DT) {
+			CLM_MOD_DT = cLM_MOD_DT;
+		}
+
+		public String getCLM_MOD_ID() {
+			return CLM_MOD_ID;
+		}
+
+		public void setCLM_MOD_ID(String cLM_MOD_ID) {
+			CLM_MOD_ID = cLM_MOD_ID;
+		}
+
+		public Date getCLM_CLOSE_DT() {
+			return CLM_CLOSE_DT;
+		}
+
+		public void setCLM_CLOSE_DT(Date cLM_CLOSE_DT) {
+			CLM_CLOSE_DT = cLM_CLOSE_DT;
+		}
+
+		public String getCLM_CLOSE_REASON() {
+			return CLM_CLOSE_REASON;
+		}
+
+		public void setCLM_CLOSE_REASON(String cLM_CLOSE_REASON) {
+			CLM_CLOSE_REASON = cLM_CLOSE_REASON;
+		}
+
+		public Date getCLM_REOPEN_DT() {
+			return CLM_REOPEN_DT;
+		}
+
+		public void setCLM_REOPEN_DT(Date cLM_REOPEN_DT) {
+			CLM_REOPEN_DT = cLM_REOPEN_DT;
+		}
+
+		public String getCLM_REOPEN_REASON() {
+			return CLM_REOPEN_REASON;
+		}
+
+		public void setCLM_REOPEN_REASON(String cLM_REOPEN_REASON) {
+			CLM_REOPEN_REASON = cLM_REOPEN_REASON;
+		}
+
+		public String getCLM_STATUS() {
+			return CLM_STATUS;
+		}
+
+		public void setCLM_STATUS(String cLM_STATUS) {
+			CLM_STATUS = cLM_STATUS;
+		}
+
+		public String getCLM_LEGAL_YN() {
+			return CLM_LEGAL_YN;
+		}
+
+		public void setCLM_LEGAL_YN(String cLM_LEGAL_YN) {
+			CLM_LEGAL_YN = cLM_LEGAL_YN;
+		}
+
+		public String getCLM_LEGAL_DTLS() {
+			return CLM_LEGAL_DTLS;
+		}
+
+		public void setCLM_LEGAL_DTLS(String cLM_LEGAL_DTLS) {
+			CLM_LEGAL_DTLS = cLM_LEGAL_DTLS;
+		}
+
+		public String getCLM_ADDL_STATUS() {
+			return CLM_ADDL_STATUS;
+		}
+
+		public void setCLM_ADDL_STATUS(String cLM_ADDL_STATUS) {
+			CLM_ADDL_STATUS = cLM_ADDL_STATUS;
+		}
+
+		public String getCLM_MASTER_POL_NO() {
+			return CLM_MASTER_POL_NO;
+		}
+
+		public void setCLM_MASTER_POL_NO(String cLM_MASTER_POL_NO) {
+			CLM_MASTER_POL_NO = cLM_MASTER_POL_NO;
+		}
+
+		public Integer getCLM_POL_REN_COUNT() {
+			return CLM_POL_REN_COUNT;
+		}
+
+		public void setCLM_POL_REN_COUNT(Integer cLM_POL_REN_COUNT) {
+			CLM_POL_REN_COUNT = cLM_POL_REN_COUNT;
+		}
+
+		public String getCLM_STATUS_CODE() {
+			return CLM_STATUS_CODE;
+		}
+
+		public void setCLM_STATUS_CODE(String cLM_STATUS_CODE) {
+			CLM_STATUS_CODE = cLM_STATUS_CODE;
+		}
+
+		public String getCLM_REASON_CODE() {
+			return CLM_REASON_CODE;
+		}
+
+		public void setCLM_REASON_CODE(String cLM_REASON_CODE) {
+			CLM_REASON_CODE = cLM_REASON_CODE;
+		}
+
+		public String getCLM_APPRV_STATUS() {
+			return CLM_APPRV_STATUS;
+		}
+
+		public void setCLM_APPRV_STATUS(String cLM_APPRV_STATUS) {
+			CLM_APPRV_STATUS = cLM_APPRV_STATUS;
+		}
+
+		public Date getCLM_APPRV_DT() {
+			return CLM_APPRV_DT;
+		}
+
+		public void setCLM_APPRV_DT(Date cLM_APPRV_DT) {
+			CLM_APPRV_DT = cLM_APPRV_DT;
+		}
+
+		public String getCLM_APPRV_UID() {
+			return CLM_APPRV_UID;
+		}
+
+		public void setCLM_APPRV_UID(String cLM_APPRV_UID) {
+			CLM_APPRV_UID = cLM_APPRV_UID;
+		}
+
+		public String getCLM_DP_YN() {
+			return CLM_DP_YN;
+		}
+
+		public void setCLM_DP_YN(String cLM_DP_YN) {
+			CLM_DP_YN = cLM_DP_YN;
+		}
+
+		public String getCLM_MOD_OF_COMM() {
+			return CLM_MOD_OF_COMM;
+		}
+
+		public void setCLM_MOD_OF_COMM(String cLM_MOD_OF_COMM) {
+			CLM_MOD_OF_COMM = cLM_MOD_OF_COMM;
+		}
+
+		public String getCLM_INFORMANT() {
+			return CLM_INFORMANT;
+		}
+
+		public void setCLM_INFORMANT(String cLM_INFORMANT) {
+			CLM_INFORMANT = cLM_INFORMANT;
+		}
+
+		public String getCLM_ADDRESS1() {
+			return CLM_ADDRESS1;
+		}
+
+		public void setCLM_ADDRESS1(String cLM_ADDRESS1) {
+			CLM_ADDRESS1 = cLM_ADDRESS1;
+		}
+
+		public String getCLM_ADDRESS2() {
+			return CLM_ADDRESS2;
+		}
+
+		public void setCLM_ADDRESS2(String cLM_ADDRESS2) {
+			CLM_ADDRESS2 = cLM_ADDRESS2;
+		}
+
+		public String getCLM_ADDRESS3() {
+			return CLM_ADDRESS3;
+		}
+
+		public void setCLM_ADDRESS3(String cLM_ADDRESS3) {
+			CLM_ADDRESS3 = cLM_ADDRESS3;
+		}
+
+		public String getCLM_PHONE() {
+			return CLM_PHONE;
+		}
+
+		public void setCLM_PHONE(String cLM_PHONE) {
+			CLM_PHONE = cLM_PHONE;
+		}
+
+		public String getCLM_MOBILE() {
+			return CLM_MOBILE;
+		}
+
+		public void setCLM_MOBILE(String cLM_MOBILE) {
+			CLM_MOBILE = cLM_MOBILE;
+		}
+
+		public String getCLM_EMAIL() {
+			return CLM_EMAIL;
+		}
+
+		public void setCLM_EMAIL(String cLM_EMAIL) {
+			CLM_EMAIL = cLM_EMAIL;
+		}
+
+		public String getCLM_RELATION() {
+			return CLM_RELATION;
+		}
+
+		public void setCLM_RELATION(String cLM_RELATION) {
+			CLM_RELATION = cLM_RELATION;
+		}
+
+		public String getCLM_MED_CODE() {
+			return CLM_MED_CODE;
+		}
+
+		public void setCLM_MED_CODE(String cLM_MED_CODE) {
+			CLM_MED_CODE = cLM_MED_CODE;
+		}
+
+		public String getCLM_MED_PRAC() {
+			return CLM_MED_PRAC;
+		}
+
+		public void setCLM_MED_PRAC(String cLM_MED_PRAC) {
+			CLM_MED_PRAC = cLM_MED_PRAC;
+		}
+
+		public String getCLM_MED_PRAC_DTLS() {
+			return CLM_MED_PRAC_DTLS;
+		}
+
+		public void setCLM_MED_PRAC_DTLS(String cLM_MED_PRAC_DTLS) {
+			CLM_MED_PRAC_DTLS = cLM_MED_PRAC_DTLS;
+		}
+
+		public Date getCLM_ACCI_DATE() {
+			return CLM_ACCI_DATE;
+		}
+
+		public void setCLM_ACCI_DATE(Date cLM_ACCI_DATE) {
+			CLM_ACCI_DATE = cLM_ACCI_DATE;
+		}
+
+		public String getCLM_STA_CODE() {
+			return CLM_STA_CODE;
+		}
+
+		public void setCLM_STA_CODE(String cLM_STA_CODE) {
+			CLM_STA_CODE = cLM_STA_CODE;
+		}
+
+		public String getCLM_ACC_CODE() {
+			return CLM_ACC_CODE;
+		}
+
+		public void setCLM_ACC_CODE(String cLM_ACC_CODE) {
+			CLM_ACC_CODE = cLM_ACC_CODE;
+		}
+
+		public String getCLM_ACCI_TIME() {
+			return CLM_ACCI_TIME;
+		}
+
+		public void setCLM_ACCI_TIME(String cLM_ACCI_TIME) {
+			CLM_ACCI_TIME = cLM_ACCI_TIME;
+		}
+
+		public String getCLM_ACCI_DESC() {
+			return CLM_ACCI_DESC;
+		}
+
+		public void setCLM_ACCI_DESC(String cLM_ACCI_DESC) {
+			CLM_ACCI_DESC = cLM_ACCI_DESC;
+		}
+
+		public String getCLM_ACCI_INJU() {
+			return CLM_ACCI_INJU;
+		}
+
+		public void setCLM_ACCI_INJU(String cLM_ACCI_INJU) {
+			CLM_ACCI_INJU = cLM_ACCI_INJU;
+		}
+
+		public String getCLM_PLAN_CODE() {
+			return CLM_PLAN_CODE;
+		}
+
+		public void setCLM_PLAN_CODE(String cLM_PLAN_CODE) {
+			CLM_PLAN_CODE = cLM_PLAN_CODE;
+		}
+
+		public String getCLM_HEAD_COUNT_VALUE() {
+			return CLM_HEAD_COUNT_VALUE;
+		}
+
+		public void setCLM_HEAD_COUNT_VALUE(String cLM_HEAD_COUNT_VALUE) {
+			CLM_HEAD_COUNT_VALUE = cLM_HEAD_COUNT_VALUE;
+		}
+
+		public String getCLM_NEW_IC_NO() {
+			return CLM_NEW_IC_NO;
+		}
+
+		public void setCLM_NEW_IC_NO(String cLM_NEW_IC_NO) {
+			CLM_NEW_IC_NO = cLM_NEW_IC_NO;
+		}
+
+		public String getCLM_OLD_IC_NO() {
+			return CLM_OLD_IC_NO;
+		}
+
+		public void setCLM_OLD_IC_NO(String cLM_OLD_IC_NO) {
+			CLM_OLD_IC_NO = cLM_OLD_IC_NO;
+		}
+
+		public String getCLM_EMP_NAME() {
+			return CLM_EMP_NAME;
+		}
+
+		public void setCLM_EMP_NAME(String cLM_EMP_NAME) {
+			CLM_EMP_NAME = cLM_EMP_NAME;
+		}
+
+		public String getCLM_PCI_REF_NO() {
+			return CLM_PCI_REF_NO;
+		}
+
+		public void setCLM_PCI_REF_NO(String cLM_PCI_REF_NO) {
+			CLM_PCI_REF_NO = cLM_PCI_REF_NO;
+		}
+
+		public String getCLM_CATG_CODE() {
+			return CLM_CATG_CODE;
+		}
+
+		public void setCLM_CATG_CODE(String cLM_CATG_CODE) {
+			CLM_CATG_CODE = cLM_CATG_CODE;
+		}
+
+		public String getCLM_OS_PREM_FLAG() {
+			return CLM_OS_PREM_FLAG;
+		}
+
+		public void setCLM_OS_PREM_FLAG(String cLM_OS_PREM_FLAG) {
+			CLM_OS_PREM_FLAG = cLM_OS_PREM_FLAG;
+		}
+
+		public String getCLM_INVEST() {
+			return CLM_INVEST;
+		}
+
+		public void setCLM_INVEST(String cLM_INVEST) {
+			CLM_INVEST = cLM_INVEST;
+		}
+
+		public String getCLM_DISC() {
+			return CLM_DISC;
+		}
+
+		public void setCLM_DISC(String cLM_DISC) {
+			CLM_DISC = cLM_DISC;
+		}
+
+		public String getCLM_MED_HIS() {
+			return CLM_MED_HIS;
+		}
+
+		public void setCLM_MED_HIS(String cLM_MED_HIS) {
+			CLM_MED_HIS = cLM_MED_HIS;
+		}
+
+		public String getCLM_HSPTL() {
+			return CLM_HSPTL;
+		}
+
+		public void setCLM_HSPTL(String cLM_HSPTL) {
+			CLM_HSPTL = cLM_HSPTL;
+		}
+
+		public String getCLM_CRIM_SUS() {
+			return CLM_CRIM_SUS;
+		}
+
+		public void setCLM_CRIM_SUS(String cLM_CRIM_SUS) {
+			CLM_CRIM_SUS = cLM_CRIM_SUS;
+		}
+
+		public String getCLM_LITI() {
+			return CLM_LITI;
+		}
+
+		public void setCLM_LITI(String cLM_LITI) {
+			CLM_LITI = cLM_LITI;
+		}
+
+		public String getCLM_EX_GRA() {
+			return CLM_EX_GRA;
+		}
+
+		public void setCLM_EX_GRA(String cLM_EX_GRA) {
+			CLM_EX_GRA = cLM_EX_GRA;
+		}
+
+		public String getCLM_OTH_COV() {
+			return CLM_OTH_COV;
+		}
+
+		public void setCLM_OTH_COV(String cLM_OTH_COV) {
+			CLM_OTH_COV = cLM_OTH_COV;
+		}
+
+		public Double getCLM_LOAN_AMT() {
+			return CLM_LOAN_AMT;
+		}
+
+		public void setCLM_LOAN_AMT(Double cLM_LOAN_AMT) {
+			CLM_LOAN_AMT = cLM_LOAN_AMT;
+		}
+
+		public Double getCLM_ARREAR_AMT() {
+			return CLM_ARREAR_AMT;
+		}
+
+		public void setCLM_ARREAR_AMT(Double cLM_ARREAR_AMT) {
+			CLM_ARREAR_AMT = cLM_ARREAR_AMT;
+		}
+
+		public Double getCLM_DECL_AMT() {
+			return CLM_DECL_AMT;
+		}
+
+		public void setCLM_DECL_AMT(Double cLM_DECL_AMT) {
+			CLM_DECL_AMT = cLM_DECL_AMT;
+		}
+
+		public String getCLM_PEMP_DESC() {
+			return CLM_PEMP_DESC;
+		}
+
+		public void setCLM_PEMP_DESC(String cLM_PEMP_DESC) {
+			CLM_PEMP_DESC = cLM_PEMP_DESC;
+		}
+
+		public String getCLM_REF_NO() {
+			return CLM_REF_NO;
+		}
+
+		public void setCLM_REF_NO(String cLM_REF_NO) {
+			CLM_REF_NO = cLM_REF_NO;
+		}
+
+		public String getCLM_FIN_PAID_YN() {
+			return CLM_FIN_PAID_YN;
+		}
+
+		public void setCLM_FIN_PAID_YN(String cLM_FIN_PAID_YN) {
+			CLM_FIN_PAID_YN = cLM_FIN_PAID_YN;
+		}
+
+		public String getCLM_FIN_PAID_STATUS() {
+			return CLM_FIN_PAID_STATUS;
+		}
+
+		public void setCLM_FIN_PAID_STATUS(String cLM_FIN_PAID_STATUS) {
+			CLM_FIN_PAID_STATUS = cLM_FIN_PAID_STATUS;
+		}
 
    
 }

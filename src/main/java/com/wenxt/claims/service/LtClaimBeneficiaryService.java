@@ -1,12 +1,10 @@
 package com.wenxt.claims.service;
 
-import java.sql.SQLException;
-
-import com.wenxt.claims.model.LT_CLAIM_BENEFICIARY;
+import com.wenxt.claims.model.ClaimsRequestDTO;
 
 public interface LtClaimBeneficiaryService {
 
-	String createLtClaimBfcry(LT_CLAIM_BENEFICIARY ltclaimBfcry);
+	String createLtClaimBfcry(ClaimsRequestDTO claimsRequestDTO);
 
 //	String getAllLtClaimBfcrylist() throws SQLException;
 

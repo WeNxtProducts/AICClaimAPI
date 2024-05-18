@@ -1,12 +1,10 @@
 package com.wenxt.claims.service;
 
-import java.sql.SQLException;
-
-import com.wenxt.claims.model.LT_CLAIM_ESTIMATE;
+import com.wenxt.claims.model.ClaimsRequestDTO;
 
 public interface LtClaimEstimateService {
 
-	String createLtClaimEst(LT_CLAIM_ESTIMATE ltclaimest);
+	String createLtClaimEst(ClaimsRequestDTO claimsRequestDTO);
 
 //	String getAllLtClaimEstlist() throws SQLException;
 

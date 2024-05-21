@@ -193,31 +193,56 @@ public class LtClaimServiceImpl implements LtClaimService{
 	}
 
 	@Override
-	public String deleteLtClaimByid(Long claim_TRAN_id) {
-//		try {
-//			Optional<LT_CLAIM> optionalEntity = ltclaimrepo.findById(claim_TRAN_id);
-//
-//			if (optionalEntity.isPresent()) {
-//				ltclaimrepo.deleteById(claim_TRAN_id);
-//
-//				JSONObject response = new JSONObject();
-//				response.put("Status", "SUCCESS");
-//				response.put("Message", "Record with ID " + claim_TRAN_id + " deleted successfully");
-//				return response.toString();
-//
-//			} else {
-//				JSONObject response = new JSONObject();
-//				response.put("Status", "ERROR");
-//				response.put("Message", "Record with ID " + claim_TRAN_id + " not found");
-//				return response.toString();
-//			}
-//		} catch (Exception e) {
-//			JSONObject response = new JSONObject();
-//			response.put("Status", "ERROR");
-//			response.put("Message", "Error deleting record with ID " + claim_TRAN_id + ": " + e.getMessage());
-//			return response.toString();
-//		}
-		return "SUCCESS";
+	public String deleteLtClaimByid(Integer claim_TRAN_id) {
+		JSONObject response = new JSONObject();
+		try {
+			Optional<LT_CLAIM> optionalUser = ltclaimrepo.findById(claim_TRAN_id);
+			LT_CLAIM claim = optionalUser.get();
+			if(claim != null) {
+				claim.setCLM_CLOSE_FLAG("Y");
+				ltclaimrepo.save(claim);
+				response.put(statusCode, successCode);
+				response.put(messageCode, "Claim Details Deleted Successfully");
+			}
+		}catch(Exception e) {
+			response.put(statusCode, errorCode);
+			response.put(messageCode, e.getMessage());
+		}
+		return response.toString();
+	}
+
+	@Override
+	public String updateLtClaim(ClaimsRequestDTO claimsRequestDTO) {
+		JSONObject response = new JSONObject();
+
+		try {
+			Integer claimCoverId = Integer
+					.parseInt(claimsRequestDTO.getClaimCover().getFormFields().get("CCD_TRAN_ID"));
+			Optional<LT_CLAIM> optionalUser = ltclaimrepo.findById(claimCoverId);
+			LT_CLAIM claim = optionalUser.get();
+			if (claim != null) {
+				Map<String, Map<String, String>> fieldMaps = new HashMap<>();
+				fieldMaps.put("frontForm", claimsRequestDTO.getFrontForm().getFormFields());
+				for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
+					setClaimFields(claim, entry.getValue());
+				}
+
+				try {
+					LT_CLAIM savedClaimDetails = ltclaimrepo.save(claim);
+					response.put(statusCode, successCode);
+					response.put(messageCode, "Claim Details Updated Successfully");
+				} catch (Exception e) {
+					response.put("statusCode", errorCode);
+					response.put("message", "An error occurred: " + e.getMessage());
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.put("statusCode", errorCode);
+			response.put("message", "An error occurred: " + e.getMessage());
+		}
+
+		return response.toString();
 	}
 
 }

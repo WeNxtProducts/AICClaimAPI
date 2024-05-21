@@ -13,6 +13,8 @@ public interface LtClaimService {
 
 	String getLtClaimById(Long claim_TRAN_id);
 
-	String deleteLtClaimByid(Long claim_TRAN_id);
+	String deleteLtClaimByid(Integer claim_TRAN_id);
+
+	String updateLtClaim(ClaimsRequestDTO claimsRequestDTO);
 
 }

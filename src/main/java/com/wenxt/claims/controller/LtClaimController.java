@@ -40,13 +40,18 @@ public class LtClaimController {
 	}
 
 	@PostMapping("/deleteClaim/{claim_TRAN_id}")
-	public String deleteLtClaimByid(@PathVariable Long claim_TRAN_id) {
+	public String deleteLtClaimByid(@PathVariable Integer claim_TRAN_id) {
 		return ltclaimservice.deleteLtClaimByid(claim_TRAN_id);
 	}
 	
 	@PostMapping("/claimSave")
 	public String createLtClaim(@RequestBody ClaimsRequestDTO claimsRequestDTO) {
 		return ltclaimservice.createLtClaim(claimsRequestDTO);
+	}
+	
+	@PostMapping("/claimUpdate")
+	public String updateLtClaim(@RequestBody ClaimsRequestDTO claimsRequestDTO) {
+		return ltclaimservice.updateLtClaim(claimsRequestDTO);
 	}
 
 }

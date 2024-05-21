@@ -18,7 +18,39 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
+		
+				<!-- Dependency for Jasypt Encryption and Decryption-->
+		<dependency>      
+    		<groupId>com.github.ulisesbocchio</groupId>
+    		<artifactId>jasypt-spring-boot-starter</artifactId>
+    		<version>3.0.2</version> 
+		</dependency>
 
+		           <!-- Dependency For Security & JWT Auth-->
+ 		<dependency> 
+            <groupId>org.springframework.boot</groupId> 
+            <artifactId>spring-boot-starter-security</artifactId> 
+        </dependency>
+		 <dependency> 
+            <groupId>io.jsonwebtoken</groupId> 
+            <artifactId>jjwt-api</artifactId> 
+            <version>0.11.5</version> 
+        </dependency> 
+        <dependency> 
+            <groupId>io.jsonwebtoken</groupId> 
+            <artifactId>jjwt-impl</artifactId> 
+            <version>0.11.5</version> 
+        </dependency> 
+        <dependency> 
+            <groupId>io.jsonwebtoken</groupId> 
+            <artifactId>jjwt-jackson</artifactId> 
+            <version>0.11.5</version> 
+        </dependency>		
+        <dependency>
+    		<groupId>eu.bitwalker</groupId>
+    		<artifactId>UserAgentUtils</artifactId>
+    		<version>1.21</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -54,9 +86,18 @@
 		<dependency>
 			<groupId>com.oracle.database.jdbc</groupId>
 			<artifactId>ojdbc11</artifactId>
-			<version>21.3.0.0</version> <!-- Use the correct version -->
+			<version>23.3.0.23.09</version> <!-- Use the correct version -->
 		</dependency>
-
+		
+				<dependency> 
+            <groupId>org.springframework.boot</groupId> 
+            <artifactId>spring-boot-starter-data-jpa</artifactId> 
+        </dependency>
+		<dependency>      
+    		<groupId>com.github.ulisesbocchio</groupId>
+    		<artifactId>jasypt-spring-boot-starter</artifactId>
+    		<version>3.0.2</version> 
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

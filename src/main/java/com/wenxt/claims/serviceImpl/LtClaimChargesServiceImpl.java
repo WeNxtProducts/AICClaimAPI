@@ -41,6 +41,7 @@ public class LtClaimChargesServiceImpl implements LtClaimChargesService {
 	@Value("${spring.data.code}")
 	private String dataCode;
 
+	
 	@Value("${spring.success.code}")
 	private String successCode;
 

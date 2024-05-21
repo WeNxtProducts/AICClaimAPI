@@ -57,10 +57,7 @@ public class LtClaimServiceImpl implements LtClaimService{
 		JSONObject data = new JSONObject();
 
 		try {
-			Integer claimId = Integer.parseInt(claimsRequestDTO.getFrontForm().getFormFields().get("CLM_SYS_ID"));
-			Optional<LT_CLAIM> optionalUser = ltclaimrepo.findById(claimId);
-			LT_CLAIM claim = optionalUser.orElse(new LT_CLAIM());
-//			LT_CLAIM claim = new LT_CLAIM();
+			LT_CLAIM claim = new LT_CLAIM();
 
 			Map<String, Map<String, String>> fieldMaps = new HashMap<>();
 			fieldMaps.put("frontForm", claimsRequestDTO.getFrontForm().getFormFields());

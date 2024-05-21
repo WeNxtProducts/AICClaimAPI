@@ -39,7 +39,7 @@ public class LtClaimController {
 
 	}
 
-	@DeleteMapping("/deletesltclaimByid/{claim_TRAN_id}")
+	@PostMapping("/deleteClaim/{claim_TRAN_id}")
 	public String deleteLtClaimByid(@PathVariable Long claim_TRAN_id) {
 		return ltclaimservice.deleteLtClaimByid(claim_TRAN_id);
 	}

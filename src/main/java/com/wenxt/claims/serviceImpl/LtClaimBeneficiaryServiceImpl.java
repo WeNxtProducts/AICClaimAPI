@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import com.wenxt.claims.model.ClaimsRequestDTO;
 import com.wenxt.claims.model.LT_CLAIM_BENEFICIARY;
+import com.wenxt.claims.model.LT_CLAIM_ESTIMATE;
 import com.wenxt.claims.repository.LtClaimBeneficiaryRepository;
 import com.wenxt.claims.service.LtClaimBeneficiaryService;
 
@@ -185,7 +186,7 @@ public class LtClaimBeneficiaryServiceImpl implements LtClaimBeneficiaryService{
 //	}
 //
 	@Override
-	public String getLtClaimBfcryById(Long cben_pben_TRAN_id) {
+	public String getLtClaimBfcryById(Integer cben_pben_TRAN_id) {
 		LT_CLAIM_BENEFICIARY claimbecfry = ltclaimbnfcryrepo.findById(cben_pben_TRAN_id)
 				.orElseThrow(() -> new RuntimeException("claim beneficiary not found"));
 
@@ -197,7 +198,7 @@ public class LtClaimBeneficiaryServiceImpl implements LtClaimBeneficiaryService{
 	}
 
 	@Override
-	public String deleteLtClaimBfcryByid(Long cben_pben_TRAN_id) {
+	public String deleteLtClaimBfcryByid(Integer cben_pben_TRAN_id) {
 		try {
 			Optional<LT_CLAIM_BENEFICIARY> optionalEntity = ltclaimbnfcryrepo.findById(cben_pben_TRAN_id);
 
@@ -221,6 +222,39 @@ public class LtClaimBeneficiaryServiceImpl implements LtClaimBeneficiaryService{
 			response.put("Message", "Error deleting record with ID " + cben_pben_TRAN_id + ": " + e.getMessage());
 			return response.toString();
 		}
+	}
+	
+	@Override
+	public String updateLtClaimBeneficiary(ClaimsRequestDTO claimsRequestDTO, Integer claim_Id) {
+		JSONObject response = new JSONObject();
+
+		try {
+			Integer claimCoverId = claim_Id;
+			Optional<LT_CLAIM_BENEFICIARY> optionalUser = ltclaimbnfcryrepo.findById(claimCoverId);
+			LT_CLAIM_BENEFICIARY claim = optionalUser.get();
+			if (claim != null) {
+				Map<String, Map<String, String>> fieldMaps = new HashMap<>();
+				fieldMaps.put("frontForm", claimsRequestDTO.getFrontForm().getFormFields());
+				for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
+					setClaimBeneficiaryFields(claim, entry.getValue());
+				}
+
+				try {
+					LT_CLAIM_BENEFICIARY savedClaimDetails = ltclaimbnfcryrepo.save(claim);
+					response.put(statusCode, successCode);
+					response.put(messageCode, "Claim Details Updated Successfully");
+				} catch (Exception e) {
+					response.put("statusCode", errorCode);
+					response.put("message", "An error occurred: " + e.getMessage());
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.put("statusCode", errorCode);
+			response.put("message", "An error occurred: " + e.getMessage());
+		}
+
+		return response.toString();
 	}
 
 }

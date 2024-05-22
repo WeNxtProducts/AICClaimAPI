@@ -16,8 +16,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.wenxt.claims.model.ClaimsRequestDTO;
-import com.wenxt.claims.model.LT_CLAIM_COVER_DTLS;
-import com.wenxt.claims.repository.LtClaimCoverDtlsRepository;
+import com.wenxt.claims.model.LT_CLAIM_CHARGES;
+import com.wenxt.claims.model.LT_CLAIM_ESTIMATE;
+import com.wenxt.claims.repository.LtClaimEstimateRepository;
 import com.wenxt.claims.service.LtClaimCoverDtlsService;
 
 @Service
@@ -42,7 +43,7 @@ public class LtClaimCoverDtlsServiceImpl implements LtClaimCoverDtlsService {
 	private String warningCode;	
 	
 	@Autowired
-	private LtClaimCoverDtlsRepository ccdtlsrepo;
+	private LtClaimEstimateRepository ccdtlsrepo;
 
 //	private static final String JDBC_URL = "jdbc:mysql://baseapi.cr4u8emg2x3o.eu-north-1.rds.amazonaws.com:3306/baseapi";
 //	private static final String USERNAME = "admin";
@@ -60,7 +61,7 @@ public class LtClaimCoverDtlsServiceImpl implements LtClaimCoverDtlsService {
 //			Long claimCoverId = Long.parseLong(claimsRequestDTO.getClaimCover().getFormFields().get("CCD_TRAN_ID"));
 //			Optional<LT_CLAIM_COVER_DTLS> optionalUser = ccdtlsrepo.findById(claimCoverId);
 //			LT_CLAIM_COVER_DTLS claim = optionalUser.orElse(new LT_CLAIM_COVER_DTLS());
-			LT_CLAIM_COVER_DTLS claim = new LT_CLAIM_COVER_DTLS();
+			LT_CLAIM_ESTIMATE claim = new LT_CLAIM_ESTIMATE();
 			
 			Map<String, Map<String, String>> fieldMaps = new HashMap<>();
 			fieldMaps.put("frontForm", claimsRequestDTO.getClaimCover().getFormFields());
@@ -69,11 +70,11 @@ public class LtClaimCoverDtlsServiceImpl implements LtClaimCoverDtlsService {
 			}
 
 			try {
-				LT_CLAIM_COVER_DTLS savedClaimDetails = ccdtlsrepo.save(claim);
+				LT_CLAIM_ESTIMATE savedClaimDetails = ccdtlsrepo.save(claim);
 				response.put(statusCode, successCode);
 				response.put(messageCode,
 						 "User created successfully");
-				data.put("Id", savedClaimDetails.getCCD_TRAN_ID());
+				data.put("Id", savedClaimDetails.getCE_TRAN_ID());
 				response.put("data", data);
 			} catch (Exception e) {
 				response.put("statusCode", errorCode);
@@ -88,20 +89,20 @@ public class LtClaimCoverDtlsServiceImpl implements LtClaimCoverDtlsService {
 		return response.toString();
 	}
 	
-	private void setClaimCoverFields(LT_CLAIM_COVER_DTLS claim, Map<String, String> fields) throws Exception {
+	private void setClaimCoverFields(LT_CLAIM_ESTIMATE claim, Map<String, String> fields) throws Exception {
 		for (Map.Entry<String, String> entry : fields.entrySet()) {
 			setClaimCoverField(claim, entry.getKey(), entry.getValue());
 		}
 	}
 	
-	private void setClaimCoverField(LT_CLAIM_COVER_DTLS user, String fieldName, String value) throws Exception {
+	private void setClaimCoverField(LT_CLAIM_ESTIMATE user, String fieldName, String value) throws Exception {
 		try {
-			Field field = LT_CLAIM_COVER_DTLS.class.getDeclaredField(fieldName);
+			Field field = LT_CLAIM_ESTIMATE.class.getDeclaredField(fieldName);
 			Class<?> fieldType = field.getType();
 			Object convertedValue = convertStringToObject(value, fieldType);
 			String setterMethodName = "set" + fieldName;
 			if (value != null && !value.isEmpty()) {
-				Method setter = LT_CLAIM_COVER_DTLS.class.getMethod(setterMethodName, fieldType);
+				Method setter = LT_CLAIM_ESTIMATE.class.getMethod(setterMethodName, fieldType);
 				setter.invoke(user, convertedValue);
 			}
 		} catch (NoSuchFieldException e) {
@@ -186,8 +187,8 @@ public class LtClaimCoverDtlsServiceImpl implements LtClaimCoverDtlsService {
 
 
 	@Override
-	public String getCcdtlsById(Long ccd_TRAN_id) {
-		LT_CLAIM_COVER_DTLS polchager = ccdtlsrepo.findById(ccd_TRAN_id)
+	public String getCcdtlsById(Integer ccd_TRAN_id) {
+		LT_CLAIM_ESTIMATE polchager = ccdtlsrepo.findById(ccd_TRAN_id)
 				.orElseThrow(() -> new RuntimeException("POL CHARGER not found"));
 
 		JSONObject response = new JSONObject(polchager);
@@ -198,9 +199,9 @@ public class LtClaimCoverDtlsServiceImpl implements LtClaimCoverDtlsService {
 	}
 
 	@Override
-	public String deleteCcdtlsByid(Long ccd_TRAN_id) {
+	public String deleteCcdtlsByid(Integer ccd_TRAN_id) {
 		try {
-			Optional<LT_CLAIM_COVER_DTLS> optionalEntity = ccdtlsrepo.findById(ccd_TRAN_id);
+			Optional<LT_CLAIM_ESTIMATE> optionalEntity = ccdtlsrepo.findById(ccd_TRAN_id);
 
 			if (optionalEntity.isPresent()) {
 				ccdtlsrepo.deleteById(ccd_TRAN_id);
@@ -223,5 +224,39 @@ public class LtClaimCoverDtlsServiceImpl implements LtClaimCoverDtlsService {
 			return response.toString();
 		}
 	}
+	
+	@Override
+	public String updateLtClaimCover(ClaimsRequestDTO claimsRequestDTO, Integer claim_Id) {
+		JSONObject response = new JSONObject();
+
+		try {
+			Integer claimCoverId = claim_Id;
+			Optional<LT_CLAIM_ESTIMATE> optionalUser = ccdtlsrepo.findById(claimCoverId);
+			LT_CLAIM_ESTIMATE claim = optionalUser.get();
+			if (claim != null) {
+				Map<String, Map<String, String>> fieldMaps = new HashMap<>();
+				fieldMaps.put("frontForm", claimsRequestDTO.getFrontForm().getFormFields());
+				for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
+					setClaimCoverFields(claim, entry.getValue());
+				}
+
+				try {
+					LT_CLAIM_ESTIMATE savedClaimDetails = ccdtlsrepo.save(claim);
+					response.put(statusCode, successCode);
+					response.put(messageCode, "Claim Details Updated Successfully");
+				} catch (Exception e) {
+					response.put("statusCode", errorCode);
+					response.put("message", "An error occurred: " + e.getMessage());
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.put("statusCode", errorCode);
+			response.put("message", "An error occurred: " + e.getMessage());
+		}
+
+		return response.toString();
+	}
+
 
 }

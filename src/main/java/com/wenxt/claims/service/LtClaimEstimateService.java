@@ -8,8 +8,10 @@ public interface LtClaimEstimateService {
 
 //	String getAllLtClaimEstlist() throws SQLException;
 
-	String getLtClaimEstById(Long ce_TRAN_id);
+	String getLtClaimEstById(Integer ce_TRAN_id);
 
-	String deleteLtClaimEstByid(Long ce_TRAN_id);
+	String deleteLtClaimEstByid(Integer ce_TRAN_id);
+
+	String updateLtClaimEstimate(ClaimsRequestDTO claimsRequestDTO, Integer claim_Id);
 
 }

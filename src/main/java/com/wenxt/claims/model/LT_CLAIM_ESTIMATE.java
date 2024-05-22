@@ -18,7 +18,7 @@ public class LT_CLAIM_ESTIMATE {
     @SequenceGenerator(name = "ClaimEstimateTranIDSeq", sequenceName = "CE_TRAN_ID_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ClaimEstimateTranIDSeq")
     @Column(name = "CE_TRAN_ID")
-    private Long CE_TRAN_ID;
+    private Integer CE_TRAN_ID;
 
     @Column(name = "CE_CLM_TRAN_ID")
     private Integer CE_CLM_TRAN_ID;
@@ -119,11 +119,11 @@ public class LT_CLAIM_ESTIMATE {
     @Column(name = "CE_LC_REM_AMT_TO_PAY")
     private Double CE_LC_REM_AMT_TO_PAY;
 
-	public Long getCE_TRAN_ID() {
+	public Integer getCE_TRAN_ID() {
 		return CE_TRAN_ID;
 	}
 
-	public void setCE_TRAN_ID(Long cE_TRAN_ID) {
+	public void setCE_TRAN_ID(Integer cE_TRAN_ID) {
 		CE_TRAN_ID = cE_TRAN_ID;
 	}
 

@@ -8,8 +8,10 @@ public interface LtClaimCoverDtlsService {
 
 //	String getAllCcdtlslist() throws SQLException;
 
-	String getCcdtlsById(Long ccd_TRAN_id);
+	String getCcdtlsById(Integer ccd_TRAN_id);
 
-	String deleteCcdtlsByid(Long ccd_TRAN_id);
+	String deleteCcdtlsByid(Integer ccd_TRAN_id);
+
+	String updateLtClaimCover(ClaimsRequestDTO claimsRequestDTO, Integer claim_Id);
 
 }

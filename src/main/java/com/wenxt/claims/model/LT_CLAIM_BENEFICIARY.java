@@ -4,7 +4,10 @@ import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
@@ -13,8 +16,10 @@ public class LT_CLAIM_BENEFICIARY {
 
 
     @Id
+  	@SequenceGenerator(name = "ClaimBenIdSeq", sequenceName = "CBEN_TRAN_ID_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ClaimBenIdSeq")
     @Column(name = "CBEN_TRAN_ID")
-    private Long CBEN_TRAN_ID;
+    private Integer CBEN_TRAN_ID;
 
     @Column(name = "CBEN_CLAIM_TRAN_ID")
     private Long CBEN_CLAIM_TRAN_ID;
@@ -88,11 +93,11 @@ public class LT_CLAIM_BENEFICIARY {
     @Column(name = "CBEN_CITY_CODE")
     private String CBEN_CITY_CODE;
 
-	public Long getCBEN_TRAN_ID() {
+	public Integer getCBEN_TRAN_ID() {
 		return CBEN_TRAN_ID;
 	}
 
-	public void setCBEN_TRAN_ID(Long cBEN_TRAN_ID) {
+	public void setCBEN_TRAN_ID(Integer cBEN_TRAN_ID) {
 		CBEN_TRAN_ID = cBEN_TRAN_ID;
 	}
 

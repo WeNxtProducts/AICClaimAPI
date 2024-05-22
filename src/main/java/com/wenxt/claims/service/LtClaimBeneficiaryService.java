@@ -8,8 +8,10 @@ public interface LtClaimBeneficiaryService {
 
 //	String getAllLtClaimBfcrylist() throws SQLException;
 
-	String getLtClaimBfcryById(Long cben_pben_TRAN_id);
+	String getLtClaimBfcryById(Integer cben_pben_TRAN_id);
 
-	String deleteLtClaimBfcryByid(Long cben_pben_TRAN_id);
+	String deleteLtClaimBfcryByid(Integer cben_pben_TRAN_id);
+
+	String updateLtClaimBeneficiary(ClaimsRequestDTO claimsRequestDTO, Integer claim_Id);
 
 }

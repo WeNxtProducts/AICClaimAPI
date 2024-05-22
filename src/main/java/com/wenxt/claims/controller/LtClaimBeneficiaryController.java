@@ -16,6 +16,8 @@ import com.wenxt.claims.model.ClaimsRequestDTO;
 import com.wenxt.claims.model.LT_CLAIM_BENEFICIARY;
 import com.wenxt.claims.service.LtClaimBeneficiaryService;
 
+import oracle.jdbc.proxy.annotation.Post;
+
 @RestController
 @RequestMapping("claimBfcry")
 public class LtClaimBeneficiaryController {
@@ -34,14 +36,19 @@ public class LtClaimBeneficiaryController {
 //	}
 
 	@GetMapping("getltclaimBfcryByid/{cben_pben_TRAN_id}")
-	public String getLtClaimBfcryById(@PathVariable Long cben_pben_TRAN_id) {
+	public String getLtClaimBfcryById(@PathVariable Integer cben_pben_TRAN_id) {
 		return claimBfcryservice.getLtClaimBfcryById(cben_pben_TRAN_id);
 
 	}
 
 	@DeleteMapping("/deletesclaimBfcryByid/{cben_pben_TRAN_id}")
-	public String deleteLtClaimBfcryByid(@PathVariable Long cben_pben_TRAN_id) {
+	public String deleteLtClaimBfcryByid(@PathVariable Integer cben_pben_TRAN_id) {
 		return claimBfcryservice.deleteLtClaimBfcryByid(cben_pben_TRAN_id);
+	}
+	
+	@PostMapping("/updateLtClaimBeneficiary/{claimBenId}")
+	public String updateLtClaimBeneficiary(@RequestBody ClaimsRequestDTO claimsRequestDTO, @PathVariable Integer claimBenId) {
+		return claimBfcryservice.updateLtClaimBeneficiary(claimsRequestDTO, claimBenId);
 	}
 
 }

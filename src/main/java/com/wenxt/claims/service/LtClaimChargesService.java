@@ -11,8 +11,10 @@ public interface LtClaimChargesService {
 
 //	String getAllClaimChargeslist() throws SQLException;
 
-	String getClaimChargesById(Long cc_TRAN_id);
+	String getClaimChargesById(Integer cc_TRAN_id);
 
-	String deleteClaimChargesByid(Long cc_TRAN_id);
+	String deleteClaimChargesByid(Integer cc_TRAN_id);
+
+	String updateLtClaimCharges(ClaimsRequestDTO claimsRequestDTO, Integer claim_Id);
 
 }

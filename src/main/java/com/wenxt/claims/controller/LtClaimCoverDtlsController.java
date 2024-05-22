@@ -30,14 +30,19 @@ public class LtClaimCoverDtlsController {
 //	}
 
 	@GetMapping("getccdtlsByid/{ccd_TRAN_id}")
-	public String getCcdtlsById(@PathVariable Long ccd_TRAN_id) {
+	public String getCcdtlsById(@PathVariable Integer ccd_TRAN_id) {
 		return ccdtlservice.getCcdtlsById(ccd_TRAN_id);
 
 	}
 
 	@DeleteMapping("/deletesccdtlsByid/{ccd_TRAN_id}")
-	public String deleteCcdtlsByid(@PathVariable Long ccd_TRAN_id) {
+	public String deleteCcdtlsByid(@PathVariable Integer ccd_TRAN_id) {
 		return ccdtlservice.deleteCcdtlsByid(ccd_TRAN_id);
+	}
+	
+	@PostMapping("updateClaimCover/{claimCoverId}")
+	public String updateLtClaimCover(@RequestBody ClaimsRequestDTO claimsRequestDTO, @PathVariable Integer claimCoverId) {
+		return ccdtlservice.updateLtClaimCover(claimsRequestDTO, claimCoverId);
 	}
 
 }

@@ -12,18 +12,15 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="LT_CLAIM")
 public class LT_CLAIM {
-	
-		@Id
-	    @SequenceGenerator(name = "ClaimSysIdSeq", sequenceName = "CLM_SYS_ID_SEQ", allocationSize = 1)
-	    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ClaimSysIdSeq")
-	    @Column(name = "CLM_SYS_ID")
-	    private Long CLM_SYS_ID;
 
+		@Id
+	  	@SequenceGenerator(name = "ClaimSysIdSeq", sequenceName = "CLM_SYS_ID_SEQ", allocationSize = 1)
+	    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ClaimSysIdSeq")
 	    @Column(name = "CLM_TRAN_ID")
-	    private Long CLM_TRAN_ID;
+	    private Integer CLM_TRAN_ID;
 
 	    @Column(name = "CLM_POL_TRAN_ID")
-	    private Long CLM_POL_TRAN_ID;
+	    private Integer CLM_POL_TRAN_ID;
 
 	    @Column(name = "CLM_DIVN_CODE")
 	    private String CLM_DIVN_CODE;
@@ -271,27 +268,19 @@ public class LT_CLAIM {
 	    @Column(name = "CLM_FIN_PAID_STATUS", columnDefinition = "CHAR(1 BYTE) DEFAULT 'O'")
 	    private String CLM_FIN_PAID_STATUS = "O";
 
-		public Long getCLM_SYS_ID() {
-			return CLM_SYS_ID;
-		}
-
-		public void setCLM_SYS_ID(Long cLM_SYS_ID) {
-			CLM_SYS_ID = cLM_SYS_ID;
-		}
-
-		public Long getCLM_TRAN_ID() {
+		public Integer getCLM_TRAN_ID() {
 			return CLM_TRAN_ID;
 		}
 
-		public void setCLM_TRAN_ID(Long cLM_TRAN_ID) {
+		public void setCLM_TRAN_ID(Integer cLM_TRAN_ID) {
 			CLM_TRAN_ID = cLM_TRAN_ID;
 		}
 
-		public Long getCLM_POL_TRAN_ID() {
+		public Integer getCLM_POL_TRAN_ID() {
 			return CLM_POL_TRAN_ID;
 		}
 
-		public void setCLM_POL_TRAN_ID(Long cLM_POL_TRAN_ID) {
+		public void setCLM_POL_TRAN_ID(Integer cLM_POL_TRAN_ID) {
 			CLM_POL_TRAN_ID = cLM_POL_TRAN_ID;
 		}
 

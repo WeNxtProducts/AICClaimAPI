@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.wenxt.claims.model.LT_CLAIM_ESTIMATE;
 
 @Repository
-public interface LtClaimEstimateRepository extends JpaRepository<LT_CLAIM_ESTIMATE, Long> {
+public interface LtClaimEstimateRepository extends JpaRepository<LT_CLAIM_ESTIMATE, Integer> {
 
 }

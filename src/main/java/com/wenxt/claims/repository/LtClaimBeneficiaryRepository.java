@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.wenxt.claims.model.LT_CLAIM_BENEFICIARY;
 
 @Repository
-public interface LtClaimBeneficiaryRepository extends JpaRepository<LT_CLAIM_BENEFICIARY, Long> {
+public interface LtClaimBeneficiaryRepository extends JpaRepository<LT_CLAIM_BENEFICIARY, Integer> {
 
 }

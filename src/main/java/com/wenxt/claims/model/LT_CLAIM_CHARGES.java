@@ -17,7 +17,7 @@ public class LT_CLAIM_CHARGES {
     @SequenceGenerator(name = "ClaimChargesTranIdSeq", sequenceName = "CC_TRAN_ID_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ClaimChargesTranIdSeq")
     @Column(name="CC_TRAN_ID")
-	private Long CC_TRAN_ID;
+	private Integer CC_TRAN_ID;
 	
 	@Column(name="CC_CLAIM_TRAN_ID")
 	private Integer CC_CLAIM_TRAN_ID;
@@ -46,7 +46,7 @@ public class LT_CLAIM_CHARGES {
 	@Column(name="CC_BENF_CODE")
 	private String CC_BENF_CODE;
 
-	public Long getCC_TRAN_ID() {
+	public Integer getCC_TRAN_ID() {
 		return CC_TRAN_ID;
 	}
 
@@ -122,7 +122,7 @@ public class LT_CLAIM_CHARGES {
 		CC_BENF_CODE = cC_BENF_CODE;
 	}
 
-	public void setCC_TRAN_ID(Long cC_TRAN_ID) {
+	public void setCC_TRAN_ID(Integer cC_TRAN_ID) {
 		CC_TRAN_ID = cC_TRAN_ID;
 	}
 

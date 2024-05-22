@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.wenxt.claims.model.ClaimsRequestDTO;
 import com.wenxt.claims.service.LtClaimEstimateService;
 
+import oracle.jdbc.proxy.annotation.Post;
+
 @RestController
 @RequestMapping("/claimest")
 public class LtClaimEstimateController {
@@ -30,17 +32,20 @@ public class LtClaimEstimateController {
 //	}
 
 	@GetMapping("getclaimestByid/{ce_TRAN_id}")
-	public String getLtClaimEstById(@PathVariable Long ce_TRAN_id) {
+	public String getLtClaimEstById(@PathVariable Integer ce_TRAN_id) {
 		return claimestservice.getLtClaimEstById(ce_TRAN_id);
 
 	}
 
 	@DeleteMapping("/deleteclaimestByid/{ce_TRAN_id}")
-	public String deleteLtClaimEstByid(@PathVariable Long ce_TRAN_id) {
+	public String deleteLtClaimEstByid(@PathVariable Integer ce_TRAN_id) {
 		return claimestservice.deleteLtClaimEstByid(ce_TRAN_id);
 	}
 
-
+	@PostMapping("/uupdateLtClaimEstimate/{ClaimestID}")
+	public String updateLtClaimEstimate(@RequestBody ClaimsRequestDTO claimsRequestDTO, @PathVariable Integer ClaimestID) {
+		return claimestservice.updateLtClaimEstimate(claimsRequestDTO, ClaimestID);
+	}
 	
 	
 

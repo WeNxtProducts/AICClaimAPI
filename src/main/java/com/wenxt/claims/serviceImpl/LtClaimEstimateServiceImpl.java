@@ -2,18 +2,11 @@ package com.wenxt.claims.serviceImpl;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -23,7 +16,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.wenxt.claims.model.ClaimsRequestDTO;
-import com.wenxt.claims.model.LT_CLAIM_COVER_DTLS;
 import com.wenxt.claims.model.LT_CLAIM_ESTIMATE;
 import com.wenxt.claims.repository.LtClaimEstimateRepository;
 import com.wenxt.claims.service.LtClaimEstimateService;
@@ -194,7 +186,7 @@ public class LtClaimEstimateServiceImpl implements LtClaimEstimateService{
 //	}
 
 	@Override
-	public String getLtClaimEstById(Long ce_TRAN_id) {
+	public String getLtClaimEstById(Integer ce_TRAN_id) {
 		LT_CLAIM_ESTIMATE polchager = claimEstrepo.findById(ce_TRAN_id)
 				.orElseThrow(() -> new RuntimeException("POL CLAIM EST  not found"));
 
@@ -206,7 +198,7 @@ public class LtClaimEstimateServiceImpl implements LtClaimEstimateService{
 	}
 
 	@Override
-	public String deleteLtClaimEstByid(Long ce_TRAN_id) {
+	public String deleteLtClaimEstByid(Integer ce_TRAN_id) {
 		try {
 			Optional<LT_CLAIM_ESTIMATE> optionalEntity = claimEstrepo.findById(ce_TRAN_id);
 
@@ -230,6 +222,39 @@ public class LtClaimEstimateServiceImpl implements LtClaimEstimateService{
 			response.put("Message", "Error deleting record with ID " + ce_TRAN_id + ": " + e.getMessage());
 			return response.toString();
 		}
+	}
+	
+	@Override
+	public String updateLtClaimEstimate(ClaimsRequestDTO claimsRequestDTO, Integer claim_Id) {
+		JSONObject response = new JSONObject();
+
+		try {
+			Integer claimCoverId = claim_Id;
+			Optional<LT_CLAIM_ESTIMATE> optionalUser = claimEstrepo.findById(claimCoverId);
+			LT_CLAIM_ESTIMATE claim = optionalUser.get();
+			if (claim != null) {
+				Map<String, Map<String, String>> fieldMaps = new HashMap<>();
+				fieldMaps.put("frontForm", claimsRequestDTO.getFrontForm().getFormFields());
+				for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
+					setClaimEstimateFields (claim, entry.getValue());
+				}
+
+				try {
+					LT_CLAIM_ESTIMATE savedClaimDetails = claimEstrepo.save(claim);
+					response.put(statusCode, successCode);
+					response.put(messageCode, "Claim Details Updated Successfully");
+				} catch (Exception e) {
+					response.put("statusCode", errorCode);
+					response.put("message", "An error occurred: " + e.getMessage());
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.put("statusCode", errorCode);
+			response.put("message", "An error occurred: " + e.getMessage());
+		}
+
+		return response.toString();
 	}
 
 }

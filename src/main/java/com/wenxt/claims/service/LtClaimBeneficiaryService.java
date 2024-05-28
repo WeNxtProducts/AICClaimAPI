@@ -8,7 +8,7 @@ public interface LtClaimBeneficiaryService {
 
 //	String getAllLtClaimBfcrylist() throws SQLException;
 
-	String getLtClaimBfcryById(Integer cben_pben_TRAN_id);
+	String getLtClaimBfcryById(Integer cben_pben_TRAN_id) throws IllegalArgumentException, IllegalAccessException;
 
 	String deleteLtClaimBfcryByid(Integer cben_pben_TRAN_id);
 

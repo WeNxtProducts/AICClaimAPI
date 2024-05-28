@@ -1,5 +1,6 @@
 package com.wenxt.claims.serviceImpl;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.time.LocalDate;
@@ -19,6 +20,8 @@ import com.wenxt.claims.model.ClaimsRequestDTO;
 import com.wenxt.claims.model.LT_CLAIM_ESTIMATE;
 import com.wenxt.claims.repository.LtClaimEstimateRepository;
 import com.wenxt.claims.service.LtClaimEstimateService;
+
+import jakarta.persistence.Column;
 
 @Service
 public class LtClaimEstimateServiceImpl implements LtClaimEstimateService{
@@ -52,7 +55,7 @@ public class LtClaimEstimateServiceImpl implements LtClaimEstimateService{
 //	private String getallltClaimeEST;
 
 	@Override
-	public String createLtClaimEst(ClaimsRequestDTO claimsRequestDTO) {
+	public String createLtClaimEst(ClaimsRequestDTO claimsRequestDTO, Integer tranId) {
 		JSONObject response = new JSONObject();
 		JSONObject data = new JSONObject();
 
@@ -69,15 +72,17 @@ public class LtClaimEstimateServiceImpl implements LtClaimEstimateService{
 			}
 
 			try {
+				claimEstimate.setCE_CLM_TRAN_ID(tranId);
+				claimEstimate.setCE_FRZ_FLAG("N");
 				LT_CLAIM_ESTIMATE savedClaimDetails = claimEstrepo.save(claimEstimate);
 				response.put(statusCode, successCode);
 				response.put(messageCode,
-						 "User created successfully");
+						 "Claim Estimate Details Successfully");
 				data.put("Id", savedClaimDetails.getCE_TRAN_ID());
-				response.put("data", data);
+				response.put(dataCode, data);
 			} catch (Exception e) {
-				response.put("statusCode", errorCode);
-				response.put("message", "An error occurred: " + e.getMessage());
+				response.put(statusCode, errorCode);
+				response.put(messageCode, "An error occurred: " + e.getMessage());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -186,15 +191,26 @@ public class LtClaimEstimateServiceImpl implements LtClaimEstimateService{
 //	}
 
 	@Override
-	public String getLtClaimEstById(Integer ce_TRAN_id) {
-		LT_CLAIM_ESTIMATE polchager = claimEstrepo.findById(ce_TRAN_id)
-				.orElseThrow(() -> new RuntimeException("POL CLAIM EST  not found"));
-
-		JSONObject response = new JSONObject(polchager);
-
-		response.put("Status", "SUCCESS");
-		response.put("Message", "Record with ID " + ce_TRAN_id + " retrived successfully");
-		return response.toString();
+	public String getLtClaimEstById(Integer ce_TRAN_id) throws IllegalArgumentException, IllegalAccessException {
+		Map<String, Object> parametermap = new HashMap<String, Object>();
+		JSONObject inputObject = new JSONObject();
+		Optional<LT_CLAIM_ESTIMATE> optionalUser = claimEstrepo.findById(ce_TRAN_id);
+		LT_CLAIM_ESTIMATE claim = optionalUser.get();
+		if (claim != null) {
+			for (int i = 0; i < claim.getClass().getDeclaredFields().length; i++) {
+				Field field = claim.getClass().getDeclaredFields()[i];
+				field.setAccessible(true);
+				String columnName = null;
+				if (field.isAnnotationPresent(Column.class)) {
+					Annotation annotation = field.getAnnotation(Column.class);
+					Column column = (Column) annotation;
+					Object value = field.get(claim);
+					columnName = column.name();
+					inputObject.put(columnName, value);
+				}
+			}
+		}
+		return inputObject.toString();
 	}
 
 	@Override
@@ -206,20 +222,20 @@ public class LtClaimEstimateServiceImpl implements LtClaimEstimateService{
 				claimEstrepo.deleteById(ce_TRAN_id);
 
 				JSONObject response = new JSONObject();
-				response.put("Status", "SUCCESS");
-				response.put("Message", "Record with ID " + ce_TRAN_id + " deleted successfully");
+				response.put(statusCode, successCode);
+				response.put(messageCode, "Record with ID " + ce_TRAN_id + " deleted successfully");
 				return response.toString();
 
 			} else {
 				JSONObject response = new JSONObject();
-				response.put("Status", "ERROR");
-				response.put("Message", "Record with ID " + ce_TRAN_id + " not found");
+				response.put(statusCode, errorCode);
+				response.put(messageCode, "Record with ID " + ce_TRAN_id + " not found");
 				return response.toString();
 			}
 		} catch (Exception e) {
 			JSONObject response = new JSONObject();
-			response.put("Status", "ERROR");
-			response.put("Message", "Error deleting record with ID " + ce_TRAN_id + ": " + e.getMessage());
+			response.put(statusCode, errorCode);
+			response.put(messageCode, "Error deleting record with ID " + ce_TRAN_id + ": " + e.getMessage());
 			return response.toString();
 		}
 	}
@@ -234,7 +250,7 @@ public class LtClaimEstimateServiceImpl implements LtClaimEstimateService{
 			LT_CLAIM_ESTIMATE claim = optionalUser.get();
 			if (claim != null) {
 				Map<String, Map<String, String>> fieldMaps = new HashMap<>();
-				fieldMaps.put("frontForm", claimsRequestDTO.getFrontForm().getFormFields());
+				fieldMaps.put("frontForm", claimsRequestDTO.getClaimEstimate().getFormFields());
 				for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
 					setClaimEstimateFields (claim, entry.getValue());
 				}

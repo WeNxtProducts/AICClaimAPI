@@ -31,8 +31,11 @@ public class LtClaimChargesController {
 
 	@GetMapping("getclaimchrgsByid/{cc_TRAN_id}")
 	public String getClaimChargesById(@PathVariable Integer cc_TRAN_id) {
+		try {
 		return claimchrgstservice.getClaimChargesById(cc_TRAN_id);
-
+		}catch(Exception e) {
+			return e.getMessage();
+		}
 	}
 
 	@DeleteMapping("/deleteclaimchrgsByid/{cc_TRAN_id}")

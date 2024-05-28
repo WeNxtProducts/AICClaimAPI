@@ -1,5 +1,6 @@
 package com.wenxt.claims.serviceImpl;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.time.LocalDate;
@@ -17,9 +18,10 @@ import org.springframework.stereotype.Service;
 
 import com.wenxt.claims.model.ClaimsRequestDTO;
 import com.wenxt.claims.model.LT_CLAIM_BENEFICIARY;
-import com.wenxt.claims.model.LT_CLAIM_ESTIMATE;
 import com.wenxt.claims.repository.LtClaimBeneficiaryRepository;
 import com.wenxt.claims.service.LtClaimBeneficiaryService;
+
+import jakarta.persistence.Column;
 
 @Service
 public class LtClaimBeneficiaryServiceImpl implements LtClaimBeneficiaryService{
@@ -45,22 +47,12 @@ public class LtClaimBeneficiaryServiceImpl implements LtClaimBeneficiaryService{
 	@Autowired
 	private LtClaimBeneficiaryRepository ltclaimbnfcryrepo;
 
-//	private static final String JDBC_URL = "jdbc:mysql://baseapi.cr4u8emg2x3o.eu-north-1.rds.amazonaws.com:3306/baseapi";
-//	private static final String USERNAME = "admin";
-//	private static final String PASSWORD = "D3Vt3aM#92";
-//
-//	@Value("${insert.message.claimBfcry}")
-//	private String getallclaimBfcry;
-
 	@Override
 	public String createLtClaimBfcry(ClaimsRequestDTO claimsRequestDTO) {
 		JSONObject response = new JSONObject();
 		JSONObject data = new JSONObject();
 
 		try {
-//			Long claimCoverId = Long.parseLong(claimsRequestDTO.getClaimCover().getFormFields().get("CCD_TRAN_ID"));
-//			Optional<LT_CLAIM_COVER_DTLS> optionalUser = ccdtlsrepo.findById(claimCoverId);
-//			LT_CLAIM_COVER_DTLS claim = optionalUser.orElse(new LT_CLAIM_COVER_DTLS());
 			LT_CLAIM_BENEFICIARY claim = new LT_CLAIM_BENEFICIARY();
 			
 			Map<String, Map<String, String>> fieldMaps = new HashMap<>();
@@ -186,15 +178,26 @@ public class LtClaimBeneficiaryServiceImpl implements LtClaimBeneficiaryService{
 //	}
 //
 	@Override
-	public String getLtClaimBfcryById(Integer cben_pben_TRAN_id) {
-		LT_CLAIM_BENEFICIARY claimbecfry = ltclaimbnfcryrepo.findById(cben_pben_TRAN_id)
-				.orElseThrow(() -> new RuntimeException("claim beneficiary not found"));
-
-		JSONObject response = new JSONObject(claimbecfry);
-
-		response.put("Status", "SUCCESS");
-		response.put("Message", "Record with ID " + cben_pben_TRAN_id + " retrived successfully");
-		return response.toString();
+	public String getLtClaimBfcryById(Integer cben_pben_TRAN_id) throws IllegalArgumentException, IllegalAccessException {
+		Map<String, Object> parametermap = new HashMap<String, Object>();
+		JSONObject inputObject = new JSONObject();
+		Optional<LT_CLAIM_BENEFICIARY> optionalUser = ltclaimbnfcryrepo.findById(cben_pben_TRAN_id);
+		LT_CLAIM_BENEFICIARY claim = optionalUser.get();
+		if (claim != null) {
+			for (int i = 0; i < claim.getClass().getDeclaredFields().length; i++) {
+				Field field = claim.getClass().getDeclaredFields()[i];
+				field.setAccessible(true);
+				String columnName = null;
+				if (field.isAnnotationPresent(Column.class)) {
+					Annotation annotation = field.getAnnotation(Column.class);
+					Column column = (Column) annotation;
+					Object value = field.get(claim);
+					columnName = column.name();
+					inputObject.put(columnName, value);
+				}
+			}
+		}
+		return inputObject.toString();
 	}
 
 	@Override

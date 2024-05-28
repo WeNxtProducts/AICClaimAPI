@@ -1,5 +1,6 @@
 package com.wenxt.claims.serviceImpl;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.time.LocalDate;
@@ -19,6 +20,8 @@ import com.wenxt.claims.model.ClaimsRequestDTO;
 import com.wenxt.claims.model.LT_CLAIM_CHARGES;
 import com.wenxt.claims.repository.LtClaimChargesRepository;
 import com.wenxt.claims.service.LtClaimChargesService;
+
+import jakarta.persistence.Column;
 
 @Service
 public class LtClaimChargesServiceImpl implements LtClaimChargesService {
@@ -186,15 +189,26 @@ public class LtClaimChargesServiceImpl implements LtClaimChargesService {
 //
 
 	@Override
-	public String getClaimChargesById(Integer cc_TRAN_id) {
-		LT_CLAIM_CHARGES claimcharges = ltclaimChrgsrepo.findById(cc_TRAN_id)
-				.orElseThrow(() -> new RuntimeException("claim beneficiary not found"));
-
-		JSONObject response = new JSONObject(claimcharges);
-
-		response.put("Status", "SUCCESS");
-		response.put("Message", "Record with ID " + cc_TRAN_id + " retrived successfully");
-		return response.toString();
+	public String getClaimChargesById(Integer cc_TRAN_id) throws IllegalArgumentException, IllegalAccessException {
+		Map<String, Object> parametermap = new HashMap<String, Object>();
+		JSONObject inputObject = new JSONObject();
+		Optional<LT_CLAIM_CHARGES> optionalUser = ltclaimChrgsrepo.findById(cc_TRAN_id);
+		LT_CLAIM_CHARGES claim = optionalUser.get();
+		if (claim != null) {
+			for (int i = 0; i < claim.getClass().getDeclaredFields().length; i++) {
+				Field field = claim.getClass().getDeclaredFields()[i];
+				field.setAccessible(true);
+				String columnName = null;
+				if (field.isAnnotationPresent(Column.class)) {
+					Annotation annotation = field.getAnnotation(Column.class);
+					Column column = (Column) annotation;
+					Object value = field.get(claim);
+					columnName = column.name();
+					inputObject.put(columnName, value);
+				}
+			}
+		}
+		return inputObject.toString();
 	}
 
 	@Override

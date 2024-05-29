@@ -64,7 +64,7 @@ public class LtClaimCoverDtlsServiceImpl implements LtClaimCoverDtlsService {
 			LT_CLAIM_ESTIMATE claim = new LT_CLAIM_ESTIMATE();
 			
 			Map<String, Map<String, String>> fieldMaps = new HashMap<>();
-			fieldMaps.put("frontForm", claimsRequestDTO.getClaimCover().getFormFields());
+			fieldMaps.put("frontForm", claimsRequestDTO.getClaimBeneficiary().getFormFields());
 			for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
 				setClaimCoverFields(claim, entry.getValue());
 			}

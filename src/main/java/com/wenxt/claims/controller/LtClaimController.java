@@ -42,7 +42,6 @@ public class LtClaimController {
 
 	@PostMapping("/deleteClaim/{claim_TRAN_id}")
 	public String deleteLtClaimByid(@PathVariable Integer claim_TRAN_id) {
-		System.out.println("IN");
 		return ltclaimservice.deleteLtClaimByid(claim_TRAN_id);
 	}
 	

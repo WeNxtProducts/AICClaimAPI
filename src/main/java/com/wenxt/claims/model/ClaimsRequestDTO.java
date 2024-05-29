@@ -6,8 +6,8 @@ public class ClaimsRequestDTO {
 	
 	private FormFieldsDTO frontForm;
 	
-	@JsonProperty("ClaimCover")
-	private FormFieldsDTO ClaimCover;
+	@JsonProperty("ClaimCheckList")
+	private FormFieldsDTO ClaimCheckList;
 	
 	@JsonProperty("ClaimCharges")
 	private FormFieldsDTO ClaimCharges;
@@ -28,12 +28,12 @@ public class ClaimsRequestDTO {
 		this.frontForm = frontForm;
 	}
 
-	public FormFieldsDTO getClaimCover() {
-		return ClaimCover;
+	public FormFieldsDTO getClaimCheckList() {
+		return ClaimCheckList;
 	}
 
-	public void setClaimCover(FormFieldsDTO claimCover) {
-		ClaimCover = claimCover;
+	public void setClaimCheckList(FormFieldsDTO claimCheckList) {
+		ClaimCheckList = claimCheckList;
 	}
 
 	public FormFieldsDTO getClaimCharges() {

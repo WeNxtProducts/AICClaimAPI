@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wenxt.claims.model.ClaimsRequestDTO;
@@ -29,8 +30,8 @@ public class LtClaimChargesController {
 //		return claimchrgstservice.getAllClaimChargeslist();
 //	}
 
-	@GetMapping("getclaimchrgsByid/{cc_TRAN_id}")
-	public String getClaimChargesById(@PathVariable Integer cc_TRAN_id) {
+	@GetMapping("getclaimchrgsByid")
+	public String getClaimChargesById(@RequestParam Integer cc_TRAN_id) {
 		try {
 		return claimchrgstservice.getClaimChargesById(cc_TRAN_id);
 		}catch(Exception e) {

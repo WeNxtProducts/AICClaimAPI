@@ -267,6 +267,30 @@ public class LT_CLAIM {
 
 	    @Column(name = "CLM_FIN_PAID_STATUS", columnDefinition = "CHAR(1 BYTE) DEFAULT 'O'")
 	    private String CLM_FIN_PAID_STATUS = "O";
+	    
+	    @Column(name = "CLAIM_ASSR_CODE")
+	    private String CLAIM_ASSR_CODE;
+	    
+	    @Column(name = "CLAIM_DISEASES_CODE")
+	    private String CLAIM_DISEASES_CODE;
+	    
+	    @Column(name = "CLAIM_DISEASES_REMARKS")
+	    private String CLAIM_DISEASES_REMARKS;
+	    
+	    @Column(name = "CLAIM_HOSP_ADDM_DT")
+	    private Date CLAIM_HOSP_ADDM_DT;
+	    
+	    @Column(name = "CLAIM_HOSP_DSCHG_DT")
+	    private Date CLAIM_HOSP_DSCHG_DT;
+	    
+	    @Column(name = "CLAIM_INT_EMAIL")
+	    private String CLAIM_INT_EMAIL;
+	    
+	    @Column(name = "CLAIM_ASSRD_REF_ID1")
+	    private String CLAIM_ASSRD_REF_ID1;
+	    
+	    @Column(name = "CLM_CH_TRAN_ID")
+	    private Integer CLM_CH_TRAN_ID;
 
 		public Integer getCLM_TRAN_ID() {
 			return CLM_TRAN_ID;
@@ -938,6 +962,70 @@ public class LT_CLAIM {
 
 		public void setCLM_FIN_PAID_STATUS(String cLM_FIN_PAID_STATUS) {
 			CLM_FIN_PAID_STATUS = cLM_FIN_PAID_STATUS;
+		}
+
+		public String getCLAIM_ASSR_CODE() {
+			return CLAIM_ASSR_CODE;
+		}
+
+		public void setCLAIM_ASSR_CODE(String cLAIM_ASSR_CODE) {
+			CLAIM_ASSR_CODE = cLAIM_ASSR_CODE;
+		}
+
+		public String getCLAIM_DISEASES_CODE() {
+			return CLAIM_DISEASES_CODE;
+		}
+
+		public void setCLAIM_DISEASES_CODE(String cLAIM_DISEASES_CODE) {
+			CLAIM_DISEASES_CODE = cLAIM_DISEASES_CODE;
+		}
+
+		public String getCLAIM_DISEASES_REMARKS() {
+			return CLAIM_DISEASES_REMARKS;
+		}
+
+		public void setCLAIM_DISEASES_REMARKS(String cLAIM_DISEASES_REMARKS) {
+			CLAIM_DISEASES_REMARKS = cLAIM_DISEASES_REMARKS;
+		}
+
+		public Date getCLAIM_HOSP_ADDM_DT() {
+			return CLAIM_HOSP_ADDM_DT;
+		}
+
+		public void setCLAIM_HOSP_ADDM_DT(Date cLAIM_HOSP_ADDM_DT) {
+			CLAIM_HOSP_ADDM_DT = cLAIM_HOSP_ADDM_DT;
+		}
+
+		public Date getCLAIM_HOSP_DSCHG_DT() {
+			return CLAIM_HOSP_DSCHG_DT;
+		}
+
+		public void setCLAIM_HOSP_DSCHG_DT(Date cLAIM_HOSP_DSCHG_DT) {
+			CLAIM_HOSP_DSCHG_DT = cLAIM_HOSP_DSCHG_DT;
+		}
+
+		public String getCLAIM_INT_EMAIL() {
+			return CLAIM_INT_EMAIL;
+		}
+
+		public void setCLAIM_INT_EMAIL(String cLAIM_INT_EMAIL) {
+			CLAIM_INT_EMAIL = cLAIM_INT_EMAIL;
+		}
+
+		public String getCLAIM_ASSRD_REF_ID1() {
+			return CLAIM_ASSRD_REF_ID1;
+		}
+
+		public void setCLAIM_ASSRD_REF_ID1(String cLAIM_ASSRD_REF_ID1) {
+			CLAIM_ASSRD_REF_ID1 = cLAIM_ASSRD_REF_ID1;
+		}
+
+		public Integer getCLM_CH_TRAN_ID() {
+			return CLM_CH_TRAN_ID;
+		}
+
+		public void setCLM_CH_TRAN_ID(Integer cLM_CH_TRAN_ID) {
+			CLM_CH_TRAN_ID = cLM_CH_TRAN_ID;
 		}
 
    

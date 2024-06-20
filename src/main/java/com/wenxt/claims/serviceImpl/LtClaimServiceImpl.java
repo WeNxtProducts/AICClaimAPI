@@ -11,6 +11,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -19,17 +20,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wenxt.claims.model.ClaimRequestDTO;
 import com.wenxt.claims.model.ClaimsRequestDTO;
 import com.wenxt.claims.model.LT_CLAIM;
+import com.wenxt.claims.model.LtClaimHdr;
+import com.wenxt.claims.model.ProcedureInput;
+import com.wenxt.claims.repository.LtClaimHdrRepo;
 import com.wenxt.claims.repository.LtClaimRepository;
 import com.wenxt.claims.service.LtClaimService;
 
@@ -56,9 +57,15 @@ public class LtClaimServiceImpl implements LtClaimService {
 
 	@Value("${spring.warning.code}")
 	private String warningCode;
+	
+	@Value("${string.baseApi.path}")
+	private String baseDocPath;
 
 	@Autowired
 	private LtClaimRepository ltclaimrepo;
+	
+	@Autowired
+	private LtClaimHdrRepo ltClaimHdrRepo;
 
 //	private static final String JDBC_URL = "jdbc:mysql://baseapi.cr4u8emg2x3o.eu-north-1.rds.amazonaws.com:3306/baseapi";
 //	private static final String USERNAME = "admin";
@@ -68,33 +75,48 @@ public class LtClaimServiceImpl implements LtClaimService {
 //	private String getallltClaim;
 
 	@Override
-	public String createLtClaim(ClaimsRequestDTO claimsRequestDTO) {
+	public String createLtClaim(ClaimRequestDTO claimsRequestDTO, HttpServletRequest request) {
 		JSONObject response = new JSONObject();
 		JSONObject data = new JSONObject();
 
 		try {
-			LT_CLAIM claim = new LT_CLAIM();
+			LtClaimHdr claim = new LtClaimHdr();
 
-			Map<String, Map<String, String>> fieldMaps = new HashMap<>();
-			fieldMaps.put("frontForm", claimsRequestDTO.getFrontForm().getFormFields());
-			for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
-				setClaimFields(claim, entry.getValue());
-			}
-
-			try {
-				LT_CLAIM savedClaimDetails = ltclaimrepo.save(claim);
-				response.put(statusCode, successCode);
-				response.put(messageCode, "User created successfully");
-				data.put("Id", savedClaimDetails.getCLM_TRAN_ID());
-				response.put("data", data);
-			} catch (Exception e) {
-				response.put("statusCode", errorCode);
-				response.put("message", "An error occurred: " + e.getMessage());
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			response.put("statusCode", errorCode);
-			response.put("message", "An error occurred: " + e.getMessage());
+			claim.setCH_CLAIM_BAS(claimsRequestDTO.getCH_CLAIM_BAS());
+			claim.setCH_CLAIM_BAS_VAL(claimsRequestDTO.getCH_CLAIM_BAS_VAL());
+			claim.setCH_CLAIM_TYPE(claimsRequestDTO.getCH_CLAIM_TYPE());
+			claim.setCH_REF_NO(claimsRequestDTO.getCH_REF_NO());
+			claim.setCH_LOSS_DT(dateConverter(claimsRequestDTO.getCH_LOSS_DT()));
+			claim.setCH_INTIM_DT(dateConverter(claimsRequestDTO.getCH_INTIM_DT()));
+			claim.setCH_INS_DT(new Date());
+			
+			LtClaimHdr savedClaimDetails = ltClaimHdrRepo.save(claim);
+			
+			Map<String, String> inputMap = new HashMap<>();
+			inputMap.put("P_CH_TRAN_ID", savedClaimDetails.getCH_TRAN_ID().toString());
+			
+			ProcedureInput input = new ProcedureInput();
+			input.setInParams(inputMap);
+			
+			String authorizationHeader = request.getHeader("Authorization");
+			String token = authorizationHeader.substring(7).trim();
+			String url = baseDocPath + "common/invokeProcedure?procedureName=" + "P_POPULATE_ELIGIBLE_POL";
+			HttpHeaders headers = new HttpHeaders();
+			RestTemplate restTemplate = new RestTemplate();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			headers.set("Authorization", "Bearer " + token);
+			HttpEntity<ProcedureInput> requestEntity = new HttpEntity<>(input, headers);
+			ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, requestEntity, String.class);
+			
+			JSONObject dataObj = new JSONObject();
+			dataObj.put("Id", savedClaimDetails.getCH_TRAN_ID());
+			response.put(statusCode, successCode);
+			response.put(messageCode, "Claim Details Saved Successfully");
+			response.put(dataCode, dataObj);
+			
+		}catch(Exception e) {
+			response.put(statusCode, errorCode);
+			response.put(messageCode, e.getMessage());
 		}
 
 		return response.toString();
@@ -137,7 +159,7 @@ public class LtClaimServiceImpl implements LtClaimService {
 		}
 	}
 
-	private Object dateConverter(String value) {
+	private Date dateConverter(String value) {
 		String dateStr = value;
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = null;
@@ -283,6 +305,26 @@ public class LtClaimServiceImpl implements LtClaimService {
 			response.put("message", "An error occurred: " + e.getMessage());
 		}
 
+		return response.toString();
+	}
+
+	@Override
+	public String getListOfPolicies(Integer sysId) {
+		JSONObject response = new JSONObject();
+			try {
+				
+				List<String> listOfPolicyNumbers = ltclaimrepo.getListOfPolicies(sysId);
+				
+				JSONObject dataObj = new JSONObject();
+				dataObj.put("Id", sysId);
+				dataObj.put("Policy_Numbers", listOfPolicyNumbers);
+				response.put(statusCode, successCode);
+				response.put(messageCode, "List Of Policies Fetched Successfully");
+				response.put(dataCode, dataObj);
+			}catch(Exception e) {
+				response.put(statusCode, errorCode);
+				response.put(messageCode, e.getMessage());
+			}
 		return response.toString();
 	}
 

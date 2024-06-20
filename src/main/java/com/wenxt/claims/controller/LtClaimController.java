@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wenxt.claims.model.ClaimRequestDTO;
 import com.wenxt.claims.model.ClaimsRequestDTO;
 import com.wenxt.claims.service.LtClaimService;
 
@@ -46,13 +47,18 @@ public class LtClaimController {
 	}
 	
 	@PostMapping("/claimSave")
-	public String createLtClaim(@RequestBody ClaimsRequestDTO claimsRequestDTO) {
-		return ltclaimservice.createLtClaim(claimsRequestDTO);
+	public String createLtClaim(@RequestBody ClaimRequestDTO claimsRequestDTO, HttpServletRequest request) {
+		return ltclaimservice.createLtClaim(claimsRequestDTO, request);
 	}
 	
 	@PostMapping("/claimUpdate/{claim_id}")
 	public String updateLtClaim(@RequestBody ClaimsRequestDTO claimsRequestDTO, @PathVariable Integer claim_id) {
 		return ltclaimservice.updateLtClaim(claimsRequestDTO, claim_id);
+	}
+	
+	@GetMapping("/getListOfPolicies")
+	public String getListOfPolicies(@RequestParam Integer sysId) {
+		return ltclaimservice.getListOfPolicies(sysId);
 	}
 
 }

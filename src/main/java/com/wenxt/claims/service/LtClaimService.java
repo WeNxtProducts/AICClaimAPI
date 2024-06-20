@@ -2,6 +2,7 @@ package com.wenxt.claims.service;
 
 import java.sql.SQLException;
 
+import com.wenxt.claims.model.ClaimRequestDTO;
 import com.wenxt.claims.model.ClaimsRequestDTO;
 import com.wenxt.claims.model.LT_CLAIM;
 
@@ -9,7 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public interface LtClaimService {
 
-	String createLtClaim(ClaimsRequestDTO claimsRequestDto);
+	String createLtClaim(ClaimRequestDTO claimsRequestDTO, HttpServletRequest request);
 
 //	String getAllLtClaimlist() throws SQLException;
 
@@ -18,5 +19,7 @@ public interface LtClaimService {
 	String deleteLtClaimByid(Integer claim_TRAN_id);
 
 	String updateLtClaim(ClaimsRequestDTO claimsRequestDTO, Integer claim_id);
+
+	String getListOfPolicies(Integer sysId);
 
 }

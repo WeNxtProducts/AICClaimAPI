@@ -1,10 +1,7 @@
 package com.wenxt.claims.service;
 
-import java.sql.SQLException;
-
 import com.wenxt.claims.model.ClaimRequestDTO;
 import com.wenxt.claims.model.ClaimsRequestDTO;
-import com.wenxt.claims.model.LT_CLAIM;
 
 import jakarta.servlet.http.HttpServletRequest;
 

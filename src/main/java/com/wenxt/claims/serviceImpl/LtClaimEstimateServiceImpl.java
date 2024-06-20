@@ -55,7 +55,7 @@ public class LtClaimEstimateServiceImpl implements LtClaimEstimateService{
 //	private String getallltClaimeEST;
 
 	@Override
-	public String createLtClaimEst(ClaimsRequestDTO claimsRequestDTO, Integer tranId) {
+	public String createLtClaimEst(ClaimsRequestDTO claimsRequestDTO) {
 		JSONObject response = new JSONObject();
 		JSONObject data = new JSONObject();
 
@@ -72,7 +72,6 @@ public class LtClaimEstimateServiceImpl implements LtClaimEstimateService{
 			}
 
 			try {
-				claimEstimate.setCE_CLM_TRAN_ID(tranId);
 				claimEstimate.setCE_FRZ_FLAG("N");
 				LT_CLAIM_ESTIMATE savedClaimDetails = claimEstrepo.save(claimEstimate);
 				response.put(statusCode, successCode);

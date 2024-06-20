@@ -33,8 +33,8 @@ public class LtClaimBeneficiaryController {
 	@PostMapping("getltclaimBfcryByid")
 	public String getLtClaimBfcryById(@RequestParam Integer cben_pben_TRAN_id) {
 		try {
-		return claimBfcryservice.getLtClaimBfcryById(cben_pben_TRAN_id);
-		}catch(Exception e) {
+			return claimBfcryservice.getLtClaimBfcryById(cben_pben_TRAN_id);
+		} catch (Exception e) {
 			return e.getMessage();
 		}
 	}
@@ -43,9 +43,10 @@ public class LtClaimBeneficiaryController {
 	public String deleteLtClaimBfcryByid(@PathVariable Integer cben_pben_TRAN_id) {
 		return claimBfcryservice.deleteLtClaimBfcryByid(cben_pben_TRAN_id);
 	}
-	
+
 	@PostMapping("/updateLtClaimBeneficiary/{claimBenId}")
-	public String updateLtClaimBeneficiary(@RequestBody ClaimsRequestDTO claimsRequestDTO, @PathVariable Integer claimBenId) {
+	public String updateLtClaimBeneficiary(@RequestBody ClaimsRequestDTO claimsRequestDTO,
+			@PathVariable Integer claimBenId) {
 		return claimBfcryservice.updateLtClaimBeneficiary(claimsRequestDTO, claimBenId);
 	}
 

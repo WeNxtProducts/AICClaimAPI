@@ -2,6 +2,8 @@ package com.wenxt.claims.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -48,15 +50,17 @@ public class LT_CLAIM_BENEFICIARY {
     @Column(name = "CBEN_FC_PAID_AMT")
     private Double CBEN_FC_PAID_AMT;
 
-    @Column(name = "CBEN_INS_UID")
-    private String CBEN_INS_UID;
-
+    @Column(name = "CBEN_INS_ID")
+    private String CBEN_INS_ID;
+    
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "CBEN_INS_DT")
     private Date CBEN_INS_DT;
 
-    @Column(name = "CBEN_MOD_UID")
-    private String CBEN_MOD_UID;
+    @Column(name = "CBEN_MOD_ID")
+    private String CBEN_MOD_ID;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "CBEN_MOD_DT")
     private Date CBEN_MOD_DT;
 
@@ -173,12 +177,14 @@ public class LT_CLAIM_BENEFICIARY {
 		CBEN_FC_PAID_AMT = cBEN_FC_PAID_AMT;
 	}
 
-	public String getCBEN_INS_UID() {
-		return CBEN_INS_UID;
+	
+
+	public String getCBEN_INS_ID() {
+		return CBEN_INS_ID;
 	}
 
-	public void setCBEN_INS_UID(String cBEN_INS_UID) {
-		CBEN_INS_UID = cBEN_INS_UID;
+	public void setCBEN_INS_ID(String cBEN_INS_ID) {
+		CBEN_INS_ID = cBEN_INS_ID;
 	}
 
 	public Date getCBEN_INS_DT() {
@@ -189,12 +195,14 @@ public class LT_CLAIM_BENEFICIARY {
 		CBEN_INS_DT = cBEN_INS_DT;
 	}
 
-	public String getCBEN_MOD_UID() {
-		return CBEN_MOD_UID;
+
+
+	public String getCBEN_MOD_ID() {
+		return CBEN_MOD_ID;
 	}
 
-	public void setCBEN_MOD_UID(String cBEN_MOD_UID) {
-		CBEN_MOD_UID = cBEN_MOD_UID;
+	public void setCBEN_MOD_ID(String cBEN_MOD_ID) {
+		CBEN_MOD_ID = cBEN_MOD_ID;
 	}
 
 	public Date getCBEN_MOD_DT() {

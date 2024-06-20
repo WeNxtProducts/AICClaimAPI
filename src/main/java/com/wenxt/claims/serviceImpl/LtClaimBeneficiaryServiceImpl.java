@@ -3,10 +3,12 @@ package com.wenxt.claims.serviceImpl;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -14,6 +16,7 @@ import java.util.Optional;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.expression.ParseException;
 import org.springframework.stereotype.Service;
 
 import com.wenxt.claims.model.ClaimsRequestDTO;
@@ -105,17 +108,45 @@ public class LtClaimBeneficiaryServiceImpl implements LtClaimBeneficiaryService{
 	private Object convertStringToObject(String value, Class<?> fieldType) {
 		if (fieldType.equals(Integer.class) && value.isEmpty() == false && value != null) {
 			return Integer.parseInt(value);
-		} else if (fieldType.equals(Double.class) && value.isEmpty() == false && value != null) {
+		} 
+		
+		else if (fieldType.equals(Long.class) && value != null && !value.isEmpty()) {
+			return Long.parseLong(value);
+		}
+		else if (fieldType.equals(Double.class) && value.isEmpty() == false && value != null) {
 			return Double.parseDouble(value);
 		} else if (fieldType.equals(Short.class) && value.isEmpty() == false && value != null) {
 			return Short.parseShort(value);
 		} else if (fieldType.equals(LocalDateTime.class) && value.isEmpty() == false && value != null) {
 			return dateTimeConverter(value);
-		} else {
+		} 
+		
+		else if (fieldType.equals(Date.class) && value.isEmpty() == false && value != null) {
+			return dateConverter(value);
+		}
+		
+		
+		else {
 			return value;
 		}
 	}
 	
+	
+
+	
+	public Object dateConverter(String value) {
+		String dateStr = value;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = null;
+		try {
+			date = sdf.parse(dateStr);
+		} catch (ParseException | java.text.ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+ 
+		return date;
+	}
 	private Object dateTimeConverter(String value) {
 		String dateString = value;
 		if (value.length() > 10) {
@@ -132,6 +163,8 @@ public class LtClaimBeneficiaryServiceImpl implements LtClaimBeneficiaryService{
 		return parsedDateTime;
 	}
 
+
+	
 
 //	@Override
 //	public String getAllLtClaimBfcrylist() throws SQLException {

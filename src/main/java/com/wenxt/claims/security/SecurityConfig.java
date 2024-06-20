@@ -68,6 +68,8 @@ public class SecurityConfig {
 				.and()
 				.authorizeHttpRequests().requestMatchers("/claimpymt/**").authenticated() 
 				.and()
+				.authorizeHttpRequests().requestMatchers("/docToDoList/**").authenticated() 
+				.and()
 				.sessionManagement() 
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS) 
 				.and() 

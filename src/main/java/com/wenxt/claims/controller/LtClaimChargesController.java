@@ -30,7 +30,7 @@ public class LtClaimChargesController {
 //		return claimchrgstservice.getAllClaimChargeslist();
 //	}
 
-	@GetMapping("getclaimchrgsByid")
+	@PostMapping("/getclaimchrgsByid")
 	public String getClaimChargesById(@RequestParam Integer cc_TRAN_id) {
 		try {
 		return claimchrgstservice.getClaimChargesById(cc_TRAN_id);
@@ -39,13 +39,13 @@ public class LtClaimChargesController {
 		}
 	}
 
-	@DeleteMapping("/deleteclaimchrgsByid/{cc_TRAN_id}")
+	@PostMapping("/deleteclaimchrgsByid/{cc_TRAN_id}")
 	public String deleteClaimChargesByid(@PathVariable Integer cc_TRAN_id) {
 		return claimchrgstservice.deleteClaimChargesByid(cc_TRAN_id);
 	}
 	
 	@PostMapping("/updateClaimCharges/{cc_TRAN_id}")
-	public String deleteClaimChargesByid(@PathVariable Integer cc_TRAN_id, @RequestBody ClaimsRequestDTO claimsRequestDTO) {
+	public String updateClaimChargesByid(@PathVariable Integer cc_TRAN_id, @RequestBody ClaimsRequestDTO claimsRequestDTO) {
 		return claimchrgstservice.updateLtClaimCharges(claimsRequestDTO, cc_TRAN_id);
 	}
 

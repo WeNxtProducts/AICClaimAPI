@@ -3,10 +3,12 @@ package com.wenxt.claims.serviceImpl;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -121,11 +123,27 @@ public class LtClaimChargesServiceImpl implements LtClaimChargesService {
 			return Short.parseShort(value);
 		} else if (fieldType.equals(LocalDateTime.class) && value.isEmpty() == false && value != null) {
 			return dateTimeConverter(value);
+		} else if(fieldType.equals(Date.class) && value.isEmpty() == false && value != null){
+			return dateConverter(value);
 		} else {
 			return value;
 		}
 	}
 	
+	private Object dateConverter(String value) {		
+	String dateStr = value;
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	Date date = null;
+	try {
+		date = sdf.parse(dateStr);
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+
+	return date;
+}
+
 	private Object dateTimeConverter(String value) {
 		String dateString = value;
 		if (value.length() > 10) {
@@ -248,7 +266,7 @@ public class LtClaimChargesServiceImpl implements LtClaimChargesService {
 			LT_CLAIM_CHARGES claim = optionalUser.get();
 			if (claim != null) {
 				Map<String, Map<String, String>> fieldMaps = new HashMap<>();
-				fieldMaps.put("frontForm", claimsRequestDTO.getFrontForm().getFormFields());
+				fieldMaps.put("frontForm", claimsRequestDTO.getClaimCharges().getFormFields());
 				for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
 					setClaimChargesFields(claim, entry.getValue());
 				}

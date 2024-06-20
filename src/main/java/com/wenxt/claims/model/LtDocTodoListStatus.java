@@ -3,7 +3,10 @@ import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
@@ -11,6 +14,8 @@ import jakarta.persistence.Table;
 public class LtDocTodoListStatus {
 
     @Id
+    @SequenceGenerator(name = "ToDoListSeq", sequenceName = "DTLS_TRAN_ID_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ToDoListSeq")
     @Column(name = "DTLS_TRAN_ID", nullable = false)
     private Integer DTLS_TRAN_ID;
 
@@ -24,7 +29,7 @@ public class LtDocTodoListStatus {
     private Integer DTLS_END_NO_IDX;
 
     @Column(name = "DTLS_CLM_TRAN_ID")
-    private Long DTLS_CLM_TRAN_ID;
+    private Integer DTLS_CLM_TRAN_ID;
 
     @Column(name = "DTLS_SR_NO")
     private Integer DTLS_SR_NO;
@@ -101,11 +106,11 @@ public class LtDocTodoListStatus {
         this.DTLS_END_NO_IDX = DTLS_END_NO_IDX;
     }
 
-    public Long getDTLS_CLM_TRAN_ID() {
+    public Integer getDTLS_CLM_TRAN_ID() {
         return DTLS_CLM_TRAN_ID;
     }
 
-    public void setDTLS_CLM_TRAN_ID(Long DTLS_CLM_TRAN_ID) {
+    public void setDTLS_CLM_TRAN_ID(Integer DTLS_CLM_TRAN_ID) {
         this.DTLS_CLM_TRAN_ID = DTLS_CLM_TRAN_ID;
     }
 

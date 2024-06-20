@@ -19,7 +19,7 @@ public class LT_CLAIM_CHARGES {
     @Column(name="CC_TRAN_ID")
 	private Integer CC_TRAN_ID;
 	
-	@Column(name="CC_CLAIM_TRAN_ID")
+	@Column(name="CC_CLM_TRAN_ID")
 	private Integer CC_CLAIM_TRAN_ID;
 	
 	@Column(name="CC_CHRG_CODE")

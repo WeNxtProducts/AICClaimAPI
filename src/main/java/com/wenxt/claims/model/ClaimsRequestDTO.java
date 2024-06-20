@@ -18,6 +18,9 @@ public class ClaimsRequestDTO {
 	@JsonProperty("ClaimBeneficiary")
 	private FormFieldsDTO ClaimBeneficiary;
 	
+	@JsonProperty("ClaimDocToDoList")
+	private FormFieldsDTO ClaimDocToDoList;
+	
 	private FormFieldsDTO CheckList;
 
 	public FormFieldsDTO getFrontForm() {
@@ -66,6 +69,14 @@ public class ClaimsRequestDTO {
 
 	public void setCheckList(FormFieldsDTO checkList) {
 		CheckList = checkList;
+	}
+
+	public FormFieldsDTO getClaimDocToDoList() {
+		return ClaimDocToDoList;
+	}
+
+	public void setClaimDocToDoList(FormFieldsDTO claimDocToDoList) {
+		ClaimDocToDoList = claimDocToDoList;
 	}
 
 }

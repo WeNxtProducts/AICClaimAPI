@@ -27,7 +27,7 @@ import com.wenxt.claims.service.LtClaimBeneficiaryService;
 import jakarta.persistence.Column;
 
 @Service
-public class LtClaimBeneficiaryServiceImpl implements LtClaimBeneficiaryService{
+public class LtClaimBeneficiaryServiceImpl implements LtClaimBeneficiaryService {
 
 	@Value("${spring.message.code}")
 	private String messageCode;
@@ -45,8 +45,8 @@ public class LtClaimBeneficiaryServiceImpl implements LtClaimBeneficiaryService{
 	private String errorCode;
 
 	@Value("${spring.warning.code}")
-	private String warningCode;	
-	
+	private String warningCode;
+
 	@Autowired
 	private LtClaimBeneficiaryRepository ltclaimbnfcryrepo;
 
@@ -57,7 +57,7 @@ public class LtClaimBeneficiaryServiceImpl implements LtClaimBeneficiaryService{
 
 		try {
 			LT_CLAIM_BENEFICIARY claim = new LT_CLAIM_BENEFICIARY();
-			
+
 			Map<String, Map<String, String>> fieldMaps = new HashMap<>();
 			fieldMaps.put("frontForm", claimsRequestDTO.getClaimBeneficiary().getFormFields());
 			for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
@@ -67,29 +67,28 @@ public class LtClaimBeneficiaryServiceImpl implements LtClaimBeneficiaryService{
 			try {
 				LT_CLAIM_BENEFICIARY savedClaimDetails = ltclaimbnfcryrepo.save(claim);
 				response.put(statusCode, successCode);
-				response.put(messageCode,
-						 "User created successfully");
+				response.put(messageCode, "User created successfully");
 				data.put("Id", savedClaimDetails.getCBEN_TRAN_ID());
-				response.put("data", data);
+				response.put(dataCode, data);
 			} catch (Exception e) {
-				response.put("statusCode", errorCode);
-				response.put("message", "An error occurred: " + e.getMessage());
+				response.put(statusCode, errorCode);
+				response.put(messageCode, "An error occurred: " + e.getMessage());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			response.put("statusCode", errorCode);
-			response.put("message", "An error occurred: " + e.getMessage());
+			response.put(statusCode, errorCode);
+			response.put(messageCode, "An error occurred: " + e.getMessage());
 		}
 
 		return response.toString();
 	}
-	
+
 	private void setClaimBeneficiaryFields(LT_CLAIM_BENEFICIARY claim, Map<String, String> fields) throws Exception {
 		for (Map.Entry<String, String> entry : fields.entrySet()) {
 			setClaimBeneficiaryField(claim, entry.getKey(), entry.getValue());
 		}
 	}
-	
+
 	private void setClaimBeneficiaryField(LT_CLAIM_BENEFICIARY user, String fieldName, String value) throws Exception {
 		try {
 			Field field = LT_CLAIM_BENEFICIARY.class.getDeclaredField(fieldName);
@@ -104,36 +103,31 @@ public class LtClaimBeneficiaryServiceImpl implements LtClaimBeneficiaryService{
 			e.printStackTrace();
 		}
 	}
-	
+
 	private Object convertStringToObject(String value, Class<?> fieldType) {
 		if (fieldType.equals(Integer.class) && value.isEmpty() == false && value != null) {
 			return Integer.parseInt(value);
-		} 
-		
+		}
+
 		else if (fieldType.equals(Long.class) && value != null && !value.isEmpty()) {
 			return Long.parseLong(value);
-		}
-		else if (fieldType.equals(Double.class) && value.isEmpty() == false && value != null) {
+		} else if (fieldType.equals(Double.class) && value.isEmpty() == false && value != null) {
 			return Double.parseDouble(value);
 		} else if (fieldType.equals(Short.class) && value.isEmpty() == false && value != null) {
 			return Short.parseShort(value);
 		} else if (fieldType.equals(LocalDateTime.class) && value.isEmpty() == false && value != null) {
 			return dateTimeConverter(value);
-		} 
-		
+		}
+
 		else if (fieldType.equals(Date.class) && value.isEmpty() == false && value != null) {
 			return dateConverter(value);
 		}
-		
-		
+
 		else {
 			return value;
 		}
 	}
-	
-	
 
-	
 	public Object dateConverter(String value) {
 		String dateStr = value;
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -144,9 +138,10 @@ public class LtClaimBeneficiaryServiceImpl implements LtClaimBeneficiaryService{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
- 
+
 		return date;
 	}
+
 	private Object dateTimeConverter(String value) {
 		String dateString = value;
 		if (value.length() > 10) {
@@ -163,55 +158,9 @@ public class LtClaimBeneficiaryServiceImpl implements LtClaimBeneficiaryService{
 		return parsedDateTime;
 	}
 
-
-	
-
-//	@Override
-//	public String getAllLtClaimBfcrylist() throws SQLException {
-//		String query = "SELECT cben_TRAN_id,cben_claim_TRAN_id,cben_cp_TRAN_id,cben_pben_TRAN_id,cben_bnf_type,cben_relation_code,cben_bnf_name,cben_bnf_name_bl,cben_perc,cben_INS_id,cben_INS_dt,cben_MOD_id,cben_MOD_dt,cben_lc_paid_amt,cben_fc_paid_amt,cben_bank_code,cben_acct_code,cben_ref_id1,cben_ref_id2,cben_address1,cben_address2,cben_address3,cben_stat_code,cben_postal_code,cben_city_code,cben_address4,cben_address5,cben_remarks,cben_catg_code,cben_age,cben_guardian_name,cben_micr_code,cben_divn_code,cben_sr_no,cben_dob,cben_bnf_code,cben_flex_01,cben_flex_02,cben_flex_03,cben_flex_04,cben_flex_05,cben_flex_06 FROM lt_claim_beneficiary";
-//				
-//		ResultSet headerResultSet = executeQuery(query);
-//
-//		JSONObject header = new JSONObject();
-//		ResultSetMetaData rsmd = headerResultSet.getMetaData();
-//		int columnCount = rsmd.getColumnCount();
-//		for (int i = 1; i <= columnCount; i++) {
-//			String columnName = rsmd.getColumnName(i);
-//			header.put(columnName, columnName);
-//		}
-//
-//		List<LT_CLAIM_BENEFICIARY> exceptions = ltclaimbnfcryrepo.findAll();
-//
-//		JSONObject response = new JSONObject();
-//		response.put("Status", "SUCCESS");
-//		response.put("Message", getallclaimBfcry);
-//		response.put("Heading", header);
-//		response.put("Data", exceptions);
-//
-//		return response.toString();
-//
-//	}
-
-//	private ResultSet executeQuery(String query) throws SQLException {
-//		try {
-//			// Load the MySQL JDBC driver
-//			Class.forName("com.mysql.cj.jdbc.Driver");
-//		} catch (ClassNotFoundException e) {
-//			e.printStackTrace();
-//		}
-//
-//		// Establish a connection
-//		Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
-//
-//		// Create a statement
-//		Statement statement = connection.createStatement();
-//
-//		// Execute the query and return the result set
-//		return statement.executeQuery(query);
-//	}
-//
 	@Override
-	public String getLtClaimBfcryById(Integer cben_pben_TRAN_id) throws IllegalArgumentException, IllegalAccessException {
+	public String getLtClaimBfcryById(Integer cben_pben_TRAN_id)
+			throws IllegalArgumentException, IllegalAccessException {
 		Map<String, Object> parametermap = new HashMap<String, Object>();
 		JSONObject inputObject = new JSONObject();
 		Optional<LT_CLAIM_BENEFICIARY> optionalUser = ltclaimbnfcryrepo.findById(cben_pben_TRAN_id);
@@ -235,62 +184,69 @@ public class LtClaimBeneficiaryServiceImpl implements LtClaimBeneficiaryService{
 
 	@Override
 	public String deleteLtClaimBfcryByid(Integer cben_pben_TRAN_id) {
+		JSONObject response = new JSONObject();
+		JSONObject data = new JSONObject();
 		try {
 			Optional<LT_CLAIM_BENEFICIARY> optionalEntity = ltclaimbnfcryrepo.findById(cben_pben_TRAN_id);
 
 			if (optionalEntity.isPresent()) {
 				ltclaimbnfcryrepo.deleteById(cben_pben_TRAN_id);
 
-				JSONObject response = new JSONObject();
-				response.put("Status", "SUCCESS");
-				response.put("Message", "Record with ID " + cben_pben_TRAN_id + " deleted successfully");
+				response.put(statusCode, successCode);
+				data.put("Id", cben_pben_TRAN_id);
+				response.put(messageCode, "Record with ID " + cben_pben_TRAN_id + " deleted successfully");
+				response.put(dataCode, data);
 				return response.toString();
 
-			} else {
-				JSONObject response = new JSONObject();
-				response.put("Status", "ERROR");
-				response.put("Message", "Record with ID " + cben_pben_TRAN_id + " not found");
+			} else {				
+				response.put(statusCode, errorCode);
+				response.put(messageCode, "Record with ID " + cben_pben_TRAN_id + " not found");
 				return response.toString();
 			}
 		} catch (Exception e) {
-			JSONObject response = new JSONObject();
-			response.put("Status", "ERROR");
-			response.put("Message", "Error deleting record with ID " + cben_pben_TRAN_id + ": " + e.getMessage());
+			response.put(statusCode, errorCode);
+			response.put(messageCode, "Error deleting record with ID " + cben_pben_TRAN_id + ": " + e.getMessage());
 			return response.toString();
 		}
 	}
-	
+
 	@Override
 	public String updateLtClaimBeneficiary(ClaimsRequestDTO claimsRequestDTO, Integer claim_Id) {
+
 		JSONObject response = new JSONObject();
+		JSONObject data = new JSONObject();
 
 		try {
-			Integer claimCoverId = claim_Id;
-			Optional<LT_CLAIM_BENEFICIARY> optionalUser = ltclaimbnfcryrepo.findById(claimCoverId);
-			LT_CLAIM_BENEFICIARY claim = optionalUser.get();
-			if (claim != null) {
+			Integer claimTrainid = claim_Id;
+			Optional<LT_CLAIM_BENEFICIARY> savedClaimDetails = ltclaimbnfcryrepo.findById(claimTrainid);
+
+			if (savedClaimDetails.isPresent()) {
+				LT_CLAIM_BENEFICIARY saveClaim = savedClaimDetails.get();
+
 				Map<String, Map<String, String>> fieldMaps = new HashMap<>();
-				fieldMaps.put("frontForm", claimsRequestDTO.getFrontForm().getFormFields());
+				fieldMaps.put("frontForm", claimsRequestDTO.getClaimBeneficiary().getFormFields());
+
 				for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
-					setClaimBeneficiaryFields(claim, entry.getValue());
+					setClaimBeneficiaryFields(saveClaim, entry.getValue());
 				}
 
-				try {
-					LT_CLAIM_BENEFICIARY savedClaimDetails = ltclaimbnfcryrepo.save(claim);
-					response.put(statusCode, successCode);
-					response.put(messageCode, "Claim Details Updated Successfully");
-				} catch (Exception e) {
-					response.put("statusCode", errorCode);
-					response.put("message", "An error occurred: " + e.getMessage());
-				}
+				ltclaimbnfcryrepo.save(saveClaim);
+				response.put(statusCode, successCode);
+				data.put("Id", savedClaimDetails.get().getCBEN_TRAN_ID());
+				response.put(messageCode, "Claim Details Updated Successfully");
+				response.put(dataCode, data);
+			} else {
+				response.put(statusCode, errorCode);
+				response.put(messageCode, "Claim with the provided ID not found");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			response.put("statusCode", errorCode);
-			response.put("message", "An error occurred: " + e.getMessage());
+			response.put(statusCode, errorCode);
+			response.put(messageCode, "An error occurred: " + e.getMessage());
 		}
 
 		return response.toString();
+
 	}
 
 }

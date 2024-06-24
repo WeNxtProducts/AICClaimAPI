@@ -39,7 +39,7 @@ public class LtClaimBeneficiaryController {
 		}
 	}
 
-	@DeleteMapping("/deletesclaimBfcryByid/{cben_pben_TRAN_id}")
+	@PostMapping("/deletesclaimBfcryByid/{cben_pben_TRAN_id}")
 	public String deleteLtClaimBfcryByid(@PathVariable Integer cben_pben_TRAN_id) {
 		return claimBfcryservice.deleteLtClaimBfcryByid(cben_pben_TRAN_id);
 	}

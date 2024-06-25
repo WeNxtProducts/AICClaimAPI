@@ -3,6 +3,7 @@ package com.wenxt.claims.serviceImpl;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -124,6 +125,8 @@ public class LtClaimChargesServiceImpl implements LtClaimChargesService {
 			return Short.parseShort(value);
 		} else if (fieldType.equals(LocalDateTime.class) && value.isEmpty() == false && value != null) {
 			return dateTimeConverter(value);
+		} else if (fieldType.equals(BigDecimal.class) && value.isEmpty() == false && value != null) {
+			return new BigDecimal(value);
 		} else if(fieldType.equals(Date.class) && value.isEmpty() == false && value != null){
 			return dateConverter(value);
 		} else {

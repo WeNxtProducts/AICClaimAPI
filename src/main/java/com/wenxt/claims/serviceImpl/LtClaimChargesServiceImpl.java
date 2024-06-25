@@ -79,7 +79,7 @@ public class LtClaimChargesServiceImpl implements LtClaimChargesService {
 				LT_CLAIM_CHARGES savedClaimDetails = ltclaimChrgsrepo.save(claim);
 				response.put(statusCode, successCode);
 				response.put(messageCode,
-						 "User created successfully");
+						 "Claim Charges Details Added Successfully");
 				data.put("Id", savedClaimDetails.getCC_TRAN_ID());
 				response.put("data", data);
 			} catch (Exception e) {

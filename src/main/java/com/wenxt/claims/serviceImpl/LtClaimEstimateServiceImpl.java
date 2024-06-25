@@ -55,14 +55,11 @@ public class LtClaimEstimateServiceImpl implements LtClaimEstimateService{
 //	private String getallltClaimeEST;
 
 	@Override
-	public String createLtClaimEst(ClaimsRequestDTO claimsRequestDTO) {
+	public String createLtClaimEst(ClaimsRequestDTO claimsRequestDTO, Integer tranId) {
 		JSONObject response = new JSONObject();
 		JSONObject data = new JSONObject();
 
 		try {
-//			Long claimCoverId = Long.parseLong(claimsRequestDTO.getClaimCover().getFormFields().get("CCD_TRAN_ID"));
-//			Optional<LT_CLAIM_COVER_DTLS> optionalUser = ccdtlsrepo.findById(claimCoverId);
-//			LT_CLAIM_COVER_DTLS claim = optionalUser.orElse(new LT_CLAIM_COVER_DTLS());
 			LT_CLAIM_ESTIMATE claimEstimate = new LT_CLAIM_ESTIMATE();
 			
 			Map<String, Map<String, String>> fieldMaps = new HashMap<>();
@@ -72,11 +69,12 @@ public class LtClaimEstimateServiceImpl implements LtClaimEstimateService{
 			}
 
 			try {
+				claimEstimate.setCE_CLM_TRAN_ID(tranId);
 				claimEstimate.setCE_FRZ_FLAG("N");
 				LT_CLAIM_ESTIMATE savedClaimDetails = claimEstrepo.save(claimEstimate);
 				response.put(statusCode, successCode);
 				response.put(messageCode,
-						 "Claim Estimate Details Successfully");
+						 "Claim Cover Details Successfully");
 				data.put("Id", savedClaimDetails.getCE_TRAN_ID());
 				response.put(dataCode, data);
 			} catch (Exception e) {

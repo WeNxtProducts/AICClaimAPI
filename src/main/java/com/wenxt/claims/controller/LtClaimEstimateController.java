@@ -18,9 +18,9 @@ public class LtClaimEstimateController {
 	@Autowired
 	private LtClaimEstimateService claimestservice;
 
-	@PostMapping("/claimEstSave")
-	public String createLtClaimEst(@RequestBody ClaimsRequestDTO claimsRequestDTO) {
-		return claimestservice.createLtClaimEst(claimsRequestDTO);
+	@PostMapping("/claimEstSave/{tranId}")
+	public String createLtClaimEst(@RequestBody ClaimsRequestDTO claimsRequestDTO, @PathVariable Integer tranId) {
+		return claimestservice.createLtClaimEst(claimsRequestDTO, tranId);
 	}
 
 //	@GetMapping("/claimest_List")

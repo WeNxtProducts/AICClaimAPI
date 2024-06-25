@@ -4,7 +4,7 @@ import com.wenxt.claims.model.ClaimsRequestDTO;
 
 public interface LtClaimEstimateService {
 
-	String createLtClaimEst(ClaimsRequestDTO claimsRequestDTO);
+	String createLtClaimEst(ClaimsRequestDTO claimsRequestDTO, Integer tranId);
 
 //	String getAllLtClaimEstlist() throws SQLException;
 

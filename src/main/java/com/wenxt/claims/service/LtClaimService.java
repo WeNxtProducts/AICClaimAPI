@@ -19,4 +19,8 @@ public interface LtClaimService {
 
 	String getListOfPolicies(Integer sysId);
 
+	String getClaimHeader(Integer tranId) throws Exception;
+
+	String getClaimHistory(Integer tranId, HttpServletRequest request) throws Exception;
+
 }

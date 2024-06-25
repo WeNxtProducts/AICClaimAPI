@@ -60,5 +60,23 @@ public class LtClaimController {
 	public String getListOfPolicies(@RequestParam Integer sysId) {
 		return ltclaimservice.getListOfPolicies(sysId);
 	}
-
+	
+	@GetMapping("/getClaimHeader/{tranId}")
+	public String getClaimHeader(@PathVariable Integer tranId) {
+		try {
+		return ltclaimservice.getClaimHeader(tranId);
+		}catch(Exception e) {
+			return e.getMessage();
+		}
+	}
+	
+	@PostMapping("/getClaimHistory")
+	public String getClaimHistory(@RequestParam Integer tranId, HttpServletRequest request) {
+		try {
+		return ltclaimservice.getClaimHistory(tranId, request);
+		}catch(Exception e) {
+			return e.getMessage();
+		}
+	}
+	
 }

@@ -28,8 +28,10 @@ import org.springframework.web.client.RestTemplate;
 import com.wenxt.claims.model.ClaimRequestDTO;
 import com.wenxt.claims.model.ClaimsRequestDTO;
 import com.wenxt.claims.model.LT_CLAIM;
+import com.wenxt.claims.model.LhClaimEstimate;
 import com.wenxt.claims.model.LtClaimHdr;
 import com.wenxt.claims.model.ProcedureInput;
+import com.wenxt.claims.repository.ClaimHistoryRepo;
 import com.wenxt.claims.repository.LtClaimHdrRepo;
 import com.wenxt.claims.repository.LtClaimRepository;
 import com.wenxt.claims.service.LtClaimService;
@@ -66,6 +68,9 @@ public class LtClaimServiceImpl implements LtClaimService {
 	
 	@Autowired
 	private LtClaimHdrRepo ltClaimHdrRepo;
+	
+	@Autowired
+	private ClaimHistoryRepo claimHistoryRepo;
 
 //	private static final String JDBC_URL = "jdbc:mysql://baseapi.cr4u8emg2x3o.eu-north-1.rds.amazonaws.com:3306/baseapi";
 //	private static final String USERNAME = "admin";
@@ -326,6 +331,53 @@ public class LtClaimServiceImpl implements LtClaimService {
 				response.put(messageCode, e.getMessage());
 			}
 		return response.toString();
+	}
+
+	@Override
+	public String getClaimHeader(Integer tranId) throws Exception{
+		JSONObject inputObject = new JSONObject();
+		Optional<LtClaimHdr> optionalUser = ltClaimHdrRepo.findById(tranId);
+		LtClaimHdr claim = optionalUser.get();
+		if (claim != null) {
+			System.out.println("IN");
+			for (int i = 0; i < claim.getClass().getDeclaredFields().length; i++) {
+				Field field = claim.getClass().getDeclaredFields()[i];
+				field.setAccessible(true);
+				String columnName = null;
+				if (field.isAnnotationPresent(Column.class)) {
+					Annotation annotation = field.getAnnotation(Column.class);
+					Column column = (Column) annotation;
+					Object value = field.get(claim);
+					columnName = column.name();
+					inputObject.put(columnName, value);
+				}
+			}
+		}
+		return inputObject.toString();
+	}
+
+	@Override
+	public String getClaimHistory(Integer tranId, HttpServletRequest request) throws Exception {
+		System.out.println("IN");
+		Map<String, Object> parametermap = new HashMap<String, Object>();
+		JSONObject inputObject = new JSONObject();
+		Optional<LhClaimEstimate> optionalUser = claimHistoryRepo.findById(tranId);
+		LhClaimEstimate claim = optionalUser.get();
+		if (claim != null) {
+			for (int i = 0; i < claim.getClass().getDeclaredFields().length; i++) {
+				Field field = claim.getClass().getDeclaredFields()[i];
+				field.setAccessible(true);
+				String columnName = null;
+				if (field.isAnnotationPresent(Column.class)) {
+					Annotation annotation = field.getAnnotation(Column.class);
+					Column column = (Column) annotation;
+					Object value = field.get(claim);
+					columnName = column.name();
+					inputObject.put(columnName, value);
+				}
+			}
+		}
+		return inputObject.toString();
 	}
 
 }

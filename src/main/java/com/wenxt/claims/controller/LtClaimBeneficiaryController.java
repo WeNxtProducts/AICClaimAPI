@@ -20,9 +20,9 @@ public class LtClaimBeneficiaryController {
 	@Autowired
 	private LtClaimBeneficiaryService claimBfcryservice;
 
-	@PostMapping("/claimBfcry_creates")
-	public String createLtClaimBfcry(@RequestBody ClaimsRequestDTO claimsRequestDTO) {
-		return claimBfcryservice.createLtClaimBfcry(claimsRequestDTO);
+	@PostMapping("/claimBfcry_creates/{tranId}")
+	public String createLtClaimBfcry(@RequestBody ClaimsRequestDTO claimsRequestDTO, @PathVariable Integer tranId) {
+		return claimBfcryservice.createLtClaimBfcry(claimsRequestDTO, tranId);
 	}
 //
 //	@GetMapping("/claimBfcry_List")

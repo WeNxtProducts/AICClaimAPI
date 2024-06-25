@@ -4,7 +4,7 @@ import com.wenxt.claims.model.ClaimsRequestDTO;
 
 public interface LtClaimBeneficiaryService {
 
-	String createLtClaimBfcry(ClaimsRequestDTO claimsRequestDTO);
+	String createLtClaimBfcry(ClaimsRequestDTO claimsRequestDTO, Integer tranId);
 
 //	String getAllLtClaimBfcrylist() throws SQLException;
 

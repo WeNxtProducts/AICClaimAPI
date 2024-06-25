@@ -51,7 +51,7 @@ public class LtClaimBeneficiaryServiceImpl implements LtClaimBeneficiaryService 
 	private LtClaimBeneficiaryRepository ltclaimbnfcryrepo;
 
 	@Override
-	public String createLtClaimBfcry(ClaimsRequestDTO claimsRequestDTO) {
+	public String createLtClaimBfcry(ClaimsRequestDTO claimsRequestDTO, Integer tranId) {
 		JSONObject response = new JSONObject();
 		JSONObject data = new JSONObject();
 
@@ -65,6 +65,7 @@ public class LtClaimBeneficiaryServiceImpl implements LtClaimBeneficiaryService 
 			}
 
 			try {
+				claim.setCBEN_CLAIM_TRAN_ID(tranId);
 				LT_CLAIM_BENEFICIARY savedClaimDetails = ltclaimbnfcryrepo.save(claim);
 				response.put(statusCode, successCode);
 				response.put(messageCode, "User created successfully");

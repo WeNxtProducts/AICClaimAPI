@@ -57,7 +57,7 @@ public class LtClaimChargesServiceImpl implements LtClaimChargesService {
 //	private String getallclaimChgrs;
 
 	@Override
-	public String createClaimCharges(ClaimsRequestDTO claimsRequestDTO) {
+	public String createClaimCharges(ClaimsRequestDTO claimsRequestDTO, Integer tranId) {
 		JSONObject response = new JSONObject();
 		JSONObject data = new JSONObject();
 
@@ -74,6 +74,7 @@ public class LtClaimChargesServiceImpl implements LtClaimChargesService {
 			}
 
 			try {
+				claim.setCC_CLAIM_TRAN_ID(tranId);
 				LT_CLAIM_CHARGES savedClaimDetails = ltclaimChrgsrepo.save(claim);
 				response.put(statusCode, successCode);
 				response.put(messageCode,

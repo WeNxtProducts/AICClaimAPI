@@ -24,7 +24,7 @@ public class LT_CLAIM_BENEFICIARY {
     private Integer CBEN_TRAN_ID;
 
     @Column(name = "CBEN_CLAIM_TRAN_ID")
-    private Long CBEN_CLAIM_TRAN_ID;
+    private Integer CBEN_CLAIM_TRAN_ID;
 
     @Column(name = "CBEN_CP_TRAN_ID")
     private Long CBEN_CP_TRAN_ID;
@@ -105,11 +105,11 @@ public class LT_CLAIM_BENEFICIARY {
 		CBEN_TRAN_ID = cBEN_TRAN_ID;
 	}
 
-	public Long getCBEN_CLAIM_TRAN_ID() {
+	public Integer getCBEN_CLAIM_TRAN_ID() {
 		return CBEN_CLAIM_TRAN_ID;
 	}
 
-	public void setCBEN_CLAIM_TRAN_ID(Long cBEN_CLAIM_TRAN_ID) {
+	public void setCBEN_CLAIM_TRAN_ID(Integer cBEN_CLAIM_TRAN_ID) {
 		CBEN_CLAIM_TRAN_ID = cBEN_CLAIM_TRAN_ID;
 	}
 

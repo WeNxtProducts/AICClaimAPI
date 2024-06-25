@@ -20,9 +20,9 @@ public class LtClaimChargesController {
 	@Autowired
 	private LtClaimChargesService claimchrgstservice;
 
-	@PostMapping("/claimChrgsSave")
-	public String createClaimCharges(@RequestBody ClaimsRequestDTO claimsRequestDTO) {
-		return claimchrgstservice.createClaimCharges(claimsRequestDTO);
+	@PostMapping("/claimChrgsSave/{tranId}")
+	public String createClaimCharges(@RequestBody ClaimsRequestDTO claimsRequestDTO, @PathVariable Integer tranId) {
+		return claimchrgstservice.createClaimCharges(claimsRequestDTO, tranId);
 	}
 
 //	@GetMapping("/claimchrgs_List")

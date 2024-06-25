@@ -4,7 +4,7 @@ import com.wenxt.claims.model.ClaimsRequestDTO;
 
 public interface LtClaimChargesService {
 
-	String createClaimCharges(ClaimsRequestDTO claimsRequestDTO);
+	String createClaimCharges(ClaimsRequestDTO claimsRequestDTO, Integer tranId);
 
 //	String getAllClaimChargeslist() throws SQLException;
 

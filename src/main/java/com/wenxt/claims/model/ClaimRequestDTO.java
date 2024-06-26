@@ -15,6 +15,9 @@ public class ClaimRequestDTO {
 	@JsonProperty("CH_CLAIM_BAS_VAL")
 	private String CH_CLAIM_BAS_VAL;
 	
+	@JsonProperty("ASSURED_CODE")
+	private String ASSURED_CODE;
+	
 	@JsonProperty("CH_REF_NO")
 	private String CH_REF_NO;
 	  
@@ -42,6 +45,14 @@ public class ClaimRequestDTO {
 
 	public String getCH_CLAIM_BAS_VAL() {
 		return CH_CLAIM_BAS_VAL;
+	}
+
+	public String getASSURED_CODE() {
+		return ASSURED_CODE;
+	}
+
+	public void setASSURED_CODE(String aSSURED_CODE) {
+		ASSURED_CODE = aSSURED_CODE;
 	}
 
 	public void setCH_CLAIM_BAS_VAL(String cH_CLAIM_BAS_VAL) {

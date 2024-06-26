@@ -49,6 +49,9 @@ public class LtClaimHdr {
 
     @Column(name = "CH_REF_NO")
     private String CH_REF_NO;
+    
+    @Column(name = "CH_ASSR_CODE")
+    private String CH_ASSR_CODE;
 
 	public Integer getCH_TRAN_ID() {
 		return CH_TRAN_ID;
@@ -136,6 +139,14 @@ public class LtClaimHdr {
 
 	public void setCH_REF_NO(String cH_REF_NO) {
 		CH_REF_NO = cH_REF_NO;
+	}
+
+	public String getCH_ASSR_CODE() {
+		return CH_ASSR_CODE;
+	}
+
+	public void setCH_ASSR_CODE(String cH_ASSR_CODE) {
+		CH_ASSR_CODE = cH_ASSR_CODE;
 	}
 
 }

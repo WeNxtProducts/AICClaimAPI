@@ -121,6 +121,9 @@ public class LT_CLAIM_ESTIMATE {
     
     @Column(name = "CE_DIS_REASON_CODE")
     private String CE_DIS_REASON_CODE;
+    
+    @Column(name = "CE_COVER_SEL_YN")
+    private String CE_COVER_SEL_YN;
 
 	public Integer getCE_TRAN_ID() {
 		return CE_TRAN_ID;
@@ -400,6 +403,14 @@ public class LT_CLAIM_ESTIMATE {
 
 	public void setCE_DIS_REASON_CODE(String cE_DIS_REASON_CODE) {
 		CE_DIS_REASON_CODE = cE_DIS_REASON_CODE;
+	}
+
+	public String getCE_COVER_SEL_YN() {
+		return CE_COVER_SEL_YN;
+	}
+
+	public void setCE_COVER_SEL_YN(String cE_COVER_SEL_YN) {
+		CE_COVER_SEL_YN = cE_COVER_SEL_YN;
 	}
     
 }

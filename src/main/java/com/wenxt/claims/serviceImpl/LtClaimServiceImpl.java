@@ -106,6 +106,7 @@ public class LtClaimServiceImpl implements LtClaimService {
 			claim.setCH_CLAIM_BAS(claimsRequestDTO.getCH_CLAIM_BAS());
 			claim.setCH_CLAIM_BAS_VAL(claimsRequestDTO.getCH_CLAIM_BAS_VAL());
 			claim.setCH_CLAIM_TYPE(claimsRequestDTO.getCH_CLAIM_TYPE());
+			claim.setCH_ASSR_CODE(claimsRequestDTO.getASSURED_CODE());
 			claim.setCH_REF_NO(claimsRequestDTO.getCH_REF_NO());
 			claim.setCH_LOSS_DT(dateConverter(claimsRequestDTO.getCH_LOSS_DT()));
 			claim.setCH_INTIM_DT(dateConverter(claimsRequestDTO.getCH_INTIM_DT()));

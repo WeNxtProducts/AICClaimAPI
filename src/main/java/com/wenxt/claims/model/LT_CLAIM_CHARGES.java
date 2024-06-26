@@ -45,6 +45,9 @@ public class LT_CLAIM_CHARGES {
 	
 	@Column(name="CC_BENF_CODE")
 	private String CC_BENF_CODE;
+	
+	@Column(name = "CC_CHRG_SEL_YN")
+	private String CC_CHRG_SEL_YN;
 
 	public Integer getCC_TRAN_ID() {
 		return CC_TRAN_ID;
@@ -124,6 +127,14 @@ public class LT_CLAIM_CHARGES {
 
 	public void setCC_TRAN_ID(Integer cC_TRAN_ID) {
 		CC_TRAN_ID = cC_TRAN_ID;
+	}
+
+	public String getCC_CHRG_SEL_YN() {
+		return CC_CHRG_SEL_YN;
+	}
+
+	public void setCC_CHRG_SEL_YN(String cC_CHRG_SEL_YN) {
+		CC_CHRG_SEL_YN = cC_CHRG_SEL_YN;
 	}
 
 }

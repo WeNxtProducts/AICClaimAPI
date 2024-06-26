@@ -96,6 +96,9 @@ public class LT_CLAIM_BENEFICIARY {
 
     @Column(name = "CBEN_CITY_CODE")
     private String CBEN_CITY_CODE;
+    
+    @Column(name = "CBEN_SELECT_YN")
+    private String CBEN_SELECT_YN;
 
 	public Integer getCBEN_TRAN_ID() {
 		return CBEN_TRAN_ID;
@@ -299,6 +302,14 @@ public class LT_CLAIM_BENEFICIARY {
 
 	public void setCBEN_CITY_CODE(String cBEN_CITY_CODE) {
 		CBEN_CITY_CODE = cBEN_CITY_CODE;
+	}
+
+	public String getCBEN_SELECT_YN() {
+		return CBEN_SELECT_YN;
+	}
+
+	public void setCBEN_SELECT_YN(String cBEN_SELECT_YN) {
+		CBEN_SELECT_YN = cBEN_SELECT_YN;
 	}
 
 }

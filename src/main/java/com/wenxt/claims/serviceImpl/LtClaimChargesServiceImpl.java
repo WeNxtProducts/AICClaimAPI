@@ -242,20 +242,20 @@ public class LtClaimChargesServiceImpl implements LtClaimChargesService {
 				ltclaimChrgsrepo.deleteById(cc_TRAN_id);
 
 				JSONObject response = new JSONObject();
-				response.put("Status", "SUCCESS");
-				response.put("Message", "Record with ID " + cc_TRAN_id + " deleted successfully");
+				response.put(statusCode, successCode);
+				response.put(messageCode, "Record with ID " + cc_TRAN_id + " deleted successfully");
 				return response.toString();
 
 			} else {
 				JSONObject response = new JSONObject();
-				response.put("Status", "ERROR");
-				response.put("Message", "Record with ID " + cc_TRAN_id + " not found");
+				response.put(statusCode, errorCode);
+				response.put(messageCode, "Record with ID " + cc_TRAN_id + " not found");
 				return response.toString();
 			}
 		} catch (Exception e) {
 			JSONObject response = new JSONObject();
-			response.put("Status", "ERROR");
-			response.put("Message", "Error deleting record with ID " + cc_TRAN_id + ": " + e.getMessage());
+			response.put(statusCode, errorCode);
+			response.put(messageCode, "Error deleting record with ID " + cc_TRAN_id + ": " + e.getMessage());
 			return response.toString();
 		}
 	}

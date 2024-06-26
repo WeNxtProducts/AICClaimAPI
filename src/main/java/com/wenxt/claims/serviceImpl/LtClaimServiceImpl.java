@@ -29,12 +29,25 @@ import com.wenxt.claims.model.ClaimRequestDTO;
 import com.wenxt.claims.model.ClaimsRequestDTO;
 import com.wenxt.claims.model.LT_CLAIM;
 import com.wenxt.claims.model.LhClaimEstimate;
+import com.wenxt.claims.model.LtClaimDed;
 import com.wenxt.claims.model.LtClaimHdr;
 import com.wenxt.claims.model.ProcedureInput;
+import com.wenxt.claims.repository.ClaimDeducRepo;
 import com.wenxt.claims.repository.ClaimHistoryRepo;
 import com.wenxt.claims.repository.LtClaimHdrRepo;
 import com.wenxt.claims.repository.LtClaimRepository;
 import com.wenxt.claims.service.LtClaimService;
+
+import org.apache.http.HttpHost;
+import org.elasticsearch.action.DocWriteResponse.Result;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.action.update.UpdateResponse;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestClientBuilder;
+import org.elasticsearch.client.RestHighLevelClient;
 
 import jakarta.persistence.Column;
 import jakarta.servlet.http.HttpServletRequest;
@@ -71,6 +84,9 @@ public class LtClaimServiceImpl implements LtClaimService {
 	
 	@Autowired
 	private ClaimHistoryRepo claimHistoryRepo;
+	
+	@Autowired
+	private ClaimDeducRepo claimDedRepo;
 
 //	private static final String JDBC_URL = "jdbc:mysql://baseapi.cr4u8emg2x3o.eu-north-1.rds.amazonaws.com:3306/baseapi";
 //	private static final String USERNAME = "admin";
@@ -94,15 +110,40 @@ public class LtClaimServiceImpl implements LtClaimService {
 			claim.setCH_LOSS_DT(dateConverter(claimsRequestDTO.getCH_LOSS_DT()));
 			claim.setCH_INTIM_DT(dateConverter(claimsRequestDTO.getCH_INTIM_DT()));
 			claim.setCH_INS_DT(new Date());
-			
+
+			Map<String, Object> claimHdrFields = new HashMap<>();
+			claimHdrFields.put("CH_CLAIM_BAS", claimsRequestDTO.getCH_CLAIM_BAS());
+			claimHdrFields.put("CH_CLAIM_BAS_VAL", claimsRequestDTO.getCH_CLAIM_TYPE());
+			claimHdrFields.put("CH_CLAIM_TYPE", claimsRequestDTO.getCH_CLAIM_TYPE());
+			claimHdrFields.put("CH_REF_NO", claimsRequestDTO.getCH_REF_NO());
+			claimHdrFields.put("CH_LOSS_DT", dateConverter(claimsRequestDTO.getCH_LOSS_DT()));
+			claimHdrFields.put("CH_INTIM_DT", dateConverter(claimsRequestDTO.getCH_INTIM_DT()));
+			claimHdrFields.put("CH_INS_DT", new Date());
+
 			LtClaimHdr savedClaimDetails = ltClaimHdrRepo.save(claim);
-			
+
+//			RestClientBuilder builder = RestClient.builder(new HttpHost("192.168.1.32", 9200, "http"));
+//			RestHighLevelClient client = new RestHighLevelClient(builder);
+//
+//			IndexRequest req = new IndexRequest("ClaimHeader").id(savedClaimDetails.getCH_TRAN_ID().toString())
+//					.source(claimHdrFields);
+//
+//			IndexResponse res = client.index(req, RequestOptions.DEFAULT);
+//
+//			if (res.getResult() == Result.CREATED) {
+//				System.out.println("Document indexed successfully!");
+//			} else {
+//				// Handle indexing failure
+//			}
+//
+//			client.close();
+
 			Map<String, String> inputMap = new HashMap<>();
 			inputMap.put("P_CH_TRAN_ID", savedClaimDetails.getCH_TRAN_ID().toString());
-			
+
 			ProcedureInput input = new ProcedureInput();
 			input.setInParams(inputMap);
-			
+
 			String authorizationHeader = request.getHeader("Authorization");
 			String token = authorizationHeader.substring(7).trim();
 			String url = baseDocPath + "common/invokeProcedure?procedureName=" + "P_POPULATE_ELIGIBLE_POL";
@@ -112,14 +153,14 @@ public class LtClaimServiceImpl implements LtClaimService {
 			headers.set("Authorization", "Bearer " + token);
 			HttpEntity<ProcedureInput> requestEntity = new HttpEntity<>(input, headers);
 			ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, requestEntity, String.class);
-			
+
 			JSONObject dataObj = new JSONObject();
 			dataObj.put("Id", savedClaimDetails.getCH_TRAN_ID());
 			response.put(statusCode, successCode);
 			response.put(messageCode, "Claim Details Saved Successfully");
 			response.put(dataCode, dataObj);
-			
-		}catch(Exception e) {
+
+		} catch (Exception e) {
 			response.put(statusCode, errorCode);
 			response.put(messageCode, e.getMessage());
 		}
@@ -339,7 +380,6 @@ public class LtClaimServiceImpl implements LtClaimService {
 		Optional<LtClaimHdr> optionalUser = ltClaimHdrRepo.findById(tranId);
 		LtClaimHdr claim = optionalUser.get();
 		if (claim != null) {
-			System.out.println("IN");
 			for (int i = 0; i < claim.getClass().getDeclaredFields().length; i++) {
 				Field field = claim.getClass().getDeclaredFields()[i];
 				field.setAccessible(true);
@@ -358,7 +398,6 @@ public class LtClaimServiceImpl implements LtClaimService {
 
 	@Override
 	public String getClaimHistory(Integer tranId, HttpServletRequest request) throws Exception {
-		System.out.println("IN");
 		Map<String, Object> parametermap = new HashMap<String, Object>();
 		JSONObject inputObject = new JSONObject();
 		Optional<LhClaimEstimate> optionalUser = claimHistoryRepo.findById(tranId);
@@ -378,6 +417,72 @@ public class LtClaimServiceImpl implements LtClaimService {
 			}
 		}
 		return inputObject.toString();
+	}
+
+	@Override
+	public String claimDeductionsave(String cD_WAIVE_PREM_INT, String cD_WAIVE_LOAN_INT, Integer tranId)throws Exception {
+		JSONObject response = new JSONObject();
+		Map<String, Object> parametermap = new HashMap<String, Object>();
+		JSONObject inputObject = new JSONObject();
+		Optional<LtClaimDed> optionalUser = claimDedRepo.findById(tranId);
+		LtClaimDed claim = optionalUser.get();
+		if (claim != null) {
+			claim.setCD_WAIVE_PREM_INT(cD_WAIVE_PREM_INT);
+			claim.setCD_WAIVE_LOAN_INT(cD_WAIVE_LOAN_INT);
+			
+			claimDedRepo.save(claim);
+			response.put(statusCode, successCode);
+			response.put(messageCode, "Data Retrieved Successsfully");
+		}
+		return response.toString();
+	}
+
+	@Override
+	public String getClaimHdrDetails(Integer tranId) throws Exception {
+		JSONObject response = new JSONObject();
+		JSONObject inputObject = new JSONObject();
+		
+		Optional<LtClaimHdr> claimHeader = ltClaimHdrRepo.findById(tranId);
+		LtClaimHdr claimHeaderDetails = claimHeader.get();
+		if(claimHeaderDetails != null) {
+			for (int i = 0; i < claimHeaderDetails.getClass().getDeclaredFields().length; i++) {
+				Field field = claimHeaderDetails.getClass().getDeclaredFields()[i];
+				field.setAccessible(true);
+				String columnName = null;
+				if (field.isAnnotationPresent(Column.class)) {
+					Annotation annotation = field.getAnnotation(Column.class);
+					Column column = (Column) annotation;
+					Object value = field.get(claimHeaderDetails);
+					columnName = column.name();
+					inputObject.put(columnName, value);
+				}
+			}
+			response.put(statusCode, successCode);
+			response.put(messageCode, "The Claim Header Details Fetched Successfully");
+			response.put(dataCode, inputObject);
+		}else {
+			response.put(statusCode, errorCode);
+			response.put(messageCode, "No Such record present");
+		}
+		return response.toString();
+	}
+
+	@Override
+	public String deleteClaimHdrDetails(Integer tranId) {
+		JSONObject response = new JSONObject();
+		try {
+			Optional<LtClaimHdr> optionalUser = ltClaimHdrRepo.findById(tranId);
+			LtClaimHdr claim = optionalUser.get();
+			if (claim != null) {
+				ltClaimHdrRepo.deleteById(tranId);
+				response.put(statusCode, successCode);
+				response.put(messageCode, "Claim Header Details Deleted Successfully");
+			}
+		} catch (Exception e) {
+			response.put(statusCode, errorCode);
+			response.put(messageCode, e.getMessage());
+		}
+		return response.toString();
 	}
 
 }

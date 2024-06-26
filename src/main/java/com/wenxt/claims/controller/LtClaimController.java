@@ -14,6 +14,7 @@ import com.wenxt.claims.model.ClaimsRequestDTO;
 import com.wenxt.claims.service.LtClaimService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import oracle.jdbc.proxy.annotation.Post;
 
 @RestController
 @RequestMapping("/ltclaim")
@@ -74,6 +75,33 @@ public class LtClaimController {
 	public String getClaimHistory(@RequestParam Integer tranId, HttpServletRequest request) {
 		try {
 		return ltclaimservice.getClaimHistory(tranId, request);
+		}catch(Exception e) {
+			return e.getMessage();
+		}
+	}
+	
+	@PostMapping("/claimDeductionsave")
+	public String claimDeductionsave(@RequestParam String CD_WAIVE_PREM_INT, @RequestParam String CD_WAIVE_LOAN_INT, @RequestParam Integer tranId) {
+		try {
+		return ltclaimservice.claimDeductionsave(CD_WAIVE_PREM_INT, CD_WAIVE_LOAN_INT, tranId);
+		}catch(Exception e) {
+			return e.getMessage();
+		}
+	}
+	
+	@GetMapping("/claimHdrGet")
+	public String getClaimHdrDetails(@RequestParam Integer tranId) {
+		try {
+			return ltclaimservice.getClaimHdrDetails(tranId);
+		}catch(Exception e) {
+			return e.getMessage();
+		}
+	}
+	
+	@PostMapping("/claimHdrDelete")
+	public String deleteClaimHdrDetails(@RequestParam Integer tranId) {
+		try {
+			return ltclaimservice.deleteClaimHdrDetails(tranId);
 		}catch(Exception e) {
 			return e.getMessage();
 		}

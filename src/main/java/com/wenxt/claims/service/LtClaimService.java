@@ -23,4 +23,10 @@ public interface LtClaimService {
 
 	String getClaimHistory(Integer tranId, HttpServletRequest request) throws Exception;
 
+	String claimDeductionsave(String cD_WAIVE_PREM_INT, String cD_WAIVE_LOAN_INT, Integer tranId) throws Exception;
+
+	String getClaimHdrDetails(Integer tranId) throws Exception;
+
+	String deleteClaimHdrDetails(Integer tranId);
+
 }

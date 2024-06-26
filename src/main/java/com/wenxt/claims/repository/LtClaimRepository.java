@@ -13,7 +13,7 @@ import com.wenxt.claims.model.LT_CLAIM;
 @Repository
 public interface LtClaimRepository  extends JpaRepository<LT_CLAIM, Integer>{
 
-	Optional<LT_CLAIM> findById(Integer id);
+//	Optional<LT_CLAIM> findById(Integer id);
 
 	@Query("SELECT e.CLM_POL_NO FROM LT_CLAIM e WHERE e.CLM_CH_TRAN_ID = :tranId")
 	List<String> getListOfPolicies(@Param("tranId") Integer tranId);

@@ -29,4 +29,6 @@ public interface LtClaimService {
 
 	String deleteClaimHdrDetails(Integer tranId);
 
+	String saveClaimFlagDetails(Integer tranId, String cLM_STATUS, String cLM_STATUS_CODE, String freezeFlag);
+
 }

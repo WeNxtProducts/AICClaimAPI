@@ -107,4 +107,9 @@ public class LtClaimController {
 		}
 	}
 	
+	@PostMapping("/saveClaimFlagDetails")
+	public String saveClaimFlagDetails(@RequestParam Integer tranId, @RequestParam String CLM_STATUS, @RequestParam String CLM_STATUS_CODE, @RequestParam String FreezeFlag) {
+		return ltclaimservice.saveClaimFlagDetails(tranId, CLM_STATUS, CLM_STATUS_CODE, FreezeFlag);
+	}
+	
 }

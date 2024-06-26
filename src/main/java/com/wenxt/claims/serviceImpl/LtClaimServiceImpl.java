@@ -122,7 +122,7 @@ public class LtClaimServiceImpl implements LtClaimService {
 
 			LtClaimHdr savedClaimDetails = ltClaimHdrRepo.save(claim);
 
-//			RestClientBuilder builder = RestClient.builder(new HttpHost("192.168.1.32", 9200, "http"));
+//			RestClientBuilder builder = RestClient.builder(new HttpHost("localhost", 9200, "http"));
 //			RestHighLevelClient client = new RestHighLevelClient(builder);
 //
 //			IndexRequest req = new IndexRequest("ClaimHeader").id(savedClaimDetails.getCH_TRAN_ID().toString())
@@ -422,8 +422,6 @@ public class LtClaimServiceImpl implements LtClaimService {
 	@Override
 	public String claimDeductionsave(String cD_WAIVE_PREM_INT, String cD_WAIVE_LOAN_INT, Integer tranId)throws Exception {
 		JSONObject response = new JSONObject();
-		Map<String, Object> parametermap = new HashMap<String, Object>();
-		JSONObject inputObject = new JSONObject();
 		Optional<LtClaimDed> optionalUser = claimDedRepo.findById(tranId);
 		LtClaimDed claim = optionalUser.get();
 		if (claim != null) {
@@ -432,7 +430,7 @@ public class LtClaimServiceImpl implements LtClaimService {
 			
 			claimDedRepo.save(claim);
 			response.put(statusCode, successCode);
-			response.put(messageCode, "Data Retrieved Successsfully");
+			response.put(messageCode, "Claim Deduction Flag Details Updated Successsfully");
 		}
 		return response.toString();
 	}
@@ -477,6 +475,27 @@ public class LtClaimServiceImpl implements LtClaimService {
 				ltClaimHdrRepo.deleteById(tranId);
 				response.put(statusCode, successCode);
 				response.put(messageCode, "Claim Header Details Deleted Successfully");
+			}
+		} catch (Exception e) {
+			response.put(statusCode, errorCode);
+			response.put(messageCode, e.getMessage());
+		}
+		return response.toString();
+	}
+
+	@Override
+	public String saveClaimFlagDetails(Integer tranId, String cLM_STATUS, String cLM_STATUS_CODE, String freezeFlag) {
+		JSONObject response = new JSONObject();
+		try {
+			Optional<LT_CLAIM> optionalUser = ltclaimrepo.findById(tranId);
+			LT_CLAIM claim = optionalUser.get();
+			if (claim != null) {
+				claim.setCLM_STATUS(cLM_STATUS_CODE);
+				claim.setCLM_STA_CODE(cLM_STATUS);
+				claim.setCLM_FRZ_YN(freezeFlag);
+				ltclaimrepo.save(claim);
+				response.put(statusCode, successCode);
+				response.put(messageCode, "Claim Flag Details Updated Successfully");
 			}
 		} catch (Exception e) {
 			response.put(statusCode, errorCode);

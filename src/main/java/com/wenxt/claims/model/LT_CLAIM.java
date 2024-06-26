@@ -1,4 +1,5 @@
 package com.wenxt.claims.model;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import jakarta.persistence.Column;
@@ -248,7 +249,7 @@ public class LT_CLAIM {
 	    private String CLM_OTH_COV;
 
 	    @Column(name = "CLM_LOAN_AMT")
-	    private Double CLM_LOAN_AMT;
+	    private BigDecimal CLM_LOAN_AMT;
 
 	    @Column(name = "CLM_ARREAR_AMT")
 	    private Double CLM_ARREAR_AMT;
@@ -291,6 +292,9 @@ public class LT_CLAIM {
 	    
 	    @Column(name = "CLM_CH_TRAN_ID")
 	    private Integer CLM_CH_TRAN_ID;
+	    
+	    @Column(name = "CLM_FRZ_YN")
+	    private String CLM_FRZ_YN;
 
 		public Integer getCLM_TRAN_ID() {
 			return CLM_TRAN_ID;
@@ -908,11 +912,11 @@ public class LT_CLAIM {
 			CLM_OTH_COV = cLM_OTH_COV;
 		}
 
-		public Double getCLM_LOAN_AMT() {
+		public BigDecimal getCLM_LOAN_AMT() {
 			return CLM_LOAN_AMT;
 		}
 
-		public void setCLM_LOAN_AMT(Double cLM_LOAN_AMT) {
+		public void setCLM_LOAN_AMT(BigDecimal cLM_LOAN_AMT) {
 			CLM_LOAN_AMT = cLM_LOAN_AMT;
 		}
 
@@ -1026,6 +1030,14 @@ public class LT_CLAIM {
 
 		public void setCLM_CH_TRAN_ID(Integer cLM_CH_TRAN_ID) {
 			CLM_CH_TRAN_ID = cLM_CH_TRAN_ID;
+		}
+
+		public String getCLM_FRZ_YN() {
+			return CLM_FRZ_YN;
+		}
+
+		public void setCLM_FRZ_YN(String cLM_FRZ_YN) {
+			CLM_FRZ_YN = cLM_FRZ_YN;
 		}
 
    

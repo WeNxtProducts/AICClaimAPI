@@ -65,10 +65,11 @@ public class LtClaimBeneficiaryServiceImpl implements LtClaimBeneficiaryService 
 			}
 
 			try {
+				claim.setCBEN_SELECT_YN("Y");
 				claim.setCBEN_CLAIM_TRAN_ID(tranId);
 				LT_CLAIM_BENEFICIARY savedClaimDetails = ltclaimbnfcryrepo.save(claim);
 				response.put(statusCode, successCode);
-				response.put(messageCode, "User created successfully");
+				response.put(messageCode, "Pay To Details Inserted Successfully");
 				data.put("Id", savedClaimDetails.getCBEN_TRAN_ID());
 				response.put(dataCode, data);
 			} catch (Exception e) {
@@ -234,11 +235,11 @@ public class LtClaimBeneficiaryServiceImpl implements LtClaimBeneficiaryService 
 				ltclaimbnfcryrepo.save(saveClaim);
 				response.put(statusCode, successCode);
 				data.put("Id", savedClaimDetails.get().getCBEN_TRAN_ID());
-				response.put(messageCode, "Claim Details Updated Successfully");
+				response.put(messageCode, "Pay To Details Updated Successfully");
 				response.put(dataCode, data);
 			} else {
 				response.put(statusCode, errorCode);
-				response.put(messageCode, "Claim with the provided ID not found");
+				response.put(messageCode, "Pay To Details with the provided ID not found");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

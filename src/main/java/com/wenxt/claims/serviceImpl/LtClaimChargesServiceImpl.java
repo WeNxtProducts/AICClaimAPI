@@ -75,6 +75,7 @@ public class LtClaimChargesServiceImpl implements LtClaimChargesService {
 			}
 
 			try {
+				claim.setCC_CHRG_SEL_YN("Y");
 				claim.setCC_CLAIM_TRAN_ID(tranId);
 				LT_CLAIM_CHARGES savedClaimDetails = ltclaimChrgsrepo.save(claim);
 				response.put(statusCode, successCode);
@@ -278,7 +279,7 @@ public class LtClaimChargesServiceImpl implements LtClaimChargesService {
 				try {
 					LT_CLAIM_CHARGES savedClaimDetails = ltclaimChrgsrepo.save(claim);
 					response.put(statusCode, successCode);
-					response.put(messageCode, "Claim Details Updated Successfully");
+					response.put(messageCode, "Claim Charges Details Updated Successfully");
 				} catch (Exception e) {
 					response.put("statusCode", errorCode);
 					response.put("message", "An error occurred: " + e.getMessage());

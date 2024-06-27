@@ -15,6 +15,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.apache.http.HttpHost;
+import org.elasticsearch.action.DocWriteResponse.Result;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.support.master.AcknowledgedResponse;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestClientBuilder;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,17 +48,7 @@ import com.wenxt.claims.repository.LtClaimHdrRepo;
 import com.wenxt.claims.repository.LtClaimRepository;
 import com.wenxt.claims.service.LtClaimService;
 
-import org.apache.http.HttpHost;
-import org.elasticsearch.action.DocWriteResponse.Result;
-import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.action.update.UpdateRequest;
-import org.elasticsearch.action.update.UpdateResponse;
-import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.RestClient;
-import org.elasticsearch.client.RestClientBuilder;
-import org.elasticsearch.client.RestHighLevelClient;
-
+import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
 import jakarta.persistence.Column;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -113,15 +113,16 @@ public class LtClaimServiceImpl implements LtClaimService {
 			claim.setCH_INS_DT(new Date());
 
 			Map<String, Object> claimHdrFields = new HashMap<>();
-			claimHdrFields.put("CH_CLAIM_BAS", claimsRequestDTO.getCH_CLAIM_BAS());
-			claimHdrFields.put("CH_CLAIM_BAS_VAL", claimsRequestDTO.getCH_CLAIM_TYPE());
-			claimHdrFields.put("CH_CLAIM_TYPE", claimsRequestDTO.getCH_CLAIM_TYPE());
-			claimHdrFields.put("CH_REF_NO", claimsRequestDTO.getCH_REF_NO());
-			claimHdrFields.put("CH_LOSS_DT", dateConverter(claimsRequestDTO.getCH_LOSS_DT()));
-			claimHdrFields.put("CH_INTIM_DT", dateConverter(claimsRequestDTO.getCH_INTIM_DT()));
+			claimHdrFields.put("Claim_Basis", claimsRequestDTO.getCH_CLAIM_BAS());
+			claimHdrFields.put("Basis_Value", claimsRequestDTO.getCH_CLAIM_BAS_VAL());
+			claimHdrFields.put("Claim_Type", claimsRequestDTO.getCH_CLAIM_TYPE());
+			claimHdrFields.put("Reference_No", claimsRequestDTO.getCH_REF_NO());
+			claimHdrFields.put("Loss_Date", dateConverter(claimsRequestDTO.getCH_LOSS_DT()));
+			claimHdrFields.put("Intimation_Date", dateConverter(claimsRequestDTO.getCH_INTIM_DT()));
 			claimHdrFields.put("CH_INS_DT", new Date());
 
 			LtClaimHdr savedClaimDetails = ltClaimHdrRepo.save(claim);
+			
 
 			RestClientBuilder builder = RestClient.builder(new HttpHost("localhost", 9200, "http"));
 			RestHighLevelClient client = new RestHighLevelClient(builder);
@@ -134,20 +135,20 @@ public class LtClaimServiceImpl implements LtClaimService {
 			if (res.getResult() == Result.CREATED) {
 				System.out.println("Document indexed successfully!");
 			} else {
-				
+				System.out.println("DOCUMENT NOT INDEXED");
 			}
 
 			client.close();
 
-			Map<String, String> inputMap = new HashMap<>();
-			inputMap.put("P_CEP_CH_TRAN_ID", savedClaimDetails.getCH_TRAN_ID().toString());
+			Map<String, Object> inputMap = new HashMap<>();
+			inputMap.put("P_CH_TRAN_ID", savedClaimDetails.getCH_TRAN_ID());
 
 			ProcedureInput input = new ProcedureInput();
 			input.setInParams(inputMap);
 
 			String authorizationHeader = request.getHeader("Authorization");
 			String token = authorizationHeader.substring(7).trim();
-			String url = baseDocPath + "common/invokeProcedure?procedureName=" + "P_PRCSS_ELIGIBLE_POL";
+			String url = baseDocPath + "common/invokeProcedure?procedureName=" + "P_POPULATE_ELIGIBLE_POL";
 			HttpHeaders headers = new HttpHeaders();
 			RestTemplate restTemplate = new RestTemplate();
 			headers.setContentType(MediaType.APPLICATION_JSON);
@@ -313,7 +314,7 @@ public class LtClaimServiceImpl implements LtClaimService {
 			if (claim != null) {
 				ltclaimrepo.deleteById(claim_TRAN_id);
 				response.put(statusCode, successCode);
-				response.put(messageCode, "Claim Details Deleted Successfully");
+				response.put(messageCode, "Claim Cover Details Deleted Successfully");
 			}
 		} catch (Exception e) {
 			response.put(statusCode, errorCode);
@@ -340,7 +341,7 @@ public class LtClaimServiceImpl implements LtClaimService {
 				try {
 					LT_CLAIM savedClaimDetails = ltclaimrepo.save(claim);
 					response.put(statusCode, successCode);
-					response.put(messageCode, "Claim Details Updated Successfully");
+					response.put(messageCode, "Claim Cover Details Updated Successfully");
 				} catch (Exception e) {
 					response.put("statusCode", errorCode);
 					response.put("message", "An error occurred: " + e.getMessage());

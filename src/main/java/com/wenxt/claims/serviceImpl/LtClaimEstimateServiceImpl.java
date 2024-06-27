@@ -69,6 +69,7 @@ public class LtClaimEstimateServiceImpl implements LtClaimEstimateService{
 			}
 
 			try {
+				claimEstimate.setCE_COVER_SEL_YN("Y");
 				claimEstimate.setCE_CLM_TRAN_ID(tranId);
 				claimEstimate.setCE_FRZ_FLAG("N");
 				LT_CLAIM_ESTIMATE savedClaimDetails = claimEstrepo.save(claimEstimate);

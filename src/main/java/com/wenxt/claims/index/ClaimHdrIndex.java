@@ -8,7 +8,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
-@Document(indexName = "ClaimHeader")
+@Document(indexName = "claimheader")
 public class ClaimHdrIndex {
 
     @JsonProperty("CH_TRAN_ID")

@@ -123,31 +123,31 @@ public class LtClaimServiceImpl implements LtClaimService {
 
 			LtClaimHdr savedClaimDetails = ltClaimHdrRepo.save(claim);
 
-//			RestClientBuilder builder = RestClient.builder(new HttpHost("localhost", 9200, "http"));
-//			RestHighLevelClient client = new RestHighLevelClient(builder);
-//
-//			IndexRequest req = new IndexRequest("ClaimHeader").id(savedClaimDetails.getCH_TRAN_ID().toString())
-//					.source(claimHdrFields);
-//
-//			IndexResponse res = client.index(req, RequestOptions.DEFAULT);
-//
-//			if (res.getResult() == Result.CREATED) {
-//				System.out.println("Document indexed successfully!");
-//			} else {
-//				// Handle indexing failure
-//			}
-//
-//			client.close();
+			RestClientBuilder builder = RestClient.builder(new HttpHost("localhost", 9200, "http"));
+			RestHighLevelClient client = new RestHighLevelClient(builder);
+
+			IndexRequest req = new IndexRequest("claimheader").id(savedClaimDetails.getCH_TRAN_ID().toString())
+					.source(claimHdrFields);
+
+			IndexResponse res = client.index(req, RequestOptions.DEFAULT);
+
+			if (res.getResult() == Result.CREATED) {
+				System.out.println("Document indexed successfully!");
+			} else {
+				
+			}
+
+			client.close();
 
 			Map<String, String> inputMap = new HashMap<>();
-			inputMap.put("P_CH_TRAN_ID", savedClaimDetails.getCH_TRAN_ID().toString());
+			inputMap.put("P_CEP_CH_TRAN_ID", savedClaimDetails.getCH_TRAN_ID().toString());
 
 			ProcedureInput input = new ProcedureInput();
 			input.setInParams(inputMap);
 
 			String authorizationHeader = request.getHeader("Authorization");
 			String token = authorizationHeader.substring(7).trim();
-			String url = baseDocPath + "common/invokeProcedure?procedureName=" + "P_POPULATE_ELIGIBLE_POL";
+			String url = baseDocPath + "common/invokeProcedure?procedureName=" + "P_PRCSS_ELIGIBLE_POL";
 			HttpHeaders headers = new HttpHeaders();
 			RestTemplate restTemplate = new RestTemplate();
 			headers.setContentType(MediaType.APPLICATION_JSON);

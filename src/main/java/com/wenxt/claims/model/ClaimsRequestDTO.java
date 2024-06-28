@@ -12,7 +12,7 @@ public class ClaimsRequestDTO {
 	@JsonProperty("ClaimCharges")
 	private FormFieldsDTO ClaimCharges;
 	
-	@JsonProperty("Claim_Estimate")
+	@JsonProperty("ClaimCover")
 	private FormFieldsDTO ClaimEstimate;
 	
 	@JsonProperty("ClaimBeneficiary")

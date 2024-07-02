@@ -2,6 +2,8 @@ package com.wenxt.claims.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -50,6 +52,7 @@ public class LtClaimHdr {
     @Column(name = "CH_REF_NO")
     private String CH_REF_NO;
     
+    @JsonProperty("CH_ASSR_CODE")
     @Column(name = "CH_ASSR_CODE")
     private String CH_ASSR_CODE;
 

@@ -63,7 +63,11 @@ public class LtClaimEstimateServiceImpl implements LtClaimEstimateService{
 			LT_CLAIM_ESTIMATE claimEstimate = new LT_CLAIM_ESTIMATE();
 			
 			Map<String, Map<String, String>> fieldMaps = new HashMap<>();
+			if(claimsRequestDTO.getClaimEstimate() != null) {
 			fieldMaps.put("frontForm", claimsRequestDTO.getClaimEstimate().getFormFields());
+			}else {
+				fieldMaps.put("frontForm", claimsRequestDTO.getClaimCoverDis().getFormFields());
+			}
 			for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
 				setClaimEstimateFields(claimEstimate, entry.getValue());
 			}
@@ -248,7 +252,11 @@ public class LtClaimEstimateServiceImpl implements LtClaimEstimateService{
 			LT_CLAIM_ESTIMATE claim = optionalUser.get();
 			if (claim != null) {
 				Map<String, Map<String, String>> fieldMaps = new HashMap<>();
-				fieldMaps.put("frontForm", claimsRequestDTO.getClaimEstimate().getFormFields());
+				if(claimsRequestDTO.getClaimEstimate() != null) {
+					fieldMaps.put("frontForm", claimsRequestDTO.getClaimEstimate().getFormFields());
+					}else {
+						fieldMaps.put("frontForm", claimsRequestDTO.getClaimCoverDis().getFormFields());
+					}
 				for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
 					setClaimEstimateFields (claim, entry.getValue());
 				}

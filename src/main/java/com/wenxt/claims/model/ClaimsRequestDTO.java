@@ -15,6 +15,9 @@ public class ClaimsRequestDTO {
 	@JsonProperty("ClaimCover")
 	private FormFieldsDTO ClaimEstimate;
 	
+	@JsonProperty("ClaimCoverDis")
+	private FormFieldsDTO ClaimCoverDis;
+	
 	@JsonProperty("ClaimBeneficiary")
 	private FormFieldsDTO ClaimBeneficiary;
 	
@@ -53,6 +56,14 @@ public class ClaimsRequestDTO {
 
 	public void setClaimEstimate(FormFieldsDTO claimEstimate) {
 		ClaimEstimate = claimEstimate;
+	}
+
+	public FormFieldsDTO getClaimCoverDis() {
+		return ClaimCoverDis;
+	}
+
+	public void setClaimCoverDis(FormFieldsDTO claimCoverDis) {
+		ClaimCoverDis = claimCoverDis;
 	}
 
 	public FormFieldsDTO getClaimBeneficiary() {

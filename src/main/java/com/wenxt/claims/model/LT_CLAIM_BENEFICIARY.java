@@ -63,6 +63,9 @@ public class LT_CLAIM_BENEFICIARY {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "CBEN_MOD_DT")
     private Date CBEN_MOD_DT;
+    
+    @Column(name = "CBEN_PYMT_MTHD")
+    private String CBEN_PYMT_MTHD;
 
     @Column(name = "CBEN_PBEN_TRAN_ID")
     private Long CBEN_PBEN_TRAN_ID;
@@ -154,6 +157,14 @@ public class LT_CLAIM_BENEFICIARY {
 
 	public void setCBEN_BNF_NAME(String cBEN_BNF_NAME) {
 		CBEN_BNF_NAME = cBEN_BNF_NAME;
+	}
+
+	public String getCBEN_PYMT_MTHD() {
+		return CBEN_PYMT_MTHD;
+	}
+
+	public void setCBEN_PYMT_MTHD(String cBEN_PYMT_MTHD) {
+		CBEN_PYMT_MTHD = cBEN_PYMT_MTHD;
 	}
 
 	public String getCBEN_BNF_NAME_BL() {

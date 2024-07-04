@@ -70,6 +70,8 @@ public class SecurityConfig {
 				.and()
 				.authorizeHttpRequests().requestMatchers("/docToDoList/**").authenticated() 
 				.and()
+				.authorizeHttpRequests().requestMatchers("/claimPaid/**").authenticated() 
+				.and()
 				.sessionManagement() 
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS) 
 				.and() 

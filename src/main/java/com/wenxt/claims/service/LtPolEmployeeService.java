@@ -10,4 +10,6 @@ public interface LtPolEmployeeService {
 
 	String deletePolEmployeeById(Integer polEmpId);
 
+	String getPolEmployeeByid(Integer polEmpId) throws Exception;
+
 }

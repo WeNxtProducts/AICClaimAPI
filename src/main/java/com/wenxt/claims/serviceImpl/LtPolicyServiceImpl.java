@@ -1,5 +1,6 @@
 package com.wenxt.claims.serviceImpl;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.sql.Date;
@@ -23,6 +24,7 @@ import com.wenxt.claims.repository.LtPolicyRepository;
 import com.wenxt.claims.service.LtPolicyService;
 
 import jakarta.mail.internet.ParseException;
+import jakarta.persistence.Column;
 
 @Service
 public class LtPolicyServiceImpl implements LtPolicyService{
@@ -70,7 +72,7 @@ public class LtPolicyServiceImpl implements LtPolicyService{
 				LT_POLICY savedPolicyDetails = ltPolicyRepo.save(policy);
 				response.put(statusCode, successCode);
 				response.put(messageCode,
-						 "Claim Cover Details Successfully");
+						 "Policy Details Created Successfully");
 				data.put("Id", savedPolicyDetails.getPOL_TRAN_ID());
 				response.put(dataCode, data);
 			} catch (Exception e) {
@@ -166,7 +168,7 @@ public class LtPolicyServiceImpl implements LtPolicyService{
 				try {
 					LT_POLICY savedPolicyDetails = ltPolicyRepo.save(policy);
 					response.put(statusCode, successCode);
-					response.put(messageCode, "Claim Details Updated Successfully");
+					response.put(messageCode, "Policy Details Updated Successfully");
 				} catch (Exception e) {
 					response.put("statusCode", errorCode);
 					response.put("message", "An error occurred: " + e.getMessage());
@@ -206,6 +208,29 @@ public class LtPolicyServiceImpl implements LtPolicyService{
 			response.put("Message", "Error deleting record with ID " + policy_id + ": " + e.getMessage());
 			return response.toString();
 		}
+	}
+	
+	@Override
+	public String getPolicyByid(Integer policyId) throws Exception {
+		Map<String, Object> parametermap = new HashMap<String, Object>();
+		JSONObject inputObject = new JSONObject();
+		Optional<LT_POLICY> optionalUser = ltPolicyRepo.findById(policyId);
+		LT_POLICY policy = optionalUser.get();
+		if (policy != null) {
+			for (int i = 0; i < policy.getClass().getDeclaredFields().length; i++) {
+				Field field = policy.getClass().getDeclaredFields()[i];
+				field.setAccessible(true);
+				String columnName = null;
+				if (field.isAnnotationPresent(Column.class)) {
+					Annotation annotation = field.getAnnotation(Column.class);
+					Column column = (Column) annotation;
+					Object value = field.get(policy);
+					columnName = column.name();
+					inputObject.put(columnName, value);
+				}
+			}
+		}
+		return inputObject.toString();
 	}
 
 }

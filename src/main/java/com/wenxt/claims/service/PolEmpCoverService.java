@@ -10,4 +10,6 @@ public interface PolEmpCoverService {
 
 	String deletePolEmpCoverById(Integer polEmpCoverId);
 
+	String getPolEmpCoverByid(Integer polEmpCoverId) throws Exception;
+
 }

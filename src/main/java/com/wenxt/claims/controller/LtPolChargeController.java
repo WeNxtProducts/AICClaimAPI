@@ -5,10 +5,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wenxt.claims.model.ProposalEntryRequest;
-import com.wenxt.claims.service.LtPolBeneficiaryService;
 import com.wenxt.claims.service.LtPolChargeService;
 
 @RestController
@@ -23,14 +23,23 @@ public class LtPolChargeController {
 		return polChargeService.createPolCharge(proposalEntryRequest);
 	}
 	
-	@PostMapping("/polBeneficiaryUpdate/{polBeneficiaryId}")
-	public String updatePolBeneficiary(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable Integer polBeneficiaryId) {
-		return polChargeService.updatePolCharge(proposalEntryRequest, polBeneficiaryId);
+	@PostMapping("/polChargeUpdate/{polChargeId}")
+	public String updatePolCharge(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable Integer polChargeId) {
+		return polChargeService.updatePolCharge(proposalEntryRequest, polChargeId);
 	}
 	
-	@PostMapping("/deletePolBeneficiary/{polBeneficiaryId}")
-	public String deletePolBeneficiary(@PathVariable Integer polBeneficiaryId) {
-		return polChargeService.deletePolChargeById(polBeneficiaryId);
+	@PostMapping("/deletePolCharge/{polChargeId}")
+	public String deletePolCharge(@PathVariable Integer polChargeId) {
+		return polChargeService.deletePolChargeById(polChargeId);
+	}
+	
+	@PostMapping("/getPolChargeByid")
+	public String getLtClaimEstById(@RequestParam Integer polChargeId) {
+		try {
+		return polChargeService.getPolChargeById(polChargeId);
+		}catch(Exception e) {
+			return e.getMessage();
+		}
 	}
 
 }

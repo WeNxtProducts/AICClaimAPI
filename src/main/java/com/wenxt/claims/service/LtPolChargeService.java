@@ -10,4 +10,6 @@ public interface LtPolChargeService {
 
 	String deletePolChargeById(Integer polBeneficiaryId);
 
+	String getPolChargeById(Integer polChargeId) throws Exception;
+
 }

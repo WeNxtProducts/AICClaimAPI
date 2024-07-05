@@ -10,4 +10,6 @@ public interface LtPolBeneficiaryService {
 
 	String deletePolBeneficiaryById(Integer polBeneficiaryId);
 
+	String getPolBeneficiaryById(Integer polBeneficiaryId) throws Exception;
+
 }

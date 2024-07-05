@@ -4,7 +4,10 @@ import java.sql.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
@@ -12,6 +15,8 @@ import jakarta.persistence.Table;
 public class LT_POL_BENEFICIARY {
 
     @Id
+    @SequenceGenerator(name = "PolBeneficiaryTranIDSeq", sequenceName = "PGBEN_TRAN_ID_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PolBeneficiaryTranIDSeq")
     @Column(name = "PGBEN_TRAN_ID")
     private Long PGBEN_TRAN_ID;
 

@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wenxt.claims.model.ClaimsRequestDTO;
 import com.wenxt.claims.model.ProposalEntryRequest;
 import com.wenxt.claims.service.LtPolicyService;
 
@@ -24,13 +24,22 @@ public class LtPolicyController {
 	}
 	
 	@PostMapping("/policyUpdate/{policy_id}")
-	public String updateLtClaim(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable Integer policy_id) {
+	public String updatePolicy(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable Integer policy_id) {
 		return policyService.updatePolicy(proposalEntryRequest, policy_id);
 	}
 	
 	@PostMapping("/deletePolicy/{policy_id}")
-	public String deleteLtClaimByid(@PathVariable Integer policy_id) {
+	public String deletePolicyByid(@PathVariable Integer policy_id) {
 		return policyService.deletePolicyByid(policy_id);
+	}
+	
+	@PostMapping("/getPolicyByid")
+	public String getPolicyByid(@RequestParam Integer policyId) {
+		try {
+		return policyService.getPolicyByid(policyId);
+		}catch(Exception e) {
+			return e.getMessage();
+		}
 	}
 
 }

@@ -3,6 +3,7 @@ package com.wenxt.claims.serviceImpl;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -16,15 +17,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.wenxt.claims.model.LT_POL_EMP_COVER;
+import com.wenxt.claims.model.LT_CLAIM_ESTIMATE;
+import com.wenxt.claims.model.LT_POL_DISCLOAD;
 import com.wenxt.claims.model.ProposalEntryRequest;
-import com.wenxt.claims.repository.LtPolEmpCoverRepository;
-import com.wenxt.claims.service.PolEmpCoverService;
+import com.wenxt.claims.repository.LtPolDiscLoadRepository;
+import com.wenxt.claims.service.LtPolDiscLoadService;
 
 import jakarta.persistence.Column;
 
 @Service
-public class PolEmpCoverServiceImpl implements PolEmpCoverService {
+public class LtPolDiscLoadServiceImpl implements LtPolDiscLoadService {
 	
 	@Value("${spring.message.code}")
 	private String messageCode;
@@ -45,33 +47,33 @@ public class PolEmpCoverServiceImpl implements PolEmpCoverService {
 	private String warningCode;	
 	
 	@Autowired
-	private LtPolEmpCoverRepository polEmpCoverRepo;
+	private LtPolDiscLoadRepository polDiscLoadRepo;
 
 	@Override
-	public String createPolEmpCover(ProposalEntryRequest proposalEntryRequest) {
+	public String createPolDiscLoad(ProposalEntryRequest proposalEntryRequest) {
 		JSONObject response = new JSONObject();
 		JSONObject data = new JSONObject();
 
 		try {
-			LT_POL_EMP_COVER polEmpCover = new LT_POL_EMP_COVER();
+			LT_POL_DISCLOAD polDiscLoad = new LT_POL_DISCLOAD();
 			
 			Map<String, Map<String, String>> fieldMaps = new HashMap<>();
-			if(proposalEntryRequest.getPolEmpCoverDetails() != null) {
-			fieldMaps.put("frontForm", proposalEntryRequest.getPolEmpCoverDetails().getFormFields());
+			if(proposalEntryRequest.getPolDiscLoad() != null) {
+			fieldMaps.put("frontForm", proposalEntryRequest.getPolDiscLoad().getFormFields());
 			}else {
-				fieldMaps.put("frontForm", proposalEntryRequest.getPolEmpCoverDetails().getFormFields());
+				fieldMaps.put("frontForm", proposalEntryRequest.getPolDiscLoad().getFormFields());
 			}
 			for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
-				setPolEmpCoverFields(polEmpCover, entry.getValue());
+				setPolDiscLoadFields(polDiscLoad, entry.getValue());
 			}
 
 			try {
-				polEmpCover.setPEC_INS_DT(new Date(System.currentTimeMillis()));
-				LT_POL_EMP_COVER savedPolEmpCoverDetails = polEmpCoverRepo.save(polEmpCover);
+				polDiscLoad.setPDL_INS_DT(new Date(System.currentTimeMillis()));
+				LT_POL_DISCLOAD savedPolDiscLoadDetails = polDiscLoadRepo.save(polDiscLoad);
 				response.put(statusCode, successCode);
 				response.put(messageCode,
-						 "Policy Emp Cover Details Created Successfully");
-				data.put("Id", savedPolEmpCoverDetails.getPEC_TRAN_ID());
+						 "Pol Disc Load Details Created Successfully");
+				data.put("Id", savedPolDiscLoadDetails.getPDL_TRAN_ID());
 				response.put(dataCode, data);
 			} catch (Exception e) {
 				response.put(statusCode, errorCode);
@@ -85,22 +87,22 @@ public class PolEmpCoverServiceImpl implements PolEmpCoverService {
 
 		return response.toString();
 	}
-	
-	private void setPolEmpCoverFields(LT_POL_EMP_COVER polEmpCover, Map<String, String> value)throws Exception {
+
+	private void setPolDiscLoadFields(LT_POL_DISCLOAD polDiscLoad, Map<String, String> value)throws Exception {
 		for (Map.Entry<String, String> entry : value.entrySet()) {
-			setPolEmpCoverField(polEmpCover, entry.getKey(), entry.getValue());
+			setPolDiscLoadField(polDiscLoad, entry.getKey(), entry.getValue());
 		}
 	}
 
-	private void setPolEmpCoverField(LT_POL_EMP_COVER polEmpCover, String key, String value)throws Exception {
+	private void setPolDiscLoadField(LT_POL_DISCLOAD polDiscLoad, String key, String value)throws Exception {
 		try {
-			Field field = LT_POL_EMP_COVER.class.getDeclaredField(key);
+			Field field = LT_POL_DISCLOAD.class.getDeclaredField(key);
 			Class<?> fieldType = field.getType();
 			Object convertedValue = convertStringToObject(value, fieldType);
 			String setterMethodName = "set" + key;
 			if (value != null && !value.isEmpty()) {
-				Method setter = LT_POL_EMP_COVER.class.getMethod(setterMethodName, fieldType);
-				setter.invoke(polEmpCover, convertedValue);
+				Method setter = LT_POL_DISCLOAD.class.getMethod(setterMethodName, fieldType);
+				setter.invoke(polDiscLoad, convertedValue);
 			}
 		} catch (NoSuchFieldException e) {
 			e.printStackTrace();
@@ -120,12 +122,16 @@ public class PolEmpCoverServiceImpl implements PolEmpCoverService {
 			return dateTimeConverter(value, fieldType);
 		} else if (fieldType.equals(Long.class) && value.isEmpty() == false && value != null) {
 			return Long.parseLong(value);
+		} else if (fieldType.equals(BigDecimal.class) && value.isEmpty() == false && value != null) {
+			BigDecimal bigDecimal = new BigDecimal(value);
+			Object obj = bigDecimal;
+			return bigDecimal;
 		} else {
 			return value;
 		}
 	}
-
-	private Object dateTimeConverter(String dateString, Class<?> type) {
+	
+	private Object dateTimeConverter(String dateString, Class<?> type){
 		SimpleDateFormat dateFormat;
 		if (type.equals(Date.class)) {
 			dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -148,26 +154,25 @@ public class PolEmpCoverServiceImpl implements PolEmpCoverService {
  
 		return null;
 	}
-
 	@Override
-	public String updatePolEmpCover(ProposalEntryRequest proposalEntryRequest, Integer polEmpCoverId) {
+	public String updatePolDiscLoad(ProposalEntryRequest proposalEntryRequest, Integer polDiscLoadId) {
 		JSONObject response = new JSONObject();
 
 		try {
-			Optional<LT_POL_EMP_COVER> optionalUser = polEmpCoverRepo.findById(polEmpCoverId);
-			LT_POL_EMP_COVER polEmpCover = optionalUser.get();
-			if (polEmpCover != null) {
+			Optional<LT_POL_DISCLOAD> optionalUser = polDiscLoadRepo.findById(polDiscLoadId);
+			LT_POL_DISCLOAD polDiscLoad = optionalUser.get();
+			if (polDiscLoad != null) {
 				Map<String, Map<String, String>> fieldMaps = new HashMap<>();
-				fieldMaps.put("frontForm", proposalEntryRequest.getPolEmpCoverDetails().getFormFields());
+				fieldMaps.put("frontForm", proposalEntryRequest.getPolDiscLoad().getFormFields());
 				for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
-					setPolEmpCoverFields(polEmpCover, entry.getValue());
+					setPolDiscLoadFields(polDiscLoad, entry.getValue());
 				}
 
 				try {
-					polEmpCover.setPEC_MOD_DT(new Date(System.currentTimeMillis()));
-					LT_POL_EMP_COVER savedPolEmpCoverDetails = polEmpCoverRepo.save(polEmpCover);
+					polDiscLoad.setPDL_MOD_DT(new Date(System.currentTimeMillis()));
+					LT_POL_DISCLOAD savedPolDiscLoadDetails = polDiscLoadRepo.save(polDiscLoad);
 					response.put(statusCode, successCode);
-					response.put(messageCode, "Policy Emp Cover Details Updated Successfully");
+					response.put(messageCode, "Pol Disc Load Details Updated Successfully");
 				} catch (Exception e) {
 					response.put("statusCode", errorCode);
 					response.put("message", "An error occurred: " + e.getMessage());
@@ -183,47 +188,47 @@ public class PolEmpCoverServiceImpl implements PolEmpCoverService {
 	}
 
 	@Override
-	public String deletePolEmpCoverById(Integer polEmpCoverId) {
+	public String deletePolDiscLoadById(Integer polDiscLoadId) {
 		try {
-			Optional<LT_POL_EMP_COVER> optionalEntity = polEmpCoverRepo.findById(polEmpCoverId);
+			Optional<LT_POL_DISCLOAD> polDiscLoadDetails = polDiscLoadRepo.findById(polDiscLoadId);
 
-			if (optionalEntity.isPresent()) {
-				polEmpCoverRepo.deleteById(polEmpCoverId);
+			if (polDiscLoadDetails.isPresent()) {
+				polDiscLoadRepo.deleteById(polDiscLoadId);
 
 				JSONObject response = new JSONObject();
-				response.put(statusCode, successCode);
-				response.put(messageCode, "Record with ID " + polEmpCoverId + " deleted successfully");
+				response.put("Status", "SUCCESS");
+				response.put("Message", "Record with ID " + polDiscLoadId + " deleted successfully");
 				return response.toString();
 
 			} else {
 				JSONObject response = new JSONObject();
-				response.put(statusCode, errorCode);
-				response.put(messageCode, "Record with ID " + polEmpCoverId + " not found");
+				response.put("Status", "ERROR");
+				response.put("Message", "Record with ID " + polDiscLoadId + " not found");
 				return response.toString();
 			}
 		} catch (Exception e) {
 			JSONObject response = new JSONObject();
-			response.put(statusCode, errorCode);
-			response.put(messageCode, "Error deleting record with ID " + polEmpCoverId + ": " + e.getMessage());
+			response.put("Status", "ERROR");
+			response.put("Message", "Error deleting record with ID " + polDiscLoadId + ": " + e.getMessage());
 			return response.toString();
 		}
 	}
 	
 	@Override
-	public String getPolEmpCoverByid(Integer polEmpCoverId) throws Exception {
+	public String getPolDiscLoadByid(Integer polDiscLoadId) throws Exception {
 		Map<String, Object> parametermap = new HashMap<String, Object>();
 		JSONObject inputObject = new JSONObject();
-		Optional<LT_POL_EMP_COVER> optionalUser = polEmpCoverRepo.findById(polEmpCoverId);
-		LT_POL_EMP_COVER polEmpCover = optionalUser.get();
-		if (polEmpCover != null) {
-			for (int i = 0; i < polEmpCover.getClass().getDeclaredFields().length; i++) {
-				Field field = polEmpCover.getClass().getDeclaredFields()[i];
+		Optional<LT_POL_DISCLOAD> optionalUser = polDiscLoadRepo.findById(polDiscLoadId);
+		LT_POL_DISCLOAD polDiscLoad = optionalUser.get();
+		if (polDiscLoad != null) {
+			for (int i = 0; i < polDiscLoad.getClass().getDeclaredFields().length; i++) {
+				Field field = polDiscLoad.getClass().getDeclaredFields()[i];
 				field.setAccessible(true);
 				String columnName = null;
 				if (field.isAnnotationPresent(Column.class)) {
 					Annotation annotation = field.getAnnotation(Column.class);
 					Column column = (Column) annotation;
-					Object value = field.get(polEmpCover);
+					Object value = field.get(polDiscLoad);
 					columnName = column.name();
 					inputObject.put(columnName, value);
 				}

@@ -5,10 +5,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wenxt.claims.model.ProposalEntryRequest;
-import com.wenxt.claims.service.LtPolEmployeeService;
 import com.wenxt.claims.service.PolEmpCoverService;
 
 @RestController
@@ -31,6 +31,15 @@ public class LtPolEmpCoverController {
 	@PostMapping("/deletePolEmpCover/{polEmpCoverId}")
 	public String deletePolEmpCover(@PathVariable Integer polEmpCoverId) {
 		return polEmpCoverService.deletePolEmpCoverById(polEmpCoverId);
+	}
+	
+	@PostMapping("/getPolEmpCoverByid")
+	public String getPolEmpCoverByid(@RequestParam Integer polEmpCoverId) {
+		try {
+		return polEmpCoverService.getPolEmpCoverByid(polEmpCoverId);
+		}catch(Exception e) {
+			return e.getMessage();
+		}
 	}
 
 }

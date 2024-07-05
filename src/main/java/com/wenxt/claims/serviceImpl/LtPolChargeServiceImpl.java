@@ -1,5 +1,6 @@
 package com.wenxt.claims.serviceImpl;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.sql.Date;
@@ -21,6 +22,8 @@ import com.wenxt.claims.model.LT_POL_CHARGE;
 import com.wenxt.claims.model.ProposalEntryRequest;
 import com.wenxt.claims.repository.LtPolChargeRepository;
 import com.wenxt.claims.service.LtPolChargeService;
+
+import jakarta.persistence.Column;
 
 @Service
 public class LtPolChargeServiceImpl implements LtPolChargeService {
@@ -55,7 +58,7 @@ public class LtPolChargeServiceImpl implements LtPolChargeService {
 			LT_POL_CHARGE polCharge = new LT_POL_CHARGE();
 			
 			Map<String, Map<String, String>> fieldMaps = new HashMap<>();
-			if(proposalEntryRequest.getPolicyDetails() != null) {
+			if(proposalEntryRequest.getPolChargeDetails() != null) {
 			fieldMaps.put("frontForm", proposalEntryRequest.getPolChargeDetails().getFormFields());
 			}else {
 				fieldMaps.put("frontForm", proposalEntryRequest.getPolChargeDetails().getFormFields());
@@ -65,6 +68,7 @@ public class LtPolChargeServiceImpl implements LtPolChargeService {
 			}
 
 			try {
+				polCharge.setPCHRG_INS_DT(new Date(System.currentTimeMillis()));
 				LT_POL_CHARGE savedPolChargeDetails = polChargeRepo.save(polCharge);
 				response.put(statusCode, successCode);
 				response.put(messageCode,
@@ -156,12 +160,13 @@ public class LtPolChargeServiceImpl implements LtPolChargeService {
 			LT_POL_CHARGE polCharge = optionalUser.get();
 			if (polCharge != null) {
 				Map<String, Map<String, String>> fieldMaps = new HashMap<>();
-				fieldMaps.put("frontForm", proposalEntryRequest.getPolicyDetails().getFormFields());
+				fieldMaps.put("frontForm", proposalEntryRequest.getPolChargeDetails().getFormFields());
 				for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
 					setPolChargeFields(polCharge, entry.getValue());
 				}
 
 				try {
+					polCharge.setPCHRG_MOD_DT(new Date(System.currentTimeMillis()));
 					LT_POL_CHARGE savedPolChargeDetails = polChargeRepo.save(polCharge);
 					response.put(statusCode, successCode);
 					response.put(messageCode, "Policy Charge Details Updated Successfully");
@@ -180,30 +185,53 @@ public class LtPolChargeServiceImpl implements LtPolChargeService {
 	}
 
 	@Override
-	public String deletePolChargeById(Integer polBeneficiaryId) {
+	public String deletePolChargeById(Integer polChargeId) {
 		try {
-			Optional<LT_POL_CHARGE> optionalEntity = polChargeRepo.findById(polBeneficiaryId);
+			Optional<LT_POL_CHARGE> optionalEntity = polChargeRepo.findById(polChargeId);
 
 			if (optionalEntity.isPresent()) {
-				polChargeRepo.deleteById(polBeneficiaryId);
+				polChargeRepo.deleteById(polChargeId);
 
 				JSONObject response = new JSONObject();
 				response.put(statusCode, successCode);
-				response.put(messageCode, "Record with ID " + polBeneficiaryId + " deleted successfully");
+				response.put(messageCode, "Record with ID " + polChargeId + " deleted successfully");
 				return response.toString();
 
 			} else {
 				JSONObject response = new JSONObject();
 				response.put(statusCode, errorCode);
-				response.put(messageCode, "Record with ID " + polBeneficiaryId + " not found");
+				response.put(messageCode, "Record with ID " + polChargeId + " not found");
 				return response.toString();
 			}
 		} catch (Exception e) {
 			JSONObject response = new JSONObject();
 			response.put(statusCode, errorCode);
-			response.put(messageCode, "Error deleting record with ID " + polBeneficiaryId + ": " + e.getMessage());
+			response.put(messageCode, "Error deleting record with ID " + polChargeId + ": " + e.getMessage());
 			return response.toString();
 		}
+	}
+	
+	@Override
+	public String getPolChargeById(Integer polChargeId) throws Exception {
+		Map<String, Object> parametermap = new HashMap<String, Object>();
+		JSONObject inputObject = new JSONObject();
+		Optional<LT_POL_CHARGE> optionalUser = polChargeRepo.findById(polChargeId);
+		LT_POL_CHARGE polCharge = optionalUser.get();
+		if (polCharge != null) {
+			for (int i = 0; i < polCharge.getClass().getDeclaredFields().length; i++) {
+				Field field = polCharge.getClass().getDeclaredFields()[i];
+				field.setAccessible(true);
+				String columnName = null;
+				if (field.isAnnotationPresent(Column.class)) {
+					Annotation annotation = field.getAnnotation(Column.class);
+					Column column = (Column) annotation;
+					Object value = field.get(polCharge);
+					columnName = column.name();
+					inputObject.put(columnName, value);
+				}
+			}
+		}
+		return inputObject.toString();
 	}
 
 }

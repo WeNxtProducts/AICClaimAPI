@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wenxt.claims.model.ProposalEntryRequest;
@@ -30,6 +31,15 @@ public class LtPolEmployeeController {
 	@PostMapping("/deletePolEmployee/{polEmpId}")
 	public String deletePolEmployee(@PathVariable Integer polEmpId) {
 		return polEmployeeService.deletePolEmployeeById(polEmpId);
+	}
+	
+	@PostMapping("/getPolEmployeeByid")
+	public String getPolEmployeeByid(@RequestParam Integer polEmpId) {
+		try {
+		return polEmployeeService.getPolEmployeeByid(polEmpId);
+		}catch(Exception e) {
+			return e.getMessage();
+		}
 	}
 
 }

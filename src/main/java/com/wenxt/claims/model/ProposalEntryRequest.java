@@ -7,6 +7,14 @@ public class ProposalEntryRequest {
 	private FormFieldsDTO polChargeDetails;
 	
 	private FormFieldsDTO polBeneficiaryDetails;
+	
+	private FormFieldsDTO polEmpCoverDetails;
+	
+	private FormFieldsDTO polEmployeeDetails;
+	
+	private FormFieldsDTO polBrokerDetails;
+	
+	private FormFieldsDTO polDiscLoad;
 
 	public FormFieldsDTO getPolicyDetails() {
 		return policyDetails;
@@ -30,6 +38,38 @@ public class ProposalEntryRequest {
 
 	public void setPolBeneficiaryDetails(FormFieldsDTO polBeneficiaryDetails) {
 		this.polBeneficiaryDetails = polBeneficiaryDetails;
+	}
+
+	public FormFieldsDTO getPolEmpCoverDetails() {
+		return polEmpCoverDetails;
+	}
+
+	public void setPolEmpCoverDetails(FormFieldsDTO polEmpCoverDetails) {
+		this.polEmpCoverDetails = polEmpCoverDetails;
+	}
+
+	public FormFieldsDTO getPolEmployeeDetails() {
+		return polEmployeeDetails;
+	}
+
+	public void setPolEmployeeDetails(FormFieldsDTO polEmployeeDetails) {
+		this.polEmployeeDetails = polEmployeeDetails;
+	}
+
+	public FormFieldsDTO getPolBrokerDetails() {
+		return polBrokerDetails;
+	}
+
+	public void setPolBrokerDetails(FormFieldsDTO polBrokerDetails) {
+		this.polBrokerDetails = polBrokerDetails;
+	}
+
+	public FormFieldsDTO getPolDiscLoad() {
+		return polDiscLoad;
+	}
+
+	public void setPolDiscLoad(FormFieldsDTO polDiscLoad) {
+		this.polDiscLoad = polDiscLoad;
 	}
 
 }

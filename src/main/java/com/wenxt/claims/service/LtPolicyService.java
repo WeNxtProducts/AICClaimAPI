@@ -10,4 +10,6 @@ public interface LtPolicyService {
 
 	String deletePolicyByid(Integer policy_id);
 
+	String getPolicyByid(Integer policyId) throws Exception;
+
 }

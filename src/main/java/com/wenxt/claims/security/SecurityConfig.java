@@ -84,6 +84,8 @@ public class SecurityConfig {
 				.and()
 				.authorizeHttpRequests().requestMatchers("/polEmployee/**").authenticated() 
 				.and()
+				.authorizeHttpRequests().requestMatchers("/medexFeeDtl/**").authenticated() 
+				.and()
 				.sessionManagement() 
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS) 
 				.and() 

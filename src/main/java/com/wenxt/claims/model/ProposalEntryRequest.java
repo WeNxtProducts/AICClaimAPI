@@ -19,6 +19,9 @@ public class ProposalEntryRequest {
 	private FormFieldsDTO polBrokerDetails;
 	
 	private FormFieldsDTO polDiscLoad;
+	
+	@JsonProperty("medical_details")
+	private FormFieldsDTO medicalDetails;
 
 	public FormFieldsDTO getPolicyDetails() {
 		return policyDetails;
@@ -74,6 +77,14 @@ public class ProposalEntryRequest {
 
 	public void setPolDiscLoad(FormFieldsDTO polDiscLoad) {
 		this.polDiscLoad = polDiscLoad;
+	}
+
+	public FormFieldsDTO getMedicalDetails() {
+		return medicalDetails;
+	}
+
+	public void setMedicalDetails(FormFieldsDTO medicalDetails) {
+		this.medicalDetails = medicalDetails;
 	}
 
 }

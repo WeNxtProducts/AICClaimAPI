@@ -21,10 +21,10 @@ public class LT_POL_EMP_COVER {
     private Long PEC_TRAN_ID;
 
     @Column(name = "PEC_POL_TRAN_ID")
-    private Long PEC_POL_TRAN_ID;
+    private Integer PEC_POL_TRAN_ID;
 
     @Column(name = "PEC_PEMP_TRAN_ID")
-    private Long PEC_PEMP_TRAN_ID;
+    private Integer PEC_PEMP_TRAN_ID;
 
     @Column(name = "PEC_COVER_CODE")
     private String PEC_COVER_CODE;
@@ -175,19 +175,19 @@ public class LT_POL_EMP_COVER {
 		PEC_TRAN_ID = pEC_TRAN_ID;
 	}
 
-	public Long getPEC_POL_TRAN_ID() {
+	public Integer getPEC_POL_TRAN_ID() {
 		return PEC_POL_TRAN_ID;
 	}
 
-	public void setPEC_POL_TRAN_ID(Long pEC_POL_TRAN_ID) {
+	public void setPEC_POL_TRAN_ID(Integer pEC_POL_TRAN_ID) {
 		PEC_POL_TRAN_ID = pEC_POL_TRAN_ID;
 	}
 
-	public Long getPEC_PEMP_TRAN_ID() {
+	public Integer getPEC_PEMP_TRAN_ID() {
 		return PEC_PEMP_TRAN_ID;
 	}
 
-	public void setPEC_PEMP_TRAN_ID(Long pEC_PEMP_TRAN_ID) {
+	public void setPEC_PEMP_TRAN_ID(Integer pEC_PEMP_TRAN_ID) {
 		PEC_PEMP_TRAN_ID = pEC_PEMP_TRAN_ID;
 	}
 

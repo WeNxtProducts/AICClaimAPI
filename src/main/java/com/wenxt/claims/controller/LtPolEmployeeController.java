@@ -18,9 +18,9 @@ public class LtPolEmployeeController {
 	@Autowired
 	private LtPolEmployeeService polEmployeeService;
 	
-	@PostMapping("/save")
-	public String createPolicy(@RequestBody ProposalEntryRequest proposalEntryRequest) {
-		return polEmployeeService.createPolEmployee(proposalEntryRequest);
+	@PostMapping("/save/{tranId}")
+	public String createPolicy(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable Integer tranId) {
+		return polEmployeeService.createPolEmployee(proposalEntryRequest, tranId);
 	}
 	
 	@PostMapping("/polEmployeeUpdate/{polEmpId}")

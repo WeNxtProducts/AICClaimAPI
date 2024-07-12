@@ -1,5 +1,7 @@
 package com.wenxt.claims.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class ProposalEntryRequest {
 	
 	private FormFieldsDTO policyDetails;
@@ -8,8 +10,10 @@ public class ProposalEntryRequest {
 	
 	private FormFieldsDTO polBeneficiaryDetails;
 	
+	@JsonProperty("pol_riders")
 	private FormFieldsDTO polEmpCoverDetails;
 	
+	@JsonProperty("life_assured_details")
 	private FormFieldsDTO polEmployeeDetails;
 	
 	private FormFieldsDTO polBrokerDetails;

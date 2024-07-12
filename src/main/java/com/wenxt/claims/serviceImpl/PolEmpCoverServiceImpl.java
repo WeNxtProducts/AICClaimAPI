@@ -48,7 +48,7 @@ public class PolEmpCoverServiceImpl implements PolEmpCoverService {
 	private LtPolEmpCoverRepository polEmpCoverRepo;
 
 	@Override
-	public String createPolEmpCover(ProposalEntryRequest proposalEntryRequest) {
+	public String createPolEmpCover(ProposalEntryRequest proposalEntryRequest, Integer tranId, Integer empTranId) {
 		JSONObject response = new JSONObject();
 		JSONObject data = new JSONObject();
 
@@ -66,6 +66,8 @@ public class PolEmpCoverServiceImpl implements PolEmpCoverService {
 			}
 
 			try {
+				polEmpCover.setPEC_PEMP_TRAN_ID(empTranId);
+				polEmpCover.setPEC_POL_TRAN_ID(tranId);
 				polEmpCover.setPEC_INS_DT(new Date(System.currentTimeMillis()));
 				LT_POL_EMP_COVER savedPolEmpCoverDetails = polEmpCoverRepo.save(polEmpCover);
 				response.put(statusCode, successCode);

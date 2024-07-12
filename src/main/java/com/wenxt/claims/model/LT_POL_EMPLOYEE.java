@@ -21,7 +21,7 @@ public class LT_POL_EMPLOYEE {
     private Long PEMP_TRAN_ID;
 
     @Column(name = "PEMP_POL_TRAN_ID", nullable = false)
-    private Long PEMP_POL_TRAN_ID;
+    private Integer PEMP_POL_TRAN_ID;
 
     @Column(name = "PEMP_ID", nullable = false, length = 60)
     private String PEMP_ID;
@@ -394,11 +394,11 @@ public class LT_POL_EMPLOYEE {
 		PEMP_TRAN_ID = pEMP_TRAN_ID;
 	}
 
-	public Long getPEMP_POL_TRAN_ID() {
+	public Integer getPEMP_POL_TRAN_ID() {
 		return PEMP_POL_TRAN_ID;
 	}
 
-	public void setPEMP_POL_TRAN_ID(Long pEMP_POL_TRAN_ID) {
+	public void setPEMP_POL_TRAN_ID(Integer pEMP_POL_TRAN_ID) {
 		PEMP_POL_TRAN_ID = pEMP_POL_TRAN_ID;
 	}
 

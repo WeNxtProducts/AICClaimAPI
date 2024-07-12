@@ -4,7 +4,7 @@ import com.wenxt.claims.model.ProposalEntryRequest;
 
 public interface LtPolEmployeeService {
 
-	String createPolEmployee(ProposalEntryRequest proposalEntryRequest);
+	String createPolEmployee(ProposalEntryRequest proposalEntryRequest, Integer tranId);
 
 	String updatePolEmployee(ProposalEntryRequest proposalEntryRequest, Integer polEmpId);
 

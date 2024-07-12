@@ -18,9 +18,10 @@ public class LtPolEmpCoverController {
 	@Autowired
 	private PolEmpCoverService polEmpCoverService;
 	
-	@PostMapping("/save")
-	public String createPolEmpCover(@RequestBody ProposalEntryRequest proposalEntryRequest) {
-		return polEmpCoverService.createPolEmpCover(proposalEntryRequest);
+	@PostMapping("/save/{tranId}/{emptranId}")
+	public String createPolEmpCover(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable Integer tranId, @PathVariable
+			 Integer emptranId) {
+		return polEmpCoverService.createPolEmpCover(proposalEntryRequest, tranId, emptranId);
 	}
 	
 	@PostMapping("/polEmpCoverUpdate/{polEmpCoverId}")

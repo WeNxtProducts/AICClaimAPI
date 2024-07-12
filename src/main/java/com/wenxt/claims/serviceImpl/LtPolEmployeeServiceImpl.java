@@ -49,7 +49,7 @@ public class LtPolEmployeeServiceImpl implements LtPolEmployeeService {
 	private LtPolEmployeeRepository polEmployeeRepo;
 
 	@Override
-	public String createPolEmployee(ProposalEntryRequest proposalEntryRequest) {
+	public String createPolEmployee(ProposalEntryRequest proposalEntryRequest, Integer tranId) {
 		JSONObject response = new JSONObject();
 		JSONObject data = new JSONObject();
 
@@ -68,6 +68,7 @@ public class LtPolEmployeeServiceImpl implements LtPolEmployeeService {
 
 			try {
 				polEmployee.setPEMP_INS_DT(new Date(System.currentTimeMillis()));
+				polEmployee.setPEMP_POL_TRAN_ID(tranId);
 				LT_POL_EMPLOYEE savedPolEmployeeDetails = polEmployeeRepo.save(polEmployee);
 				response.put(statusCode, successCode);
 				response.put(messageCode,

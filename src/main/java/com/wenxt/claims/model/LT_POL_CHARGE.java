@@ -21,7 +21,7 @@ public class LT_POL_CHARGE {
     private Long PCHRG_TRAN_ID;
 
     @Column(name = "PCHRG_POL_TRAN_ID")
-    private Long PCHRG_POL_TRAN_ID;
+    private Integer PCHRG_POL_TRAN_ID;
 
     @Column(name = "PCHRG_CODE")
     private String PCHRG_CODE;
@@ -103,11 +103,11 @@ public class LT_POL_CHARGE {
 		PCHRG_TRAN_ID = pCHRG_TRAN_ID;
 	}
 
-	public Long getPCHRG_POL_TRAN_ID() {
+	public Integer getPCHRG_POL_TRAN_ID() {
 		return PCHRG_POL_TRAN_ID;
 	}
 
-	public void setPCHRG_POL_TRAN_ID(Long pCHRG_POL_TRAN_ID) {
+	public void setPCHRG_POL_TRAN_ID(Integer pCHRG_POL_TRAN_ID) {
 		PCHRG_POL_TRAN_ID = pCHRG_POL_TRAN_ID;
 	}
 

@@ -18,9 +18,9 @@ public class LtPolChargeController {
 	@Autowired
 	private LtPolChargeService polChargeService;
 	
-	@PostMapping("/save")
-	public String createPolCharge(@RequestBody ProposalEntryRequest proposalEntryRequest) {
-		return polChargeService.createPolCharge(proposalEntryRequest);
+	@PostMapping("/save/{tranId}")
+	public String createPolCharge(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable Integer tranId) {
+		return polChargeService.createPolCharge(proposalEntryRequest, tranId);
 	}
 	
 	@PostMapping("/polChargeUpdate/{polChargeId}")

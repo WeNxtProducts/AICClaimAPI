@@ -4,7 +4,7 @@ import com.wenxt.claims.model.ProposalEntryRequest;
 
 public interface LtPolChargeService {
 
-	String createPolCharge(ProposalEntryRequest proposalEntryRequest);
+	String createPolCharge(ProposalEntryRequest proposalEntryRequest, Integer tranId);
 
 	String updatePolCharge(ProposalEntryRequest proposalEntryRequest, Integer polBeneficiaryId);
 

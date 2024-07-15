@@ -21,7 +21,7 @@ public class LT_POL_BENEFICIARY {
     private Long PGBEN_TRAN_ID;
 
     @Column(name = "PGBEN_POL_TRAN_ID")
-    private Long PGBEN_POL_TRAN_ID;
+    private Integer PGBEN_POL_TRAN_ID;
 
     @Column(name = "PGBEN_PEMP_TRAN_ID")
     private Long PGBEN_PEMP_TRAN_ID;
@@ -121,11 +121,11 @@ public class LT_POL_BENEFICIARY {
 		PGBEN_TRAN_ID = pGBEN_TRAN_ID;
 	}
 
-	public Long getPGBEN_POL_TRAN_ID() {
+	public Integer getPGBEN_POL_TRAN_ID() {
 		return PGBEN_POL_TRAN_ID;
 	}
 
-	public void setPGBEN_POL_TRAN_ID(Long pGBEN_POL_TRAN_ID) {
+	public void setPGBEN_POL_TRAN_ID(Integer pGBEN_POL_TRAN_ID) {
 		PGBEN_POL_TRAN_ID = pGBEN_POL_TRAN_ID;
 	}
 

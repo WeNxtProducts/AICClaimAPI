@@ -50,7 +50,7 @@ public class LtPolDiscLoadServiceImpl implements LtPolDiscLoadService {
 	private LtPolDiscLoadRepository polDiscLoadRepo;
 
 	@Override
-	public String createPolDiscLoad(ProposalEntryRequest proposalEntryRequest) {
+	public String createPolDiscLoad(ProposalEntryRequest proposalEntryRequest, Integer tranId) {
 		JSONObject response = new JSONObject();
 		JSONObject data = new JSONObject();
 

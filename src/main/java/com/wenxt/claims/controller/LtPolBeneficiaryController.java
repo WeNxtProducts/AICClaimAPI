@@ -19,9 +19,9 @@ public class LtPolBeneficiaryController {
 	@Autowired
 	private LtPolBeneficiaryService polBeneficiaryService;
 	
-	@PostMapping("/save")
-	public String createPolBeneficiary(@RequestBody ProposalEntryRequest proposalEntryRequest) {
-		return polBeneficiaryService.createPolBeneficiary(proposalEntryRequest);
+	@PostMapping("/save/{tranId}")
+	public String createPolBeneficiary(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable Integer tranId) {
+		return polBeneficiaryService.createPolBeneficiary(proposalEntryRequest, tranId);
 	}
 	
 	@PostMapping("/polBeneficiaryUpdate/{polBeneficiaryId}")

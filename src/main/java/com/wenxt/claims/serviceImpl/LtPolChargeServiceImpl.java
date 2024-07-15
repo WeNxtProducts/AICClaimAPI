@@ -50,7 +50,7 @@ public class LtPolChargeServiceImpl implements LtPolChargeService {
 	private LtPolChargeRepository polChargeRepo;
 
 	@Override
-	public String createPolCharge(ProposalEntryRequest proposalEntryRequest) {
+	public String createPolCharge(ProposalEntryRequest proposalEntryRequest, Integer tranId) {
 		JSONObject response = new JSONObject();
 		JSONObject data = new JSONObject();
 
@@ -68,6 +68,7 @@ public class LtPolChargeServiceImpl implements LtPolChargeService {
 			}
 
 			try {
+				polCharge.setPCHRG_POL_TRAN_ID(tranId);
 				polCharge.setPCHRG_INS_DT(new Date(System.currentTimeMillis()));
 				LT_POL_CHARGE savedPolChargeDetails = polChargeRepo.save(polCharge);
 				response.put(statusCode, successCode);

@@ -18,9 +18,9 @@ public class LtPolDiscLoadController {
 	@Autowired
 	private LtPolDiscLoadService polDiscLoadService;
 	
-	@PostMapping("/save")
-	public String createPolBroketr(@RequestBody ProposalEntryRequest proposalEntryRequest) {
-		return polDiscLoadService.createPolDiscLoad(proposalEntryRequest);
+	@PostMapping("/save/{tranId}")
+	public String createPolBroketr(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable Integer tranId) {
+		return polDiscLoadService.createPolDiscLoad(proposalEntryRequest, tranId);
 	}
 	
 	@PostMapping("/polDiscLoadUpdate/{polDiscLoadId}")

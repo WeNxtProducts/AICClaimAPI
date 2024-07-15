@@ -6,8 +6,10 @@ public class ProposalEntryRequest {
 	
 	private FormFieldsDTO policyDetails;
 	
+	@JsonProperty("Charges")
 	private FormFieldsDTO polChargeDetails;
 	
+	@JsonProperty("benificiary")
 	private FormFieldsDTO polBeneficiaryDetails;
 	
 	@JsonProperty("pol_riders")
@@ -18,6 +20,7 @@ public class ProposalEntryRequest {
 	
 	private FormFieldsDTO polBrokerDetails;
 	
+	@JsonProperty("Discount_Loading")
 	private FormFieldsDTO polDiscLoad;
 	
 	@JsonProperty("medical_details")

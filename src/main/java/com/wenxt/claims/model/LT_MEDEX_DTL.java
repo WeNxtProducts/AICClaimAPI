@@ -17,28 +17,28 @@ public class LT_MEDEX_DTL {
     @Id
     @SequenceGenerator(name = "MedicalDetailsTranIdSeq", sequenceName = "MD_TRAN_ID_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MedicalDetailsTranIdSeq")
-    @Column(name = "MD_TRAN_ID", nullable = false)
+    @Column(name = "MD_TRAN_ID")
     private Long MD_TRAN_ID;
 
-    @Column(name = "MD_MH_TRAN_ID", nullable = false)
+    @Column(name = "MD_MH_TRAN_ID")
     private Integer MD_MH_TRAN_ID;
 
-    @Column(name = "MD_POL_TRAN_ID", nullable = false)
+    @Column(name = "MD_POL_TRAN_ID")
     private Integer MD_POL_TRAN_ID;
 
-    @Column(name = "MD_PEMP_TRAN_ID", nullable = false)
+    @Column(name = "MD_PEMP_TRAN_ID")
     private Integer MD_PEMP_TRAN_ID;
 
-    @Column(name = "MD_EXAM_CODE", nullable = false)
+    @Column(name = "MD_EXAM_CODE")
     private String MD_EXAM_CODE;
 
     @Column(name = "MD_STATUS")
     private String MD_STATUS;
 
-    @Column(name = "MD_INS_DT", nullable = false)
+    @Column(name = "MD_INS_DT")
     private Date MD_INS_DT;
 
-    @Column(name = "MD_INS_ID", nullable = false)
+    @Column(name = "MD_INS_ID")
     private String MD_INS_ID;
 
     @Column(name = "MD_MOD_DT")

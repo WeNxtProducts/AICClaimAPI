@@ -68,6 +68,7 @@ public class LtPolDiscLoadServiceImpl implements LtPolDiscLoadService {
 			}
 
 			try {
+				polDiscLoad.setPDL_POL_TRAN_ID(tranId);
 				polDiscLoad.setPDL_INS_DT(new Date(System.currentTimeMillis()));
 				LT_POL_DISCLOAD savedPolDiscLoadDetails = polDiscLoadRepo.save(polDiscLoad);
 				response.put(statusCode, successCode);

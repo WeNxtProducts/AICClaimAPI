@@ -2,7 +2,11 @@ package com.wenxt.claims.model;
 
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class FormFieldsDTO {
+	
+	@JsonProperty("formFields")
 	private Map<String, String> formFields;
 	private String label;
 

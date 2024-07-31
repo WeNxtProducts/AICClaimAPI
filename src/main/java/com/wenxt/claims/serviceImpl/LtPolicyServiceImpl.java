@@ -212,6 +212,7 @@ public class LtPolicyServiceImpl implements LtPolicyService{
 	
 	@Override
 	public String getPolicyByid(Integer policyId) throws Exception {
+		System.out.println("IN");
 		Map<String, Object> parametermap = new HashMap<String, Object>();
 		JSONObject inputObject = new JSONObject();
 		Optional<LT_POLICY> optionalUser = ltPolicyRepo.findById(policyId);

@@ -24,17 +24,17 @@ public class LtPolicyController {
 	}
 	
 	@PostMapping("/policyUpdate/{policy_id}")
-	public String updatePolicy(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable Integer policy_id) {
+	public String updatePolicy(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable("policy_id") Integer policy_id) {
 		return policyService.updatePolicy(proposalEntryRequest, policy_id);
 	}
 	
 	@PostMapping("/deletePolicy/{policy_id}")
-	public String deletePolicyByid(@PathVariable Integer policy_id) {
+	public String deletePolicyByid(@PathVariable("policy_id") Integer policy_id) {
 		return policyService.deletePolicyByid(policy_id);
 	}
 	
 	@PostMapping("/getPolicyByid")
-	public String getPolicyByid(@RequestParam Integer policyId) {
+	public String getPolicyByid(@RequestParam("policyId") Integer policyId) {
 		try {
 		return policyService.getPolicyByid(policyId);
 		}catch(Exception e) {

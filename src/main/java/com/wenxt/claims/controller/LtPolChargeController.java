@@ -19,22 +19,22 @@ public class LtPolChargeController {
 	private LtPolChargeService polChargeService;
 	
 	@PostMapping("/save/{tranId}")
-	public String createPolCharge(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable Integer tranId) {
+	public String createPolCharge(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable("tranId") Integer tranId) {
 		return polChargeService.createPolCharge(proposalEntryRequest, tranId);
 	}
 	
 	@PostMapping("/polChargeUpdate/{polChargeId}")
-	public String updatePolCharge(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable Integer polChargeId) {
+	public String updatePolCharge(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable("polChargeId") Integer polChargeId) {
 		return polChargeService.updatePolCharge(proposalEntryRequest, polChargeId);
 	}
 	
 	@PostMapping("/deletePolCharge/{polChargeId}")
-	public String deletePolCharge(@PathVariable Integer polChargeId) {
+	public String deletePolCharge(@PathVariable("polChargeId") Integer polChargeId) {
 		return polChargeService.deletePolChargeById(polChargeId);
 	}
 	
 	@PostMapping("/getPolChargeByid")
-	public String getLtClaimEstById(@RequestParam Integer polChargeId) {
+	public String getLtClaimEstById(@RequestParam("polChargeId") Integer polChargeId) {
 		try {
 		return polChargeService.getPolChargeById(polChargeId);
 		}catch(Exception e) {

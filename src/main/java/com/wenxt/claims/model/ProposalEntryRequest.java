@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ProposalEntryRequest {
 	
+	@JsonProperty("frontForm")
 	private FormFieldsDTO policyDetails;
 	
 	@JsonProperty("Charges")

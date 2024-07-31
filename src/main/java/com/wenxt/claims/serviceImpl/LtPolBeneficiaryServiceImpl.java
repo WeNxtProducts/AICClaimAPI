@@ -50,7 +50,7 @@ public class LtPolBeneficiaryServiceImpl implements LtPolBeneficiaryService {
 	private LtPolBeneficiaryRepository polBeneficiaryRepo;
 
 	@Override
-	public String createPolBeneficiary(ProposalEntryRequest proposalEntryRequest, Integer tranId) {
+	public String createPolBeneficiary(ProposalEntryRequest proposalEntryRequest, Integer tranId, Integer poltranId) {
 		JSONObject response = new JSONObject();
 		JSONObject data = new JSONObject();
 
@@ -69,6 +69,9 @@ public class LtPolBeneficiaryServiceImpl implements LtPolBeneficiaryService {
 
 			try {
 				polBeneficiary.setPGBEN_POL_TRAN_ID(tranId);
+				if(poltranId != null) {
+				polBeneficiary.setPGBEN_PEMP_TRAN_ID(poltranId);
+				}
 				polBeneficiary.setPGBEN_INS_DT(new Date(System.currentTimeMillis()));
 				LT_POL_BENEFICIARY savedPolBeneficiaryDetails = polBeneficiaryRepo.save(polBeneficiary);
 				response.put(statusCode, successCode);

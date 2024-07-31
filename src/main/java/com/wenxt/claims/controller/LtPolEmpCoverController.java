@@ -19,23 +19,23 @@ public class LtPolEmpCoverController {
 	private PolEmpCoverService polEmpCoverService;
 	
 	@PostMapping("/save/{tranId}/{emptranId}")
-	public String createPolEmpCover(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable Integer tranId, @PathVariable
+	public String createPolEmpCover(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable("tranId") Integer tranId, @PathVariable("emptranId")
 			 Integer emptranId) {
 		return polEmpCoverService.createPolEmpCover(proposalEntryRequest, tranId, emptranId);
 	}
 	
 	@PostMapping("/polEmpCoverUpdate/{polEmpCoverId}")
-	public String updatePolEmpCover(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable Integer polEmpCoverId) {
+	public String updatePolEmpCover(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable("polEmpCoverId") Integer polEmpCoverId) {
 		return polEmpCoverService.updatePolEmpCover(proposalEntryRequest, polEmpCoverId);
 	}
 	
 	@PostMapping("/deletePolEmpCover/{polEmpCoverId}")
-	public String deletePolEmpCover(@PathVariable Integer polEmpCoverId) {
+	public String deletePolEmpCover(@PathVariable("polEmpCoverId") Integer polEmpCoverId) {
 		return polEmpCoverService.deletePolEmpCoverById(polEmpCoverId);
 	}
 	
 	@PostMapping("/getPolEmpCoverByid")
-	public String getPolEmpCoverByid(@RequestParam Integer polEmpCoverId) {
+	public String getPolEmpCoverByid(@RequestParam("polEmpCoverId") Integer polEmpCoverId) {
 		try {
 		return polEmpCoverService.getPolEmpCoverByid(polEmpCoverId);
 		}catch(Exception e) {

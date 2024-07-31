@@ -24,7 +24,7 @@ public class LT_MEDEX_FEE_DTL {
     private Integer MFD_MH_TRAN_ID;
 
     @Column(name = "MFD_MD_TRAN_ID", nullable = false)
-    private Long MFD_MD_TRAN_ID;
+    private Integer MFD_MD_TRAN_ID;
 
     @Column(name = "MFD_FEE_CODE")
     private String MFD_FEE_CODE;
@@ -116,11 +116,11 @@ public class LT_MEDEX_FEE_DTL {
         this.MFD_MH_TRAN_ID = MFD_MH_TRAN_ID;
     }
 
-    public Long getMFD_MD_TRAN_ID() {
+    public Integer getMFD_MD_TRAN_ID() {
         return MFD_MD_TRAN_ID;
     }
 
-    public void setMFD_MD_TRAN_ID(Long MFD_MD_TRAN_ID) {
+    public void setMFD_MD_TRAN_ID(Integer MFD_MD_TRAN_ID) {
         this.MFD_MD_TRAN_ID = MFD_MD_TRAN_ID;
     }
 

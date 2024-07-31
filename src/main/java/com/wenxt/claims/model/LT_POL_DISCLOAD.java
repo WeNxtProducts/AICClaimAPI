@@ -22,7 +22,7 @@ public class LT_POL_DISCLOAD {
     private Long PDL_TRAN_ID;
 
     @Column(name = "PDL_POL_TRAN_ID")
-    private Long PDL_POL_TRAN_ID;
+    private Integer PDL_POL_TRAN_ID;
 
     @Column(name = "PDL_PEMP_TRAN_ID")
     private Long PDL_PEMP_TRAN_ID;
@@ -51,20 +51,14 @@ public class LT_POL_DISCLOAD {
     @Column(name = "PDL_RATE_PER")
     private Long PDL_RATE_PER;
 
-    @Column(name = "PDL_FC_DISC_LOAD_VALUE")
-    private BigDecimal PDL_FC_DISC_LOAD_VALUE;
-
-    @Column(name = "PDL_LC_DISC_LOAD_VALUE")
-    private BigDecimal PDL_LC_DISC_LOAD_VALUE;
+//    @Column(name = "PDL_FC_DISC_LOAD_VALUE")
+//    private BigDecimal PDL_FC_DISC_LOAD_VALUE;
+//
+//    @Column(name = "PDL_LC_DISC_LOAD_VALUE")
+//    private BigDecimal PDL_LC_DISC_LOAD_VALUE;
 
     @Column(name = "PDL_APPLY_UPTO_SRNO")
     private Integer PDL_APPLY_UPTO_SRNO;
-
-    @Column(name = "PDL_ORG_FC_DISC_LOAD_VALUE")
-    private BigDecimal PDL_ORG_FC_DISC_LOAD_VALUE;
-
-    @Column(name = "PDL_ORG_LC_DISC_LOAD_VALUE")
-    private BigDecimal PDL_ORG_LC_DISC_LOAD_VALUE;
 
     @Column(name = "PDL_DEL_FLAG")
     private String PDL_DEL_FLAG;
@@ -161,11 +155,11 @@ public class LT_POL_DISCLOAD {
 		PDL_TRAN_ID = pDL_TRAN_ID;
 	}
 
-	public Long getPDL_POL_TRAN_ID() {
+	public Integer getPDL_POL_TRAN_ID() {
 		return PDL_POL_TRAN_ID;
 	}
 
-	public void setPDL_POL_TRAN_ID(Long pDL_POL_TRAN_ID) {
+	public void setPDL_POL_TRAN_ID(Integer pDL_POL_TRAN_ID) {
 		PDL_POL_TRAN_ID = pDL_POL_TRAN_ID;
 	}
 
@@ -241,21 +235,21 @@ public class LT_POL_DISCLOAD {
 		PDL_RATE_PER = pDL_RATE_PER;
 	}
 
-	public BigDecimal getPDL_FC_DISC_LOAD_VALUE() {
-		return PDL_FC_DISC_LOAD_VALUE;
-	}
-
-	public void setPDL_FC_DISC_LOAD_VALUE(BigDecimal pDL_FC_DISC_LOAD_VALUE) {
-		PDL_FC_DISC_LOAD_VALUE = pDL_FC_DISC_LOAD_VALUE;
-	}
-
-	public BigDecimal getPDL_LC_DISC_LOAD_VALUE() {
-		return PDL_LC_DISC_LOAD_VALUE;
-	}
-
-	public void setPDL_LC_DISC_LOAD_VALUE(BigDecimal pDL_LC_DISC_LOAD_VALUE) {
-		PDL_LC_DISC_LOAD_VALUE = pDL_LC_DISC_LOAD_VALUE;
-	}
+//	public BigDecimal getPDL_FC_DISC_LOAD_VALUE() {
+//		return PDL_FC_DISC_LOAD_VALUE;
+//	}
+//
+//	public void setPDL_FC_DISC_LOAD_VALUE(BigDecimal pDL_FC_DISC_LOAD_VALUE) {
+//		PDL_FC_DISC_LOAD_VALUE = pDL_FC_DISC_LOAD_VALUE;
+//	}
+//
+//	public BigDecimal getPDL_LC_DISC_LOAD_VALUE() {
+//		return PDL_LC_DISC_LOAD_VALUE;
+//	}
+//
+//	public void setPDL_LC_DISC_LOAD_VALUE(BigDecimal pDL_LC_DISC_LOAD_VALUE) {
+//		PDL_LC_DISC_LOAD_VALUE = pDL_LC_DISC_LOAD_VALUE;
+//	}
 
 	public Integer getPDL_APPLY_UPTO_SRNO() {
 		return PDL_APPLY_UPTO_SRNO;
@@ -264,23 +258,7 @@ public class LT_POL_DISCLOAD {
 	public void setPDL_APPLY_UPTO_SRNO(Integer pDL_APPLY_UPTO_SRNO) {
 		PDL_APPLY_UPTO_SRNO = pDL_APPLY_UPTO_SRNO;
 	}
-
-	public BigDecimal getPDL_ORG_FC_DISC_LOAD_VALUE() {
-		return PDL_ORG_FC_DISC_LOAD_VALUE;
-	}
-
-	public void setPDL_ORG_FC_DISC_LOAD_VALUE(BigDecimal pDL_ORG_FC_DISC_LOAD_VALUE) {
-		PDL_ORG_FC_DISC_LOAD_VALUE = pDL_ORG_FC_DISC_LOAD_VALUE;
-	}
-
-	public BigDecimal getPDL_ORG_LC_DISC_LOAD_VALUE() {
-		return PDL_ORG_LC_DISC_LOAD_VALUE;
-	}
-
-	public void setPDL_ORG_LC_DISC_LOAD_VALUE(BigDecimal pDL_ORG_LC_DISC_LOAD_VALUE) {
-		PDL_ORG_LC_DISC_LOAD_VALUE = pDL_ORG_LC_DISC_LOAD_VALUE;
-	}
-
+	
 	public String getPDL_DEL_FLAG() {
 		return PDL_DEL_FLAG;
 	}

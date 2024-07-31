@@ -19,24 +19,24 @@ public class MedexFeeDtlController {
 	@Autowired
 	private MedExFeeDtlService feeDtlService;
 	
-	@PostMapping("/save/{tranId}/{emptranId}/{headertranId}")
-	public String saveMedExFeeDtl(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable Integer tranId, 
-			@PathVariable Integer emptranId, @PathVariable Integer headertranId) {
-		return feeDtlService.saveMedExFeeDtl(proposalEntryRequest, tranId, emptranId, headertranId);
+	@PostMapping("/save/{tranId}/{emptranId}")
+	public String saveMedExFeeDtl(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable("tranId") Integer tranId, 
+			@PathVariable("emptranId") Integer emptranId) {
+		return feeDtlService.saveMedExFeeDtl(proposalEntryRequest, tranId, emptranId);
 	}
 	
 	@PostMapping("/updateMedExFeeDtl/{tranId}")
-	public String updateMedExFeeDtl(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable Integer tranId) {
+	public String updateMedExFeeDtl(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable("tranId") Integer tranId) {
 		return feeDtlService.updateMedExFeeDtl(proposalEntryRequest, tranId);
 	}
 	
 	@PostMapping("/deleteMedDtl/{tranId}")
-	public String deleteMedicalDetails(@PathVariable Integer tranId) {
+	public String deleteMedicalDetails(@PathVariable("tranId") Integer tranId) {
 		return feeDtlService.deleteMedicalDetails(tranId);
 	}
 	
 	@GetMapping("/getMedDtl")
-	public String getMedicalDetails(@RequestParam Integer tranId) {
+	public String getMedicalDetails(@RequestParam("tranId") Integer tranId) {
 		try {
 		return feeDtlService.getMedicalDetails(tranId);
 		}catch(Exception e) {

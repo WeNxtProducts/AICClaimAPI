@@ -43,5 +43,15 @@ public class LtDocToDoListController {
 	public String deleteLtDocToDoList(@PathVariable Integer tranId) {
 		return ltDocToDoListService.deleteDocToDoList(tranId);
 	}
+	
+	@PostMapping("/statusFlagUpdate/{tranId}/{statusFlag}")
+	public String setStatusFlag(@PathVariable("tranId") Integer tranId, @PathVariable("statusFlag") String statusFlag) {
+		return ltDocToDoListService.updateStatusFlag(tranId, statusFlag);
+	}
+	
+	@PostMapping("/statusFlagBulkUpdate/{tranId}/{groupCode}/{statusFlag}")
+	public String statusFlagBulkUpdate(@PathVariable("tranId") Integer tranId, @PathVariable("groupCode") String groupCode, @PathVariable("statusFlag") String statusFlag) {
+		return ltDocToDoListService.statusFlagBulkUpdate(tranId, groupCode, statusFlag);
+	}
 
 }

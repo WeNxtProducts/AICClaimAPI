@@ -24,7 +24,7 @@ public class LT_POL_BENEFICIARY {
     private Integer PGBEN_POL_TRAN_ID;
 
     @Column(name = "PGBEN_PEMP_TRAN_ID")
-    private Long PGBEN_PEMP_TRAN_ID;
+    private Integer PGBEN_PEMP_TRAN_ID;
 
     @Column(name = "PGBEN_SR_NO")
     private Integer PGBEN_SR_NO;
@@ -38,8 +38,8 @@ public class LT_POL_BENEFICIARY {
     @Column(name = "PGBEN_BNF_NAME_BL")
     private String PGBEN_BNF_NAME_BL;
 
-    @Column(name = "PGBEN_PERC")
-    private Double PGBEN_PERC;
+    @Column(name = "PGBEN_SHARE_PERC")
+    private Double PGBEN_SHARE_PERC;
 
     @Column(name = "PGBEN_RELATION_CODE")
     private String PGBEN_RELATION_CODE;
@@ -129,11 +129,11 @@ public class LT_POL_BENEFICIARY {
 		PGBEN_POL_TRAN_ID = pGBEN_POL_TRAN_ID;
 	}
 
-	public Long getPGBEN_PEMP_TRAN_ID() {
+	public Integer getPGBEN_PEMP_TRAN_ID() {
 		return PGBEN_PEMP_TRAN_ID;
 	}
 
-	public void setPGBEN_PEMP_TRAN_ID(Long pGBEN_PEMP_TRAN_ID) {
+	public void setPGBEN_PEMP_TRAN_ID(Integer pGBEN_PEMP_TRAN_ID) {
 		PGBEN_PEMP_TRAN_ID = pGBEN_PEMP_TRAN_ID;
 	}
 
@@ -169,12 +169,12 @@ public class LT_POL_BENEFICIARY {
 		PGBEN_BNF_NAME_BL = pGBEN_BNF_NAME_BL;
 	}
 
-	public Double getPGBEN_PERC() {
-		return PGBEN_PERC;
+	public Double getPGBEN_SHARE_PERC() {
+		return PGBEN_SHARE_PERC;
 	}
 
-	public void setPGBEN_PERC(Double pGBEN_PERC) {
-		PGBEN_PERC = pGBEN_PERC;
+	public void setPGBEN_SHARE_PERC(Double PGBEN_SHARE_PERC) {
+		PGBEN_SHARE_PERC = PGBEN_SHARE_PERC;
 	}
 
 	public String getPGBEN_RELATION_CODE() {

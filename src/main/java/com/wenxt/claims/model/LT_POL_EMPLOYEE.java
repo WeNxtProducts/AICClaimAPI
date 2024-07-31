@@ -20,10 +20,10 @@ public class LT_POL_EMPLOYEE {
     @Column(name = "PEMP_TRAN_ID")
     private Long PEMP_TRAN_ID;
 
-    @Column(name = "PEMP_POL_TRAN_ID", nullable = false)
+    @Column(name = "PEMP_POL_TRAN_ID")
     private Integer PEMP_POL_TRAN_ID;
 
-    @Column(name = "PEMP_ID", nullable = false, length = 60)
+    @Column(name = "PEMP_ID")
     private String PEMP_ID;
 
     @Column(name = "PEMP_NAME")

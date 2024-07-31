@@ -4,8 +4,7 @@ import com.wenxt.claims.model.ProposalEntryRequest;
 
 public interface MedExFeeDtlService {
 
-	String saveMedExFeeDtl(ProposalEntryRequest proposalEntryRequest, Integer tranId, Integer emptranId,
-			Integer headertranId);
+	String saveMedExFeeDtl(ProposalEntryRequest proposalEntryRequest, Integer tranId, Integer emptranId);
 
 	String updateMedExFeeDtl(ProposalEntryRequest proposalEntryRequest, Integer tranId);
 

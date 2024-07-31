@@ -14,4 +14,8 @@ public interface LtDocToDoListService {
 
 	String deleteDocToDoList(Integer tranId);
 
+	String updateStatusFlag(Integer tranId, String statusFlag);
+
+	String statusFlagBulkUpdate(Integer tranId, String groupCode, String statusFlag);
+
 }

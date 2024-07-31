@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -16,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.wenxt.claims.model.LT_POL_CHARGE;
 import com.wenxt.claims.model.LT_POL_EMPLOYEE;
 import com.wenxt.claims.model.ProposalEntryRequest;
 import com.wenxt.claims.repository.LtPolEmployeeRepository;
@@ -67,6 +67,17 @@ public class LtPolEmployeeServiceImpl implements LtPolEmployeeService {
 			}
 
 			try {
+				List<LT_POL_EMPLOYEE> primaryEmployee = polEmployeeRepo.getPrimaryEmployee(tranId);
+				
+				if(primaryEmployee.size() >= 1 && proposalEntryRequest.getPolEmployeeDetails().getFormFields().get("PEMP_MEMBER_TYPE").equals("P")) {
+					response.put(statusCode, errorCode);
+					response.put(messageCode, "Primary Details Exists Already");
+					return response.toString();
+				}else if(primaryEmployee.size() == 0 && proposalEntryRequest.getPolEmployeeDetails().getFormFields().get("PEMP_MEMBER_TYPE").equals("S")) {
+					response.put(statusCode, errorCode);
+					response.put(messageCode, "Primary Details Is Mandatory");
+					return response.toString();
+				}
 				polEmployee.setPEMP_INS_DT(new Date(System.currentTimeMillis()));
 				polEmployee.setPEMP_POL_TRAN_ID(tranId);
 				LT_POL_EMPLOYEE savedPolEmployeeDetails = polEmployeeRepo.save(polEmployee);

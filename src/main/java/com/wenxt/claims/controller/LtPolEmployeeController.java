@@ -19,22 +19,22 @@ public class LtPolEmployeeController {
 	private LtPolEmployeeService polEmployeeService;
 	
 	@PostMapping("/save/{tranId}")
-	public String createPolicy(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable Integer tranId) {
+	public String createPolicy(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable("tranId") Integer tranId) {
 		return polEmployeeService.createPolEmployee(proposalEntryRequest, tranId);
 	}
 	
 	@PostMapping("/polEmployeeUpdate/{polEmpId}")
-	public String updatePolEmployee(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable Integer polEmpId) {
+	public String updatePolEmployee(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable("polEmpId") Integer polEmpId) {
 		return polEmployeeService.updatePolEmployee(proposalEntryRequest, polEmpId);
 	}
 	
 	@PostMapping("/deletePolEmployee/{polEmpId}")
-	public String deletePolEmployee(@PathVariable Integer polEmpId) {
+	public String deletePolEmployee(@PathVariable("polEmpId") Integer polEmpId) {
 		return polEmployeeService.deletePolEmployeeById(polEmpId);
 	}
 	
 	@PostMapping("/getPolEmployeeByid")
-	public String getPolEmployeeByid(@RequestParam Integer polEmpId) {
+	public String getPolEmployeeByid(@RequestParam("polEmpId") Integer polEmpId) {
 		try {
 		return polEmployeeService.getPolEmployeeByid(polEmpId);
 		}catch(Exception e) {

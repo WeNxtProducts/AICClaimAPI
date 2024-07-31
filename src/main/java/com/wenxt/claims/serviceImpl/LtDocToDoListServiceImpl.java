@@ -10,6 +10,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -249,6 +250,59 @@ public class LtDocToDoListServiceImpl implements LtDocToDoListService {
 			response.put(messageCode, "Error deleting record with ID " + tranId + ": " + e.getMessage());
 			return response.toString();
 		}
+	}
+
+	@Override
+	public String updateStatusFlag(Integer tranId, String statusFlag) {
+		JSONObject response = new JSONObject();
+		try {
+			Optional<LtDocTodoListStatus> optionalEntity = ltDocToDoListRepo.findById(tranId);
+
+			if (optionalEntity.isPresent()) {
+				LtDocTodoListStatus docToDoList = optionalEntity.get();
+				
+				docToDoList.setDTLS_APPR_STS(statusFlag);
+				
+				ltDocToDoListRepo.save(docToDoList);
+
+				response.put(statusCode, successCode);
+				response.put(messageCode, "Flag Details Updated Successfully");
+				return response.toString();
+			} else {
+				response.put(statusCode, errorCode);
+				response.put(messageCode, "Record with ID " + tranId + " not found");
+				return response.toString();
+			}
+		}catch(Exception e) {
+			response.put(statusCode, errorCode);
+			response.put(messageCode, e.getMessage());
+			
+			return response.toString();
+		}
+	}
+
+	@Override
+	public String statusFlagBulkUpdate(Integer tranId, String groupCode, String statusFlag) {
+		JSONObject response = new JSONObject();
+		
+		try {
+			List<LtDocTodoListStatus> checkListList = ltDocToDoListRepo.getCheckListList(tranId, groupCode);
+			if(checkListList.size() > 1) {
+				for(LtDocTodoListStatus docToDoListStatus : checkListList) {
+										
+					docToDoListStatus.setDTLS_APPR_STS(statusFlag);
+					
+					ltDocToDoListRepo.save(docToDoListStatus);
+				}
+				response.put(statusCode, successCode);
+				response.put(messageCode, "Status Flag Updated Successfully");
+			}
+		}catch(Exception e) {
+			response.put(statusCode, errorCode);
+			response.put(messageCode, e.getMessage());
+		}
+		
+		return response.toString();
 	}
 
 }

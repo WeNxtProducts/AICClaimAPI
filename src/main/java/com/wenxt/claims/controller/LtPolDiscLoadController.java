@@ -19,22 +19,22 @@ public class LtPolDiscLoadController {
 	private LtPolDiscLoadService polDiscLoadService;
 	
 	@PostMapping("/save/{tranId}")
-	public String createPolBroketr(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable Integer tranId) {
+	public String createPolBroketr(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable("tranId") Integer tranId) {
 		return polDiscLoadService.createPolDiscLoad(proposalEntryRequest, tranId);
 	}
 	
 	@PostMapping("/polDiscLoadUpdate/{polDiscLoadId}")
-	public String updatePolDiscLoad(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable Integer polDiscLoadId) {
+	public String updatePolDiscLoad(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable("polDiscLoadId") Integer polDiscLoadId) {
 		return polDiscLoadService.updatePolDiscLoad(proposalEntryRequest, polDiscLoadId);
 	}
 	
 	@PostMapping("/deletePolBroker/{polDiscLoadId}")
-	public String deletePolDiscLoad(@PathVariable Integer polDiscLoadId) {
+	public String deletePolDiscLoad(@PathVariable("polDiscLoadId") Integer polDiscLoadId) {
 		return polDiscLoadService.deletePolDiscLoadById(polDiscLoadId);
 	}
 	
 	@PostMapping("/getPolDiscLoadByid")
-	public String getPolDiscLoadByid(@RequestParam Integer polDiscLoadId) {
+	public String getPolDiscLoadByid(@RequestParam("polDiscLoadId") Integer polDiscLoadId) {
 		try {
 		return polDiscLoadService.getPolDiscLoadByid(polDiscLoadId);
 		}catch(Exception e) {

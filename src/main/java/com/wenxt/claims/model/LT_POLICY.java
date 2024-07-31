@@ -1,5 +1,6 @@
 package com.wenxt.claims.model;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 import jakarta.persistence.Column;
@@ -12,11 +13,11 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "LT_POLICY", schema = "LIFE_DEV")
-public class LT_POLICY {
-
+public class LT_POLICY implements Serializable{
+	 
     @Id
-    @SequenceGenerator(name = "PolicyTranIDSeq", sequenceName = "POL_TRAN_ID_SEQ", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PolicyTranIDSeq")
+    @SequenceGenerator(name = "PolicyTranIdSeq", sequenceName = "POL_TRAN_ID_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PolicyTranIdSeq")
     @Column(name = "POL_TRAN_ID")
     private Long POL_TRAN_ID;
 

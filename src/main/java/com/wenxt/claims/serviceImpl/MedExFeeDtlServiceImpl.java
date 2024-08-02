@@ -18,8 +18,6 @@ import org.springframework.stereotype.Service;
 
 import com.wenxt.claims.model.LT_MEDEX_DTL;
 import com.wenxt.claims.model.LT_MEDEX_FEE_DTL;
-import com.wenxt.claims.model.LT_POL_DISCLOAD;
-import com.wenxt.claims.model.LT_POL_EMPLOYEE;
 import com.wenxt.claims.model.ProposalEntryRequest;
 import com.wenxt.claims.repository.MedExDtlRepository;
 import com.wenxt.claims.repository.MedExFeeDtlRepository;

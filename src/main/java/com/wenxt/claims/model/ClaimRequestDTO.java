@@ -1,7 +1,5 @@
 package com.wenxt.claims.model;
 
-import java.util.Date;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ClaimRequestDTO {

@@ -17,10 +17,8 @@ import java.util.Optional;
 
 import org.apache.http.HttpHost;
 import org.elasticsearch.action.DocWriteResponse.Result;
-import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.action.support.master.AcknowledgedResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
@@ -48,7 +46,6 @@ import com.wenxt.claims.repository.LtClaimHdrRepo;
 import com.wenxt.claims.repository.LtClaimRepository;
 import com.wenxt.claims.service.LtClaimService;
 
-import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
 import jakarta.persistence.Column;
 import jakarta.servlet.http.HttpServletRequest;
 

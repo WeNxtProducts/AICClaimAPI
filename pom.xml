@@ -18,38 +18,38 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
-		
-				<!-- Dependency for Jasypt Encryption and Decryption-->
-		<dependency>      
-    		<groupId>com.github.ulisesbocchio</groupId>
-    		<artifactId>jasypt-spring-boot-starter</artifactId>
-    		<version>3.0.2</version> 
+
+		<!-- Dependency for Jasypt Encryption and Decryption-->
+		<dependency>
+			<groupId>com.github.ulisesbocchio</groupId>
+			<artifactId>jasypt-spring-boot-starter</artifactId>
+			<version>3.0.2</version>
 		</dependency>
 
-		           <!-- Dependency For Security & JWT Auth-->
- 		<dependency> 
-            <groupId>org.springframework.boot</groupId> 
-            <artifactId>spring-boot-starter-security</artifactId> 
-        </dependency>
-		 <dependency> 
-            <groupId>io.jsonwebtoken</groupId> 
-            <artifactId>jjwt-api</artifactId> 
-            <version>0.11.5</version> 
-        </dependency> 
-        <dependency> 
-            <groupId>io.jsonwebtoken</groupId> 
-            <artifactId>jjwt-impl</artifactId> 
-            <version>0.11.5</version> 
-        </dependency> 
-        <dependency> 
-            <groupId>io.jsonwebtoken</groupId> 
-            <artifactId>jjwt-jackson</artifactId> 
-            <version>0.11.5</version> 
-        </dependency>		
-        <dependency>
-    		<groupId>eu.bitwalker</groupId>
-    		<artifactId>UserAgentUtils</artifactId>
-    		<version>1.21</version>
+		<!-- Dependency For Security & JWT Auth-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>0.11.5</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>0.11.5</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>0.11.5</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.bitwalker</groupId>
+			<artifactId>UserAgentUtils</artifactId>
+			<version>1.21</version>
 		</dependency>
 
 		<dependency>
@@ -88,56 +88,65 @@
 			<artifactId>ojdbc11</artifactId>
 			<version>23.3.0.23.09</version> <!-- Use the correct version -->
 		</dependency>
-		
-				<dependency> 
-            <groupId>org.springframework.boot</groupId> 
-            <artifactId>spring-boot-starter-data-jpa</artifactId> 
-        </dependency>
-		<dependency>      
-    		<groupId>com.github.ulisesbocchio</groupId>
-    		<artifactId>jasypt-spring-boot-starter</artifactId>
-    		<version>3.0.2</version> 
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.github.ulisesbocchio</groupId>
+			<artifactId>jasypt-spring-boot-starter</artifactId>
+			<version>3.0.2</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
-		
+
 		<dependency>
-    		<groupId>org.springframework.data</groupId>
-    		<artifactId>spring-data-elasticsearch</artifactId>
-		</dependency>
-		
-		<dependency>
-    		<groupId>org.elasticsearch.client</groupId>
-    		<artifactId>elasticsearch-rest-high-level-client</artifactId>
-    		<version>7.17.0</version> <!-- or the version compatible with your Elasticsearch server -->
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-elasticsearch</artifactId>
 		</dependency>
 
 		<dependency>
-    		<groupId>org.elasticsearch.plugin</groupId>
-    		<artifactId>x-pack-sql-jdbc</artifactId>
-    		<version>7.17.1</version> <!-- Use the appropriate version -->
+			<groupId>org.elasticsearch.client</groupId>
+			<artifactId>elasticsearch-rest-high-level-client</artifactId>
+			<version>7.17.0</version> <!-- or the version compatible with your
+			Elasticsearch server -->
+		</dependency>
+
+		<dependency>
+			<groupId>org.elasticsearch.plugin</groupId>
+			<artifactId>x-pack-sql-jdbc</artifactId>
+			<version>7.17.1</version> <!-- Use the appropriate version -->
+		</dependency>
+
+		<dependency>
+			<groupId>org.flowable</groupId>
+			<artifactId>flowable-spring-boot-starter</artifactId>
+			<version>7.0.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.flowable</groupId>
+			<artifactId>flowable-event-registry-spring</artifactId>
+			<version>7.0.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.flowable</groupId>
+			<artifactId>flowable-event-registry</artifactId>
+			<version>7.0.1</version>
 		</dependency>
 		
+				
 		<dependency>
     		<groupId>org.flowable</groupId>
-    		<artifactId>flowable-spring-boot-starter</artifactId>
+    		<artifactId>flowable-engine</artifactId>
     		<version>7.0.1</version>
 		</dependency>
-	
-		<dependency>
-    		<groupId>org.flowable</groupId>
-    		<artifactId>flowable-event-registry-spring</artifactId>
-    		<version>7.0.1</version>
-		</dependency>
-		
-		<dependency>
-    		<groupId>org.flowable</groupId>
-    		<artifactId>flowable-event-registry</artifactId>
-    		<version>7.0.1</version>
-		</dependency>
+
 	</dependencies>
 
 	<build>

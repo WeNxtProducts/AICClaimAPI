@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import com.wenxt.claims.model.ClaimsRequestDTO;
 import com.wenxt.claims.model.LT_CLAIM_PAID;
-import com.wenxt.claims.model.LT_POL_CHARGE;
 import com.wenxt.claims.repository.LtClaimPaidRepository;
 import com.wenxt.claims.service.LtClaimPaidService;
 

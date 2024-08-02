@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.wenxt.claims.model.LT_POL_EMPLOYEE;
 import com.wenxt.claims.model.LT_RCPT_HDR;
 import com.wenxt.claims.model.ReceiptRequest;
 import com.wenxt.claims.repository.ReceiptHeaderRepository;

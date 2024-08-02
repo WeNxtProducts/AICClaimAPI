@@ -1,7 +1,5 @@
 package com.wenxt.claims.service;
 
-import java.sql.SQLException;
-
 import com.wenxt.claims.model.LT_CLAIM_PYMT;
 
 public interface LtClaimPymtService {

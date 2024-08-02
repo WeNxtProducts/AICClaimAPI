@@ -1,8 +1,5 @@
 package com.wenxt.claims.controller;
 
-import java.sql.SQLException;
-
-import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

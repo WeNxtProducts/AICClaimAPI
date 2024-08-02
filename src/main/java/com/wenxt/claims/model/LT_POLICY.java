@@ -680,6 +680,9 @@ public class LT_POLICY implements Serializable{
 
     @Column(name = "POL_COMP_CODE")
     private String POL_COMP_CODE;
+    
+    @Column(name = "POL_PROGRS_UPD")
+    private Integer POL_PROGRS_UPD = 0;
 
 	public Long getPOL_TRAN_ID() {
 		return POL_TRAN_ID;
@@ -2447,6 +2450,14 @@ public class LT_POLICY implements Serializable{
 
 	public void setPOL_COMP_CODE(String pOL_COMP_CODE) {
 		POL_COMP_CODE = pOL_COMP_CODE;
+	}
+
+	public Integer getPOL_PROGRS_UPD() {
+		return POL_PROGRS_UPD;
+	}
+
+	public void setPOL_PROGRS_UPD(Integer pOL_PROGRS_UPD) {
+		POL_PROGRS_UPD = pOL_PROGRS_UPD;
 	}
 
 }

@@ -6,15 +6,11 @@ import java.lang.reflect.Method;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import jakarta.persistence.Column;
-
-import org.joda.time.LocalDate;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +20,8 @@ import com.wenxt.claims.model.LT_POL_BENEFICIARY;
 import com.wenxt.claims.model.ProposalEntryRequest;
 import com.wenxt.claims.repository.LtPolBeneficiaryRepository;
 import com.wenxt.claims.service.LtPolBeneficiaryService;
+
+import jakarta.persistence.Column;
 
 @Service
 public class LtPolBeneficiaryServiceImpl implements LtPolBeneficiaryService {

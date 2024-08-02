@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.wenxt.claims.model.ClaimsRequestDTO;
 import com.wenxt.claims.service.LtClaimPaidService;
 
-import oracle.jdbc.proxy.annotation.Post;
-
 @RestController
 @RequestMapping("/claimPaid")
 public class LtClaimPaidController {

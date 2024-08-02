@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wenxt.claims.model.ClaimsRequestDTO;
-import com.wenxt.claims.service.LtClaimChargesService;
 import com.wenxt.claims.service.LtClaimCheckListService;
 
 @RestController

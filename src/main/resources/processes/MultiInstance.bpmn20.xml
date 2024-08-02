@@ -1,0 +1,31 @@
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  xmlns:flowable="http://flowable.org/bpmn"
+                  id="Definitions_1"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:process id="process_multi_instance" isExecutable="true">
+    <bpmn:startEvent id="startEvent" name="Start">
+      <bpmn:outgoing>flow1</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:sequenceFlow id="flow1" sourceRef="startEvent" targetRef="multiInstanceTask"/>
+
+    <bpmn:userTask id="multiInstanceTask" name="Multi-Instance Task" flowable:assignee="${assignee}">
+      <bpmn:incoming>flow1</bpmn:incoming>
+      <bpmn:outgoing>flow2</bpmn:outgoing>
+      <bpmn:multiInstanceLoopCharacteristics isSequential="false" 
+                                             flowable:collection="assignees"
+                                             flowable:elementVariable="assignee"/>
+    </bpmn:userTask>
+
+    <bpmn:sequenceFlow id="flow2" sourceRef="multiInstanceTask" targetRef="endEvent"/>
+
+    <bpmn:endEvent id="endEvent" name="End">
+      <bpmn:incoming>flow2</bpmn:incoming>
+    </bpmn:endEvent>
+  </bpmn:process>
+</bpmn:definitions>

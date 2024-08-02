@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.wenxt.claims.model.ClaimsRequestDTO;
-import com.wenxt.claims.model.LT_CLAIM_CHARGES;
 import com.wenxt.claims.model.LT_CLAIM_ESTIMATE;
 import com.wenxt.claims.repository.LtClaimEstimateRepository;
 import com.wenxt.claims.service.LtClaimCoverDtlsService;

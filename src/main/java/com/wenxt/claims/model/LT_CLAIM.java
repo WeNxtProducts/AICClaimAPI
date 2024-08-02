@@ -1,5 +1,4 @@
 package com.wenxt.claims.model;
-import java.math.BigDecimal;
 import java.util.Date;
 
 import jakarta.persistence.Column;

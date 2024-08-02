@@ -14,7 +14,6 @@ import com.wenxt.claims.model.ClaimsRequestDTO;
 import com.wenxt.claims.service.LtClaimService;
 
 import jakarta.servlet.http.HttpServletRequest;
-import oracle.jdbc.proxy.annotation.Post;
 
 @RestController
 @RequestMapping("/ltclaim")

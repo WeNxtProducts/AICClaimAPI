@@ -3,10 +3,13 @@ package com.wenxt.claims.serviceImpl;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.sql.Date;
+import java.util.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +29,7 @@ import org.flowable.task.api.history.HistoricTaskInstanceQuery;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.expression.ParseException;
 import org.springframework.stereotype.Service;
 
 import com.wenxt.claims.model.LT_POLICY;
@@ -86,12 +90,13 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 			if (proposalEntryRequest.getPolicyDetails() != null) {
 				fieldMaps.put("frontForm", proposalEntryRequest.getPolicyDetails().getFormFields());
 				fieldMaps.put("frontForm", proposalEntryRequest.getInParams());
-			} else {
-				fieldMaps.put("frontForm", proposalEntryRequest.getPolicyDetails().getFormFields());
-			}
-			for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
-				setPolicyFields(policy, LT_POLICY.class, entry.getValue());
-			}
+				for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
+					setPolicyFields(policy, LT_POLICY.class, entry.getValue());
+				}
+			} 
+//			for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
+//				setPolicyFields(policy, LT_POLICY.class, entry.getValue());
+//			}
 
 			try {
 				Map<String, Object> variables = new HashMap<>();
@@ -144,6 +149,7 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 
 	private void setPolicyField(Object policy, Class<?> clazz, String key, String value) throws Exception {
 		try {
+			System.out.println(value);
 			Field field = clazz.getDeclaredField(key);
 			field.setAccessible(true);
 			Class<?> fieldType = field.getType();
@@ -166,9 +172,9 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 		} else if (fieldType.equals(Short.class) && value.isEmpty() == false && value != null) {
 			return Short.parseShort(value);
 		} else if (fieldType.equals(LocalDateTime.class) && value.isEmpty() == false && value != null) {
-			return dateTimeConverter(value, fieldType);
+			return dateTimeConverter(value);
 		} else if (fieldType.equals(Date.class) && value.isEmpty() == false && value != null) {
-			return dateTimeConverter(value, fieldType);
+			return dateConverter(value);
 		} else if (fieldType.equals(Long.class) && value.isEmpty() == false && value != null) {
 			return Long.parseLong(value);
 		} else {
@@ -176,28 +182,34 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 		}
 	}
 
-	private <T> T dateTimeConverter(String dateString, Class<T> type) {
-		SimpleDateFormat dateFormat;
-		if (type.equals(Date.class)) {
-			dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		} else if (type.equals(Timestamp.class)) {
-			dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		} else {
-			throw new IllegalArgumentException("Unsupported date type: " + type);
-		}
-
+	public Object dateConverter(String value) {
+		String dateStr = value;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = null;
 		try {
-			Date parsedDate = (Date) dateFormat.parse(dateString);
-			if (type.equals(Date.class)) {
-				return type.cast(parsedDate);
-			} else if (type.equals(Timestamp.class)) {
-				return type.cast(new Timestamp(parsedDate.getTime()));
-			}
-		} catch (Exception e) {
+			date = (Date) sdf.parse(dateStr);
+		} catch (ParseException | java.text.ParseException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		return null;
+		return date;
+	}
+
+	private Object dateTimeConverter(String value) {
+		String dateString = value;
+		if (value.length() > 10) {
+			dateString = value.substring(0, 10);
+		}
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalTime defaultTime = LocalTime.of(0, 0, 0);
+		LocalDate localDate = LocalDate.parse(dateString, formatter);
+		LocalDateTime dateTime = LocalDateTime.of(localDate, defaultTime);
+		String formattedDateTime = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+		DateTimeFormatter formatters = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		LocalDateTime parsedDateTime = LocalDateTime.parse(formattedDateTime, formatters);
+		return parsedDateTime;
 	}
 
 	@Override
@@ -216,23 +228,23 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 				}
 
 				try {
-					Map<String, Object> variables = new HashMap<>();
-					variables.put("instance", policy);
-					variables.put("queryId", 159);
-					variables.put("class", LT_POLICY.class.getName());
-					String authorizationHeader = request.getHeader("Authorization");
-					String token = authorizationHeader.substring(7).trim();
+//					Map<String, Object> variables = new HashMap<>();
+//					variables.put("instance", policy);
+//					variables.put("queryId", 159);
+//					variables.put("class", LT_POLICY.class.getName());
+//					String authorizationHeader = request.getHeader("Authorization");
+//					String token = authorizationHeader.substring(7).trim();
+//
+//					variables.put("token", token);
+//					variables.put("process", "create");
+//					ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("TestProcess",
+//							variables);
 
-					variables.put("token", token);
-					variables.put("process", "create");
-					ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("TestProcess",
-							variables);
-
-					Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+//					Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
 //					policy = (LT_POLICY) runtimeService.getVariable(processInstance.getId(), "instance");
-					Map<String, Object> taskVariables = new HashMap<>();
-					taskVariables.put("decision", "yes");
-					taskService.complete(task.getId(), taskVariables);
+//					Map<String, Object> taskVariables = new HashMap<>();
+//					taskVariables.put("decision", "yes");
+//					taskService.complete(task.getId(), taskVariables);
 
 					LT_POLICY savedPolicyDetails = ltPolicyRepo.save(policy);
 					response.put(statusCode, successCode);

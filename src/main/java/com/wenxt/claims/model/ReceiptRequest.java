@@ -9,6 +9,9 @@ public class ReceiptRequest {
 	
 	@JsonProperty("receiptProcess")
 	public FormFieldsDTO receiptProcess;
+	
+	@JsonProperty("installHdr")
+	public FormFieldsDTO installHdr;
 
 	public FormFieldsDTO getReceiptHeader() {
 		return receiptHeader;
@@ -24,6 +27,14 @@ public class ReceiptRequest {
 
 	public void setReceiptProcess(FormFieldsDTO receiptProcess) {
 		this.receiptProcess = receiptProcess;
+	}
+
+	public FormFieldsDTO getInstallHdr() {
+		return installHdr;
+	}
+
+	public void setInstallHdr(FormFieldsDTO installHdr) {
+		this.installHdr = installHdr;
 	}
 
 }

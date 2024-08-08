@@ -1,7 +1,7 @@
 package com.wenxt.claims.model;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -667,7 +667,7 @@ public class LT_POLICY implements Serializable{
     private Double POL_NO_YRS_PREM_PAID;
 
     @Column(name = "POL_PERIOD")
-    private Integer POL_PERIOD;
+    private Long POL_PERIOD;
 
     @Column(name = "POL_PLAN_CODE")
     private String POL_PLAN_CODE;
@@ -2412,11 +2412,11 @@ public class LT_POLICY implements Serializable{
 		POL_NO_YRS_PREM_PAID = pOL_NO_YRS_PREM_PAID;
 	}
 
-	public Integer getPOL_PERIOD() {
+	public Long getPOL_PERIOD() {
 		return POL_PERIOD;
 	}
 
-	public void setPOL_PERIOD(Integer pOL_PERIOD) {
+	public void setPOL_PERIOD(Long pOL_PERIOD) {
 		POL_PERIOD = pOL_PERIOD;
 	}
 

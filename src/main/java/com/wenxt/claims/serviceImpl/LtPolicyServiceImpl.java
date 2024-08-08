@@ -85,6 +85,7 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 			Map<String, Map<String, String>> fieldMaps = new HashMap<>();
 			if (proposalEntryRequest.getPolicyDetails() != null) {
 				fieldMaps.put("frontForm", proposalEntryRequest.getPolicyDetails().getFormFields());
+				fieldMaps.put("frontForm", proposalEntryRequest.getInParams());
 			} else {
 				fieldMaps.put("frontForm", proposalEntryRequest.getPolicyDetails().getFormFields());
 			}
@@ -101,13 +102,13 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 				String token = authorizationHeader.substring(7).trim();
 				variables.put("token", token);
 				variables.put("process", "create");
-				ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("TestProcess", variables);
-
-				Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
-//				policy = (LT_POLICY) runtimeService.getVariable(processInstance.getId(), "instance");
-				Map<String, Object> taskVariables = new HashMap<>();
-				taskVariables.put("decision", "yes");
-				taskService.complete(task.getId(), taskVariables);
+//				ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("TestProcess", variables);
+//
+//				Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+////				policy = (LT_POLICY) runtimeService.getVariable(processInstance.getId(), "instance");
+//				Map<String, Object> taskVariables = new HashMap<>();
+//				taskVariables.put("decision", "yes");
+//				taskService.complete(task.getId(), taskVariables);
 
 				LT_POLICY savedPolicyDetails = ltPolicyRepo.save(policy);
 				response.put(statusCode, successCode);

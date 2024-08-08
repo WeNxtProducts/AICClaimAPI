@@ -1,11 +1,16 @@
 package com.wenxt.claims.model;
 
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ProposalEntryRequest {
 	
 	@JsonProperty("frontForm")
 	private FormFieldsDTO policyDetails;
+	
+	@JsonProperty("inParams")
+	private Map<String, String> inParams;
 	
 	@JsonProperty("Charges")
 	private FormFieldsDTO polChargeDetails;
@@ -33,6 +38,14 @@ public class ProposalEntryRequest {
 
 	public void setPolicyDetails(FormFieldsDTO policyDetails) {
 		this.policyDetails = policyDetails;
+	}
+
+	public Map<String, String> getInParams() {
+		return inParams;
+	}
+
+	public void setInParams(Map<String, String> inParams) {
+		this.inParams = inParams;
 	}
 
 	public FormFieldsDTO getPolChargeDetails() {

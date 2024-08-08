@@ -83,5 +83,10 @@ public class LtPolicyController {
 	public String updateFreezeFlag(@RequestParam String flag, @RequestParam Integer tranId) {
 		return policyService.updateFreezeFlag(flag, tranId);
 	}
+	
+	@PostMapping("/onSubmit")
+	public String onSubmit(@RequestParam Integer tranId, HttpServletRequest request) {
+		return policyService.onSubmit(tranId, request);
+	}
 
 }

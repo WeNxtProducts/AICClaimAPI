@@ -1,0 +1,26 @@
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  xmlns:flowable="http://flowable.org/bpmn"
+                  id="Definitions_1"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+                  
+    <bpmn:process id="proposal_forwarding" isExecutable="true">  
+        <bpmn:startEvent id="startEvent" name="Start">
+            <bpmn:outgoing>submitProposal</bpmn:outgoing>
+        </bpmn:startEvent>
+        
+        <bpmn:sequenceFlow id="submitProposal" sourceRef="startEvent" targetRef="proposalForwarding"/>
+        
+        <bpmn:serviceTask id="proposalForwarding" name="Proposal Forwardings" flowable:class="com.wenxt.claims.model.ProposalForwarding">
+            <bpmn:incoming>forwarding</bpmn:incoming>
+            <bpmn:outgoing>multiInstanceTask</bpmn:outgoing>
+        </bpmn:serviceTask>
+        
+        <bpmn:endEvent id="endEvent" name="End">
+            <bpmn:incoming>assignUsers</bpmn:incoming>
+        </bpmn:endEvent>
+    </bpmn:process>
+</bpmn:definitions>

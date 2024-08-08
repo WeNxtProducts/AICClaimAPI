@@ -18,6 +18,7 @@ import org.flowable.engine.ProcessEngine;
 import org.flowable.engine.ProcessEngines;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
+import org.flowable.engine.history.HistoricActivityInstance;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
 import org.flowable.task.api.TaskQuery;
@@ -358,6 +359,7 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 		for (Task task : tasks) {
 			System.out.println("Task ID: " + task.getId() + ", Task Name: " + task.getName() + ", Assignee Name: "
 					+ task.getAssignee());
+			System.out.println("VARIABLES: " + task.getProcessVariables());
 		}
 		return null;
 	}
@@ -508,6 +510,51 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 			response.put(messageCode, e.getMessage());
 			return response.toString();
 		}
+	}
+
+	@Override
+	public String onSubmit(Integer tranId, HttpServletRequest request) {
+		JSONObject response = new JSONObject();
+		try {
+			ProcessInstance existingProcessInstance = runtimeService.createProcessInstanceQuery()
+					.processDefinitionKey("proposal_forwarding").variableValueEquals("ID", tranId).singleResult();
+
+			if (existingProcessInstance != null) {
+				System.out.println("Process instance already exists with ID: " + existingProcessInstance.getId());
+			} else {
+				String header = request.getHeader("Authorization");
+				String token = null;
+				if (header != null && header.startsWith("Bearer ")) {
+					token = header.substring(7);
+				}
+				Map<String, Object> variables = new HashMap<>();
+				variables.put("ID", tranId);
+				variables.put("Token", token);
+
+				ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("proposal_forwarding",
+						variables);
+
+				Map<String, Object> executionVariables = processInstance.getProcessVariables();
+				variables.put("assignees", executionVariables.get("assignee"));
+
+				ProcessInstance existingMultiProcessInstance = runtimeService.createProcessInstanceQuery()
+						.processDefinitionKey("process_multi_instance").variableValueEquals("ID", tranId)
+						.singleResult();
+				if (existingMultiProcessInstance != null) {
+					runtimeService.setVariable(existingMultiProcessInstance.getProcessInstanceId(), "assignees",
+							variables);
+				} else {
+					ProcessInstance multiProcessInstance = runtimeService
+							.startProcessInstanceByKey("process_multi_instance", variables);
+				}
+				response.put(statusCode, successCode);
+				response.put(messageCode, "Data Submitted Successfully");
+			}
+		} catch (Exception e) {
+			response.put(statusCode, errorCode);
+			response.put(messageCode, e.getMessage());
+		}
+		return response.toString();
 	}
 
 }

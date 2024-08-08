@@ -30,4 +30,6 @@ public interface LtPolicyService {
 
 	String updateFreezeFlag(String flag, Integer tranId);
 
+	String onSubmit(Integer tranId, HttpServletRequest request);
+
 }

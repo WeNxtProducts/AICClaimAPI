@@ -82,13 +82,15 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 	public String createPolicy(ProposalEntryRequest proposalEntryRequest, HttpServletRequest request) {
 		JSONObject response = new JSONObject();
 		JSONObject data = new JSONObject();
-
 		try {
 			LT_POLICY policy = new LT_POLICY();
 
 			Map<String, Map<String, String>> fieldMaps = new HashMap<>();
 			if (proposalEntryRequest.getPolicyDetails() != null) {
 				fieldMaps.put("frontForm", proposalEntryRequest.getPolicyDetails().getFormFields());
+				for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
+					setPolicyFields(policy, LT_POLICY.class, entry.getValue());
+				}
 				fieldMaps.put("frontForm", proposalEntryRequest.getInParams());
 				for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
 					setPolicyFields(policy, LT_POLICY.class, entry.getValue());
@@ -107,6 +109,13 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 				String token = authorizationHeader.substring(7).trim();
 				variables.put("token", token);
 				variables.put("process", "create");
+				
+				AuthRequest authRequest = jwtService.getLoggedInDetails(token);
+				
+				
+				policy.setPOL_DIVN_CODE(authRequest.getDivision());
+				policy.setPOL_DEPT_CODE(authRequest.getDepartment());
+				policy.setPOL_COMP_CODE(authRequest.getCompany());
 //				ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("TestProcess", variables);
 //
 //				Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
@@ -149,7 +158,6 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 
 	private void setPolicyField(Object policy, Class<?> clazz, String key, String value) throws Exception {
 		try {
-			System.out.println(value);
 			Field field = clazz.getDeclaredField(key);
 			field.setAccessible(true);
 			Class<?> fieldType = field.getType();

@@ -31,6 +31,9 @@ public class ProposalEntryRequest {
 	
 	@JsonProperty("medical_details")
 	private FormFieldsDTO medicalDetails;
+	
+	@JsonProperty("Conditions")
+	private FormFieldsDTO Conditions;
 
 	public FormFieldsDTO getPolicyDetails() {
 		return policyDetails;
@@ -102,6 +105,14 @@ public class ProposalEntryRequest {
 
 	public void setMedicalDetails(FormFieldsDTO medicalDetails) {
 		this.medicalDetails = medicalDetails;
+	}
+
+	public FormFieldsDTO getConditions() {
+		return Conditions;
+	}
+
+	public void setConditions(FormFieldsDTO conditions) {
+		Conditions = conditions;
 	}
 
 }

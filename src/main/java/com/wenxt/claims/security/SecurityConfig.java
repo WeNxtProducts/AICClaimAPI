@@ -94,6 +94,8 @@ public class SecurityConfig {
 				.and()
 				.authorizeHttpRequests().requestMatchers("/receiptProcess/**").authenticated() 
 				.and()
+				.authorizeHttpRequests().requestMatchers("/condition/**").authenticated() 
+				.and()
 				.sessionManagement() 
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS) 
 				.and() 

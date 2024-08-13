@@ -152,7 +152,6 @@ public class LtClaimServiceImpl implements LtClaimService {
 			headers.set("Authorization", "Bearer " + token);
 			HttpEntity<ProcedureInput> requestEntity = new HttpEntity<>(input, headers);
 			ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, requestEntity, String.class);
-			System.out.println(responseEntity.getBody());
 			JSONObject dataObj = new JSONObject();
 			dataObj.put("Id", savedClaimDetails.getCH_TRAN_ID());
 			LtClaimHdr claimHdrDetails = ltClaimHdrRepo.getById(savedClaimDetails.getCH_TRAN_ID());

@@ -30,7 +30,6 @@ public class ProposalForwarding implements JavaDelegate {
 
 	@Override
 	public void execute(DelegateExecution execution) {
-		System.out.println("DELEGATE");
 		String token = (String) execution.getVariable("Token");
 		
 		Map<String, Object> queryParams = new HashMap<>();

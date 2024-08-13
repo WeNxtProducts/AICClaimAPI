@@ -2,12 +2,16 @@ package com.wenxt.claims.serviceImpl;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.sql.Date;
+import java.util.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
+import org.springframework.expression.ParseException;
 import org.springframework.stereotype.Service;
 
 import com.wenxt.claims.service.CommonService;
@@ -46,9 +50,9 @@ public class CommonServiceImpl implements CommonService {
 		} else if (fieldType.equals(Short.class) && value.isEmpty() == false && value != null) {
 			return Short.parseShort(value);
 		} else if (fieldType.equals(LocalDateTime.class) && value.isEmpty() == false && value != null) {
-			return dateTimeConverter(value, fieldType);
+			return dateTimeConverter(value);
 		} else if (fieldType.equals(Date.class) && value.isEmpty() == false && value != null) {
-			return dateTimeConverter(value, fieldType);
+			return dateConverter(value);
 		} else if (fieldType.equals(Long.class) && value.isEmpty() == false && value != null) {
 			return Long.parseLong(value);
 		} else {
@@ -56,28 +60,34 @@ public class CommonServiceImpl implements CommonService {
 		}
 	}
 
-	private <T> T dateTimeConverter(String dateString, Class<T> type) {
-		SimpleDateFormat dateFormat;
-		if (type.equals(Date.class)) {
-			dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		} else if (type.equals(Timestamp.class)) {
-			dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		} else {
-			throw new IllegalArgumentException("Unsupported date type: " + type);
-		}
-
+	public Object dateConverter(String value) {
+		String dateStr = value;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = null;
 		try {
-			Date parsedDate = (Date) dateFormat.parse(dateString);
-			if (type.equals(Date.class)) {
-				return type.cast(parsedDate);
-			} else if (type.equals(Timestamp.class)) {
-				return type.cast(new Timestamp(parsedDate.getTime()));
-			}
-		} catch (Exception e) {
+			date = (Date) sdf.parse(dateStr);
+		} catch (ParseException | java.text.ParseException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		return null;
+		return date;
+	}
+
+	private Object dateTimeConverter(String value) {
+		String dateString = value;
+		if (value.length() > 10) {
+			dateString = value.substring(0, 10);
+		}
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalTime defaultTime = LocalTime.of(0, 0, 0);
+		LocalDate localDate = LocalDate.parse(dateString, formatter);
+		LocalDateTime dateTime = LocalDateTime.of(localDate, defaultTime);
+		String formattedDateTime = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+		DateTimeFormatter formatters = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		LocalDateTime parsedDateTime = LocalDateTime.parse(formattedDateTime, formatters);
+		return parsedDateTime;
 	}
 
 }

@@ -10,8 +10,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -26,11 +28,17 @@ import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
 import org.flowable.task.api.TaskQuery;
 import org.flowable.task.api.history.HistoricTaskInstanceQuery;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.expression.ParseException;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.wenxt.claims.model.LT_POLICY;
 import com.wenxt.claims.model.ProposalEntryRequest;
@@ -82,6 +90,9 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 	public String createPolicy(ProposalEntryRequest proposalEntryRequest, HttpServletRequest request) {
 		JSONObject response = new JSONObject();
 		JSONObject data = new JSONObject();
+		
+		String authorizationHeader = request.getHeader("Authorization");
+		String token = authorizationHeader.substring(7).trim();
 		try {
 			LT_POLICY policy = new LT_POLICY();
 
@@ -89,7 +100,42 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 			if (proposalEntryRequest.getPolicyDetails() != null) {
 				fieldMaps.put("frontForm", proposalEntryRequest.getPolicyDetails().getFormFields());
 				for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
-					setPolicyFields(policy, LT_POLICY.class, entry.getValue());
+					Map<String, String> policyDetailsMap = entry.getValue();
+
+					Map<String, Object> queryParams = new HashMap<>();
+					queryParams.put("CustCode", policyDetailsMap.get("POL_CUST_CODE"));
+					
+					Map<String, Object> body = new HashMap<>();
+					body.put("queryParams", queryParams);
+
+					JSONObject jsonBody = new JSONObject(body);
+					String requestBody = jsonBody.toString();
+					
+					String url = "http://localhost:8098/common/getMapQuery?queryId=185";
+					HttpHeaders headers = new HttpHeaders();
+					RestTemplate restTemplate = new RestTemplate();
+					headers.setContentType(MediaType.APPLICATION_JSON);
+					headers.set("Authorization", "Bearer " + token);
+					HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
+					ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, requestEntity, String.class);
+					
+					JSONObject object = new JSONObject(responseEntity.getBody());
+
+					JSONArray jsonArray = (JSONArray) object.getJSONArray("Data");
+					List<String> values = new ArrayList<>();
+					for (int i = 0; i < jsonArray.length(); i++) {
+						Iterator<String> keys = ((JSONObject) jsonArray.get(i)).keys();
+						while (keys.hasNext()) { 
+							String key = keys.next();
+							Object value = ((JSONObject) jsonArray.get(i)).get(key);
+							policyDetailsMap.put(key, value.toString());
+
+//							values.add(value.toString());
+						}
+					}
+					
+					
+					setPolicyFields(policy, LT_POLICY.class, policyDetailsMap);
 				}
 				fieldMaps.put("frontForm", proposalEntryRequest.getInParams());
 				for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
@@ -105,17 +151,28 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 				variables.put("instance", policy);
 				variables.put("queryId", 158);
 				variables.put("class", LT_POLICY.class.getName());
-				String authorizationHeader = request.getHeader("Authorization");
-				String token = authorizationHeader.substring(7).trim();
 				variables.put("token", token);
 				variables.put("process", "create");
 				
 				AuthRequest authRequest = jwtService.getLoggedInDetails(token);
 				
-				
+				//setting divn, dept & company details
 				policy.setPOL_DIVN_CODE(authRequest.getDivision());
 				policy.setPOL_DEPT_CODE(authRequest.getDepartment());
 				policy.setPOL_COMP_CODE(authRequest.getCompany());
+				
+				//setting ins id & ins dt 
+				policy.setPOL_INS_DT(new Date(System.currentTimeMillis()));
+				policy.setPOL_INS_ID(authRequest.getUsername());
+				
+				//other values to be set while saving
+				policy.setPOL_ISSUE_DT(new Date(System.currentTimeMillis()));
+				policy.setPOL_LC_SA(policy.getPOL_FC_SA());
+				policy.setPOL_LC_ANN_SAL(policy.getPOL_FC_ANN_SAL());
+				
+//				policy.setPOL_CUST_ADDRESS_1(values.get(0));
+				
+				
 //				ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("TestProcess", variables);
 //
 //				Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();

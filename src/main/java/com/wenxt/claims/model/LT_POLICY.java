@@ -372,12 +372,6 @@ public class LT_POLICY implements Serializable{
     @Column(name = "POL_FAC_BASIS")
     private Integer POL_FAC_BASIS;
 
-    @Column(name = "POLH_O_TOT_NET_RATE")
-    private Double POLH_O_TOT_NET_RATE;
-
-    @Column(name = "POLH_N_TOT_NET_RATE")
-    private Double POLH_N_TOT_NET_RATE;
-
     @Column(name = "POL_EMP_SUMMARY_YN")
     private String POL_EMP_SUMMARY_YN;
 
@@ -686,6 +680,9 @@ public class LT_POLICY implements Serializable{
     
     @Column(name = "POL_AGENT_CODE")
     private String POL_AGENT_CODE;
+    
+    @Column(name = "POL_ASSR_CUST_FLAG")
+    private String POL_ASSR_CUST_FLAG;
 
 	public Long getPOL_TRAN_ID() {
 		return POL_TRAN_ID;
@@ -1631,22 +1628,6 @@ public class LT_POLICY implements Serializable{
 		POL_FAC_BASIS = pOL_FAC_BASIS;
 	}
 
-	public Double getPOLH_O_TOT_NET_RATE() {
-		return POLH_O_TOT_NET_RATE;
-	}
-
-	public void setPOLH_O_TOT_NET_RATE(Double pOLH_O_TOT_NET_RATE) {
-		POLH_O_TOT_NET_RATE = pOLH_O_TOT_NET_RATE;
-	}
-
-	public Double getPOLH_N_TOT_NET_RATE() {
-		return POLH_N_TOT_NET_RATE;
-	}
-
-	public void setPOLH_N_TOT_NET_RATE(Double pOLH_N_TOT_NET_RATE) {
-		POLH_N_TOT_NET_RATE = pOLH_N_TOT_NET_RATE;
-	}
-
 	public String getPOL_EMP_SUMMARY_YN() {
 		return POL_EMP_SUMMARY_YN;
 	}
@@ -2469,6 +2450,14 @@ public class LT_POLICY implements Serializable{
 
 	public void setPOL_AGENT_CODE(String pOL_AGENT_CODE) {
 		POL_AGENT_CODE = pOL_AGENT_CODE;
+	}
+
+	public String getPOL_ASSR_CUST_FLAG() {
+		return POL_ASSR_CUST_FLAG;
+	}
+
+	public void setPOL_ASSR_CUST_FLAG(String pOL_ASSR_CUST_FLAG) {
+		POL_ASSR_CUST_FLAG = pOL_ASSR_CUST_FLAG;
 	}
 
 }

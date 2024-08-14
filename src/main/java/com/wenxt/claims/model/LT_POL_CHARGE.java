@@ -94,6 +94,9 @@ public class LT_POL_CHARGE {
 
     @Column(name = "PCHRG_PRORATE_REFN_YN")
     private String PCHRG_PRORATE_REFN_YN;
+    
+    @Column(name = "PCHRG_APPLY_PERIOD")
+    private String PCHRG_APPLY_PERIOD;
 
 	public Long getPCHRG_TRAN_ID() {
 		return PCHRG_TRAN_ID;
@@ -301,6 +304,14 @@ public class LT_POL_CHARGE {
 
 	public void setPCHRG_PRORATE_REFN_YN(String pCHRG_PRORATE_REFN_YN) {
 		PCHRG_PRORATE_REFN_YN = pCHRG_PRORATE_REFN_YN;
+	}
+
+	public String getPCHRG_APPLY_PERIOD() {
+		return PCHRG_APPLY_PERIOD;
+	}
+
+	public void setPCHRG_APPLY_PERIOD(String pCHRG_APPLY_PERIOD) {
+		PCHRG_APPLY_PERIOD = pCHRG_APPLY_PERIOD;
 	}
 
 }

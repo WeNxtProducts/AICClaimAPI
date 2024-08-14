@@ -39,7 +39,7 @@ public class LT_POL_BENEFICIARY {
     private String PGBEN_BNF_NAME_BL;
 
     @Column(name = "PGBEN_SHARE_PERC")
-    private Double PGBEN_SHARE_PERC;
+    private Integer PGBEN_SHARE_PERC;
 
     @Column(name = "PGBEN_RELATION_CODE")
     private String PGBEN_RELATION_CODE;
@@ -169,11 +169,11 @@ public class LT_POL_BENEFICIARY {
 		PGBEN_BNF_NAME_BL = pGBEN_BNF_NAME_BL;
 	}
 
-	public Double getPGBEN_SHARE_PERC() {
+	public Integer getPGBEN_SHARE_PERC() {
 		return PGBEN_SHARE_PERC;
 	}
 
-	public void setPGBEN_SHARE_PERC(Double PGBEN_SHARE_PERC) {
+	public void setPGBEN_SHARE_PERC(Integer PGBEN_SHARE_PERC) {
 		PGBEN_SHARE_PERC = PGBEN_SHARE_PERC;
 	}
 

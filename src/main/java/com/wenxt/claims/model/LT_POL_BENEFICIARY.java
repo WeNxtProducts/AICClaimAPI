@@ -2,6 +2,8 @@ package com.wenxt.claims.model;
 
 import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -39,6 +41,7 @@ public class LT_POL_BENEFICIARY {
     private String PGBEN_BNF_NAME_BL;
 
     @Column(name = "PGBEN_SHARE_PERC")
+    @JsonProperty("PGBEN_SHARE_PERC")
     private Integer PGBEN_SHARE_PERC;
 
     @Column(name = "PGBEN_RELATION_CODE")
@@ -112,6 +115,9 @@ public class LT_POL_BENEFICIARY {
 
     @Column(name = "PGBEN_REC_TYPE")
     private String PGBEN_REC_TYPE;
+    
+    @Column(name = "PGBEN_BNF_CODE")
+    private String PGBEN_BNF_CODE;
 
 	public Long getPGBEN_TRAN_ID() {
 		return PGBEN_TRAN_ID;
@@ -173,8 +179,8 @@ public class LT_POL_BENEFICIARY {
 		return PGBEN_SHARE_PERC;
 	}
 
-	public void setPGBEN_SHARE_PERC(Integer PGBEN_SHARE_PERC) {
-		PGBEN_SHARE_PERC = PGBEN_SHARE_PERC;
+	public void setPGBEN_SHARE_PERC(Integer pGBEN_SHARE_PERC) {
+		PGBEN_SHARE_PERC = pGBEN_SHARE_PERC;
 	}
 
 	public String getPGBEN_RELATION_CODE() {
@@ -367,6 +373,14 @@ public class LT_POL_BENEFICIARY {
 
 	public void setPGBEN_REC_TYPE(String pGBEN_REC_TYPE) {
 		PGBEN_REC_TYPE = pGBEN_REC_TYPE;
+	}
+
+	public String getPGBEN_BNF_CODE() {
+		return PGBEN_BNF_CODE;
+	}
+
+	public void setPGBEN_BNF_CODE(String pGBEN_BNF_CODE) {
+		PGBEN_BNF_CODE = pGBEN_BNF_CODE;
 	}
 
 }

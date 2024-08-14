@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.wenxt.claims.model.ProposalEntryRequest;
 import com.wenxt.claims.service.LtPolEmployeeService;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/polEmployee")
 public class LtPolEmployeeController {
@@ -19,13 +21,13 @@ public class LtPolEmployeeController {
 	private LtPolEmployeeService polEmployeeService;
 	
 	@PostMapping("/save/{tranId}")
-	public String createPolicy(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable("tranId") Integer tranId) {
-		return polEmployeeService.createPolEmployee(proposalEntryRequest, tranId);
+	public String createPolicy(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable("tranId") Integer tranId, HttpServletRequest request) {
+		return polEmployeeService.createPolEmployee(proposalEntryRequest, tranId, request);
 	}
 	
 	@PostMapping("/polEmployeeUpdate/{polEmpId}")
-	public String updatePolEmployee(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable("polEmpId") Integer polEmpId) {
-		return polEmployeeService.updatePolEmployee(proposalEntryRequest, polEmpId);
+	public String updatePolEmployee(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable("polEmpId") Integer polEmpId, HttpServletRequest request) {
+		return polEmployeeService.updatePolEmployee(proposalEntryRequest, polEmpId, request);
 	}
 	
 	@PostMapping("/deletePolEmployee/{polEmpId}")

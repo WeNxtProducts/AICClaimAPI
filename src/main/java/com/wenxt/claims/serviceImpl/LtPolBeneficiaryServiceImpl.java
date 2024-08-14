@@ -6,7 +6,10 @@ import java.lang.reflect.Method;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -14,14 +17,18 @@ import java.util.Optional;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.expression.ParseException;
 import org.springframework.stereotype.Service;
 
 import com.wenxt.claims.model.LT_POL_BENEFICIARY;
 import com.wenxt.claims.model.ProposalEntryRequest;
 import com.wenxt.claims.repository.LtPolBeneficiaryRepository;
+import com.wenxt.claims.security.AuthRequest;
+import com.wenxt.claims.security.JwtService;
 import com.wenxt.claims.service.LtPolBeneficiaryService;
 
 import jakarta.persistence.Column;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 public class LtPolBeneficiaryServiceImpl implements LtPolBeneficiaryService {
@@ -46,12 +53,19 @@ public class LtPolBeneficiaryServiceImpl implements LtPolBeneficiaryService {
 	
 	@Autowired
 	private LtPolBeneficiaryRepository polBeneficiaryRepo;
+	
+	@Autowired
+	private JwtService jwtService;
 
 	@Override
-	public String createPolBeneficiary(ProposalEntryRequest proposalEntryRequest, Integer tranId, Integer poltranId) {
+	public String createPolBeneficiary(ProposalEntryRequest proposalEntryRequest, Integer tranId, Integer poltranId, HttpServletRequest request) {
 		JSONObject response = new JSONObject();
 		JSONObject data = new JSONObject();
 
+		String authorizationHeader = request.getHeader("Authorization");
+		String token = authorizationHeader.substring(7).trim();
+		
+		AuthRequest userDetails = jwtService.getLoggedInDetails(token);
 		try {
 			LT_POL_BENEFICIARY polBeneficiary = new LT_POL_BENEFICIARY();
 			
@@ -66,10 +80,13 @@ public class LtPolBeneficiaryServiceImpl implements LtPolBeneficiaryService {
 			}
 
 			try {
+				polBeneficiary.setPGBEN_INS_ID(userDetails.getUsername());
 				polBeneficiary.setPGBEN_POL_TRAN_ID(tranId);
 				if(poltranId != null) {
 				polBeneficiary.setPGBEN_PEMP_TRAN_ID(poltranId);
 				}
+				
+				System.out.println(polBeneficiary.getPGBEN_SHARE_PERC());
 				polBeneficiary.setPGBEN_INS_DT(new Date(System.currentTimeMillis()));
 				LT_POL_BENEFICIARY savedPolBeneficiaryDetails = polBeneficiaryRepo.save(polBeneficiary);
 				response.put(statusCode, successCode);
@@ -119,9 +136,9 @@ public class LtPolBeneficiaryServiceImpl implements LtPolBeneficiaryService {
 		} else if (fieldType.equals(Short.class) && value.isEmpty() == false && value != null) {
 			return Short.parseShort(value);
 		} else if (fieldType.equals(LocalDateTime.class) && value.isEmpty() == false && value != null) {
-			return dateTimeConverter(value, fieldType);
+			return dateTimeConverter(value);
 		} else if (fieldType.equals(Date.class) && value.isEmpty() == false && value != null) {
-			return dateTimeConverter(value, fieldType);
+			return dateConverter(value);
 		} else if (fieldType.equals(Long.class) && value.isEmpty() == false && value != null) {
 			return Long.parseLong(value);
 		} else {
@@ -129,34 +146,44 @@ public class LtPolBeneficiaryServiceImpl implements LtPolBeneficiaryService {
 		}
 	}
 
-	private Object dateTimeConverter(String dateString, Class<?> type) {
-		SimpleDateFormat dateFormat;
-		if (type.equals(Date.class)) {
-			dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		} else if (type.equals(Timestamp.class)) {
-			dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		} else {
-			throw new IllegalArgumentException("Unsupported date type: " + type);
-		}
- 
+	public Object dateConverter(String value) {
+		String dateStr = value;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = null;
 		try {
-			Date parsedDate = (Date) dateFormat.parse(dateString);
-			if (type.equals(Date.class)) {
-				return type.cast(parsedDate);
-			} else if (type.equals(Timestamp.class)) {
-				return type.cast(new Timestamp(parsedDate.getTime()));
-			}
-		} catch (Exception e) {
+			date = (Date) sdf.parse(dateStr);
+		} catch (ParseException | java.text.ParseException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
- 
-		return null;
+
+		return date;
+	}
+
+	private Object dateTimeConverter(String value) {
+		String dateString = value;
+		if (value.length() > 10) {
+			dateString = value.substring(0, 10);
+		}
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalTime defaultTime = LocalTime.of(0, 0, 0);
+		LocalDate localDate = LocalDate.parse(dateString, formatter);
+		LocalDateTime dateTime = LocalDateTime.of(localDate, defaultTime);
+		String formattedDateTime = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+		DateTimeFormatter formatters = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		LocalDateTime parsedDateTime = LocalDateTime.parse(formattedDateTime, formatters);
+		return parsedDateTime;
 	}
 
 	@Override
-	public String updatePolBeneficiary(ProposalEntryRequest proposalEntryRequest, Integer polBeneficiaryId) {
+	public String updatePolBeneficiary(ProposalEntryRequest proposalEntryRequest, Integer polBeneficiaryId, HttpServletRequest request) {
 		JSONObject response = new JSONObject();
 
+		String authorizationHeader = request.getHeader("Authorization");
+		String token = authorizationHeader.substring(7).trim();
+		
+		AuthRequest userDetails = jwtService.getLoggedInDetails(token);
 		try {
 			Optional<LT_POL_BENEFICIARY> optionalUser = polBeneficiaryRepo.findById(polBeneficiaryId);
 			LT_POL_BENEFICIARY polBeneficiary = optionalUser.get();
@@ -168,6 +195,7 @@ public class LtPolBeneficiaryServiceImpl implements LtPolBeneficiaryService {
 				}
 
 				try {
+					polBeneficiary.setPGBEN_MOD_ID(userDetails.getUsername());
 					polBeneficiary.setPGBEN_MOD_DT(new Date(System.currentTimeMillis()));
 					LT_POL_BENEFICIARY savedPolChargeDetails = polBeneficiaryRepo.save(polBeneficiary);
 					response.put(statusCode, successCode);

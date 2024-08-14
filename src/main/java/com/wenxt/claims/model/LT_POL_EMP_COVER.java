@@ -1,6 +1,6 @@
 package com.wenxt.claims.model;
 
-import java.sql.Date;
+import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,6 +28,9 @@ public class LT_POL_EMP_COVER {
 
     @Column(name = "PEC_COVER_CODE")
     private String PEC_COVER_CODE;
+    
+    @Column(name = "PEC_PERIOD")
+    private Integer PEC_PERIOD;
 
     @Column(name = "PEC_FC_SA")
     private Double PEC_FC_SA;
@@ -166,6 +169,9 @@ public class LT_POL_EMP_COVER {
 
     @Column(name = "PEC_PPD_DEPN_APPL_YN")
     private String PEC_PPD_DEPN_APPL_YN;
+    
+    @Column(name = "PEC_PREM_PAY_YRS")
+    private Integer PEC_PREM_PAY_YRS;
 
 	public Long getPEC_TRAN_ID() {
 		return PEC_TRAN_ID;
@@ -565,6 +571,22 @@ public class LT_POL_EMP_COVER {
 
 	public void setPEC_PPD_DEPN_APPL_YN(String pEC_PPD_DEPN_APPL_YN) {
 		PEC_PPD_DEPN_APPL_YN = pEC_PPD_DEPN_APPL_YN;
+	}
+
+	public Integer getPEC_PERIOD() {
+		return PEC_PERIOD;
+	}
+
+	public void setPEC_PERIOD(Integer pEC_PERIOD) {
+		PEC_PERIOD = pEC_PERIOD;
+	}
+
+	public Integer getPEC_PREM_PAY_YRS() {
+		return PEC_PREM_PAY_YRS;
+	}
+
+	public void setPEC_PREM_PAY_YRS(Integer pEC_PREM_PAY_YRS) {
+		PEC_PREM_PAY_YRS = pEC_PREM_PAY_YRS;
 	}
 
 }

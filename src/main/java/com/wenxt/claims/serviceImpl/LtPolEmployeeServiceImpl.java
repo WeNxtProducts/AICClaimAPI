@@ -3,10 +3,10 @@ package com.wenxt.claims.serviceImpl;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,9 +20,12 @@ import org.springframework.stereotype.Service;
 import com.wenxt.claims.model.LT_POL_EMPLOYEE;
 import com.wenxt.claims.model.ProposalEntryRequest;
 import com.wenxt.claims.repository.LtPolEmployeeRepository;
+import com.wenxt.claims.security.AuthRequest;
+import com.wenxt.claims.security.JwtService;
 import com.wenxt.claims.service.LtPolEmployeeService;
 
 import jakarta.persistence.Column;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 public class LtPolEmployeeServiceImpl implements LtPolEmployeeService {
@@ -47,12 +50,19 @@ public class LtPolEmployeeServiceImpl implements LtPolEmployeeService {
 	
 	@Autowired
 	private LtPolEmployeeRepository polEmployeeRepo;
+	
+	@Autowired
+	private JwtService jwtService;
 
 	@Override
-	public String createPolEmployee(ProposalEntryRequest proposalEntryRequest, Integer tranId) {
+	public String createPolEmployee(ProposalEntryRequest proposalEntryRequest, Integer tranId, HttpServletRequest request) {
 		JSONObject response = new JSONObject();
 		JSONObject data = new JSONObject();
 
+		String authorizationHeader = request.getHeader("Authorization");
+		String token = authorizationHeader.substring(7).trim();
+		
+		AuthRequest userDetails = jwtService.getLoggedInDetails(token);
 		try {
 			LT_POL_EMPLOYEE polEmployee = new LT_POL_EMPLOYEE();
 			
@@ -79,7 +89,11 @@ public class LtPolEmployeeServiceImpl implements LtPolEmployeeService {
 					return response.toString();
 				}
 				polEmployee.setPEMP_INS_DT(new Date(System.currentTimeMillis()));
+				polEmployee.setPEMP_INS_ID(userDetails.getUsername());
+				polEmployee.setPEMP_LC_SA(polEmployee.getPEMP_FC_SA());
 				polEmployee.setPEMP_POL_TRAN_ID(tranId);
+				polEmployee.setPEMP_HEIGHT_UNIT("Cms");
+				polEmployee.setPEMP_WEIGHT_UNIT("Kg");
 				LT_POL_EMPLOYEE savedPolEmployeeDetails = polEmployeeRepo.save(polEmployee);
 				response.put(statusCode, successCode);
 				response.put(messageCode,
@@ -163,9 +177,13 @@ public class LtPolEmployeeServiceImpl implements LtPolEmployeeService {
 	}
 
 	@Override
-	public String updatePolEmployee(ProposalEntryRequest proposalEntryRequest, Integer polEmpId) {
+	public String updatePolEmployee(ProposalEntryRequest proposalEntryRequest, Integer polEmpId, HttpServletRequest request) {
 		JSONObject response = new JSONObject();
 
+		String authorizationHeader = request.getHeader("Authorization");
+		String token = authorizationHeader.substring(7).trim();
+		
+		AuthRequest userDetails = jwtService.getLoggedInDetails(token);
 		try {
 			Optional<LT_POL_EMPLOYEE> optionalUser = polEmployeeRepo.findById(polEmpId);
 			LT_POL_EMPLOYEE polEmployee = optionalUser.get();
@@ -177,6 +195,7 @@ public class LtPolEmployeeServiceImpl implements LtPolEmployeeService {
 				}
 
 				try {
+					polEmployee.setPEMP_MOD_ID(userDetails.getUsername());
 					polEmployee.setPEMP_MOD_DT(new Date(System.currentTimeMillis()));
 					LT_POL_EMPLOYEE savedPolEmployeeDetails = polEmployeeRepo.save(polEmployee);
 					response.put(statusCode, successCode);

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.wenxt.claims.model.ProposalEntryRequest;
 import com.wenxt.claims.service.LtPolBeneficiaryService;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/polBeneficiary")
 public class LtPolBeneficiaryController {
@@ -21,13 +23,13 @@ public class LtPolBeneficiaryController {
 	private LtPolBeneficiaryService polBeneficiaryService;
 	
 	@PostMapping({"/save/{tranId}", "/save/{tranId}/{poltranId}"})
-	public String createPolBeneficiary(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable("tranId") Integer tranId, @PathVariable("poltranId") Optional<Integer> poltranId) {
-		return polBeneficiaryService.createPolBeneficiary(proposalEntryRequest, tranId, poltranId.orElse(null));
+	public String createPolBeneficiary(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable("tranId") Integer tranId, @PathVariable("poltranId") Optional<Integer> poltranId, HttpServletRequest request) {
+		return polBeneficiaryService.createPolBeneficiary(proposalEntryRequest, tranId, poltranId.orElse(null), request);
 	}
 	
 	@PostMapping("/polBeneficiaryUpdate/{polBeneficiaryId}")
-	public String updatePolBeneficiary(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable("polBeneficiaryId") Integer polBeneficiaryId) {
-		return polBeneficiaryService.updatePolBeneficiary(proposalEntryRequest, polBeneficiaryId);
+	public String updatePolBeneficiary(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable("polBeneficiaryId") Integer polBeneficiaryId, HttpServletRequest request) {
+		return polBeneficiaryService.updatePolBeneficiary(proposalEntryRequest, polBeneficiaryId, request);
 	}
 	
 	@PostMapping("/deletePolBeneficiary/{polBeneficiaryId}")

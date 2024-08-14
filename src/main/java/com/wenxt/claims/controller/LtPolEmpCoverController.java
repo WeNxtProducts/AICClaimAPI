@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.wenxt.claims.model.ProposalEntryRequest;
 import com.wenxt.claims.service.PolEmpCoverService;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/polEmpCover")
 public class LtPolEmpCoverController {
@@ -20,13 +22,13 @@ public class LtPolEmpCoverController {
 	
 	@PostMapping("/save/{tranId}/{emptranId}")
 	public String createPolEmpCover(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable("tranId") Integer tranId, @PathVariable("emptranId")
-			 Integer emptranId) {
-		return polEmpCoverService.createPolEmpCover(proposalEntryRequest, tranId, emptranId);
+			 Integer emptranId, HttpServletRequest request) {
+		return polEmpCoverService.createPolEmpCover(proposalEntryRequest, tranId, emptranId, request);
 	}
 	
 	@PostMapping("/polEmpCoverUpdate/{polEmpCoverId}")
-	public String updatePolEmpCover(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable("polEmpCoverId") Integer polEmpCoverId) {
-		return polEmpCoverService.updatePolEmpCover(proposalEntryRequest, polEmpCoverId);
+	public String updatePolEmpCover(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable("polEmpCoverId") Integer polEmpCoverId, HttpServletRequest request) {
+		return polEmpCoverService.updatePolEmpCover(proposalEntryRequest, polEmpCoverId, request);
 	}
 	
 	@PostMapping("/deletePolEmpCover/{polEmpCoverId}")

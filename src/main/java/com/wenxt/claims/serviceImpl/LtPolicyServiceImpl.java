@@ -3,8 +3,6 @@ package com.wenxt.claims.serviceImpl;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Date;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,6 +10,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -23,7 +22,6 @@ import org.flowable.engine.ProcessEngine;
 import org.flowable.engine.ProcessEngines;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
-import org.flowable.engine.history.HistoricActivityInstance;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
 import org.flowable.task.api.TaskQuery;
@@ -88,6 +86,7 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 
 	@Override
 	public String createPolicy(ProposalEntryRequest proposalEntryRequest, HttpServletRequest request) {
+		
 		JSONObject response = new JSONObject();
 		JSONObject data = new JSONObject();
 		
@@ -129,8 +128,6 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 							String key = keys.next();
 							Object value = ((JSONObject) jsonArray.get(i)).get(key);
 							policyDetailsMap.put(key, value.toString());
-
-//							values.add(value.toString());
 						}
 					}
 					
@@ -145,8 +142,6 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 //			for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
 //				setPolicyFields(policy, LT_POLICY.class, entry.getValue());
 //			}
-
-			try {
 				Map<String, Object> variables = new HashMap<>();
 				variables.put("instance", policy);
 				variables.put("queryId", 158);
@@ -169,10 +164,45 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 				policy.setPOL_ISSUE_DT(new Date(System.currentTimeMillis()));
 				policy.setPOL_LC_SA(policy.getPOL_FC_SA());
 				policy.setPOL_LC_ANN_SAL(policy.getPOL_FC_ANN_SAL());
+				policy.setPOL_SA_EXCH_RATE(1);
+				policy.setPOL_CUST_EXCH_RATE(1);
+				policy.setPOL_CUST_CURR_CODE(policy.getPOL_SA_CURR_CODE());
+				if(policy.getPOL_ASSR_CUST_FLAG().equals("Yes")) {
+					policy.setPOL_ASSRD_REF_ID(policy.getPOL_CUST_REF_ID());
+				}else if(policy.getPOL_ASSR_CUST_FLAG().equals("No")){
+					Map<String, Object> queryParams = new HashMap<>();
+					queryParams.put("CustCode", policy.getPOL_ASSR_CODE());
+					
+					Map<String, Object> body = new HashMap<>();
+					body.put("queryParams", queryParams);
+
+					JSONObject jsonBody = new JSONObject(body);
+					String requestBody = jsonBody.toString();
+					
+					String url = "http://localhost:8098/common/getMapQuery?queryId=191";
+					HttpHeaders headers = new HttpHeaders();
+					RestTemplate restTemplate = new RestTemplate();
+					headers.setContentType(MediaType.APPLICATION_JSON);
+					headers.set("Authorization", "Bearer " + token);
+					HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
+					ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, requestEntity, String.class);
+					
+					JSONObject object = new JSONObject(responseEntity.getBody());
+
+					JSONArray jsonArray = (JSONArray) object.getJSONArray("Data");
+					List<String> values = new ArrayList<>();
+					for (int i = 0; i < jsonArray.length(); i++) {
+						Iterator<String> keys = ((JSONObject) jsonArray.get(i)).keys();
+						while (keys.hasNext()) { 
+							String key = keys.next();
+							Object value = ((JSONObject) jsonArray.get(i)).get(key);
+							policy.setPOL_ASSRD_REF_ID(value.toString());
+						}
+					}
+				}
 				
 //				policy.setPOL_CUST_ADDRESS_1(values.get(0));
-				
-				
+							
 //				ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("TestProcess", variables);
 //
 //				Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
@@ -193,11 +223,6 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 						savedPolicyDetails.getPOL_DS_TYPE() != null ? savedPolicyDetails.getPOL_DS_TYPE() : "");
 				data.put("PROPOSAL_NO", savedPolicyDetails.getPOL_NO() != null ? savedPolicyDetails.getPOL_NO() : "");
 				response.put(dataCode, data);
-			} catch (Exception e) {
-				e.printStackTrace();
-				response.put(statusCode, errorCode);
-				response.put(messageCode, "An error occurred: " + e.getMessage());
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.put("statusCode", errorCode);
@@ -282,6 +307,10 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 			HttpServletRequest request) {
 		JSONObject response = new JSONObject();
 
+		String authorizationHeader = request.getHeader("Authorization");
+		String token = authorizationHeader.substring(7).trim();
+		
+		AuthRequest userDetails = jwtService.getLoggedInDetails(token);
 		try {
 			Optional<LT_POLICY> optionalUser = ltPolicyRepo.findById(policy_id);
 			LT_POLICY policy = optionalUser.get();
@@ -289,6 +318,39 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 				Map<String, Map<String, String>> fieldMaps = new HashMap<>();
 				fieldMaps.put("frontForm", proposalEntryRequest.getPolicyDetails().getFormFields());
 				for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
+					Map<String, String> policyDetailsMap = entry.getValue();
+
+					Map<String, Object> queryParams = new HashMap<>();
+					queryParams.put("CustCode", policyDetailsMap.get("POL_CUST_CODE"));
+					
+					Map<String, Object> body = new HashMap<>();
+					body.put("queryParams", queryParams);
+
+					JSONObject jsonBody = new JSONObject(body);
+					String requestBody = jsonBody.toString();
+					
+					String url = "http://localhost:8098/common/getMapQuery?queryId=185";
+					HttpHeaders headers = new HttpHeaders();
+					RestTemplate restTemplate = new RestTemplate();
+					headers.setContentType(MediaType.APPLICATION_JSON);
+					headers.set("Authorization", "Bearer " + token);
+					HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
+					ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, requestEntity, String.class);
+					
+					JSONObject object = new JSONObject(responseEntity.getBody());
+
+					JSONArray jsonArray = (JSONArray) object.getJSONArray("Data");
+					List<String> values = new ArrayList<>();
+					for (int i = 0; i < jsonArray.length(); i++) {
+						Iterator<String> keys = ((JSONObject) jsonArray.get(i)).keys();
+						while (keys.hasNext()) { 
+							String key = keys.next();
+							Object value = ((JSONObject) jsonArray.get(i)).get(key);
+							policyDetailsMap.put(key, value.toString());
+						}
+					}
+					
+
 					setPolicyFields(policy, LT_POLICY.class, entry.getValue());
 				}
 
@@ -311,6 +373,42 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 //					taskVariables.put("decision", "yes");
 //					taskService.complete(task.getId(), taskVariables);
 
+					if(policy.getPOL_ASSR_CUST_FLAG().equals("Yes")) {
+						policy.setPOL_ASSRD_REF_ID(policy.getPOL_CUST_REF_ID());
+					}else if(policy.getPOL_ASSR_CUST_FLAG().equals("No")){
+						Map<String, Object> queryParams = new HashMap<>();
+						queryParams.put("CustCode", policy.getPOL_ASSR_CODE());
+						
+						Map<String, Object> body = new HashMap<>();
+						body.put("queryParams", queryParams);
+
+						JSONObject jsonBody = new JSONObject(body);
+						String requestBody = jsonBody.toString();
+						
+						String url = "http://localhost:8098/common/getMapQuery?queryId=191";
+						HttpHeaders headers = new HttpHeaders();
+						RestTemplate restTemplate = new RestTemplate();
+						headers.setContentType(MediaType.APPLICATION_JSON);
+						headers.set("Authorization", "Bearer " + token);
+						HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
+						ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, requestEntity, String.class);
+						
+						JSONObject object = new JSONObject(responseEntity.getBody());
+
+						JSONArray jsonArray = (JSONArray) object.getJSONArray("Data");
+						List<String> values = new ArrayList<>();
+						for (int i = 0; i < jsonArray.length(); i++) {
+							Iterator<String> keys = ((JSONObject) jsonArray.get(i)).keys();
+							while (keys.hasNext()) { 
+								String key = keys.next();
+								Object value = ((JSONObject) jsonArray.get(i)).get(key);
+								policy.setPOL_ASSRD_REF_ID(value.toString());
+							}
+						}
+					}
+
+					policy.setPOL_MOD_DT(new Date(System.currentTimeMillis()));
+					policy.setPOL_MOD_ID(userDetails.getUsername());
 					LT_POLICY savedPolicyDetails = ltPolicyRepo.save(policy);
 					response.put(statusCode, successCode);
 					response.put(messageCode, "Policy Details Updated Successfully");

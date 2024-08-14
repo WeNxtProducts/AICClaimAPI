@@ -76,13 +76,13 @@ public class LT_POLICY implements Serializable{
     private String POL_SA_CURR_CODE;
 
     @Column(name = "POL_SA_EXCH_RATE")
-    private Double POL_SA_EXCH_RATE;
+    private Integer POL_SA_EXCH_RATE;
 
     @Column(name = "POL_CUST_CURR_CODE")
     private String POL_CUST_CURR_CODE;
 
     @Column(name = "POL_CUST_EXCH_RATE")
-    private Double POL_CUST_EXCH_RATE;
+    private Integer POL_CUST_EXCH_RATE;
 
     @Column(name = "POL_FM_DT")
     private Date POL_FM_DT;
@@ -836,11 +836,11 @@ public class LT_POLICY implements Serializable{
 		POL_SA_CURR_CODE = pOL_SA_CURR_CODE;
 	}
 
-	public Double getPOL_SA_EXCH_RATE() {
+	public Integer getPOL_SA_EXCH_RATE() {
 		return POL_SA_EXCH_RATE;
 	}
 
-	public void setPOL_SA_EXCH_RATE(Double pOL_SA_EXCH_RATE) {
+	public void setPOL_SA_EXCH_RATE(Integer pOL_SA_EXCH_RATE) {
 		POL_SA_EXCH_RATE = pOL_SA_EXCH_RATE;
 	}
 
@@ -852,11 +852,11 @@ public class LT_POLICY implements Serializable{
 		POL_CUST_CURR_CODE = pOL_CUST_CURR_CODE;
 	}
 
-	public Double getPOL_CUST_EXCH_RATE() {
+	public Integer getPOL_CUST_EXCH_RATE() {
 		return POL_CUST_EXCH_RATE;
 	}
 
-	public void setPOL_CUST_EXCH_RATE(Double pOL_CUST_EXCH_RATE) {
+	public void setPOL_CUST_EXCH_RATE(Integer pOL_CUST_EXCH_RATE) {
 		POL_CUST_EXCH_RATE = pOL_CUST_EXCH_RATE;
 	}
 

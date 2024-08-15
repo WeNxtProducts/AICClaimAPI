@@ -195,6 +195,8 @@ public class LtPolEmployeeServiceImpl implements LtPolEmployeeService {
 				}
 
 				try {
+					polEmployee.setPEMP_LC_SA(polEmployee.getPEMP_FC_SA());
+					polEmployee.setPEMP_INS_ID(userDetails.getUsername());
 					polEmployee.setPEMP_MOD_ID(userDetails.getUsername());
 					polEmployee.setPEMP_MOD_DT(new Date(System.currentTimeMillis()));
 					LT_POL_EMPLOYEE savedPolEmployeeDetails = polEmployeeRepo.save(polEmployee);

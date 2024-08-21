@@ -19,10 +19,10 @@ public class MedexFeeDtlController {
 	@Autowired
 	private MedExFeeDtlService feeDtlService;
 	
-	@PostMapping("/save/{tranId}/{emptranId}")
+	@PostMapping("/save/{tranId}/{emptranId}/{mhtranId}")
 	public String saveMedExFeeDtl(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable("tranId") Integer tranId, 
-			@PathVariable("emptranId") Integer emptranId) {
-		return feeDtlService.saveMedExFeeDtl(proposalEntryRequest, tranId, emptranId);
+			@PathVariable("emptranId") Integer emptranId, @PathVariable("mhtranId") Integer mhtranId) {
+		return feeDtlService.saveMedExFeeDtl(proposalEntryRequest, tranId, emptranId, mhtranId);
 	}
 	
 	@PostMapping("/updateMedExFeeDtl/{tranId}")

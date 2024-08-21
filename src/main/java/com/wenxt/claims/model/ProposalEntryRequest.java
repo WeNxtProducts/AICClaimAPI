@@ -1,5 +1,6 @@
 package com.wenxt.claims.model;
 
+import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -24,7 +25,8 @@ public class ProposalEntryRequest {
 	@JsonProperty("life_assured_details")
 	private FormFieldsDTO polEmployeeDetails;
 	
-	private FormFieldsDTO polBrokerDetails;
+    @JsonProperty("polBrokerDetails")
+    private List<FormFieldsDTO> polBrokerDetails;
 	
 	@JsonProperty("Discount_Loading")
 	private FormFieldsDTO polDiscLoad;
@@ -83,11 +85,11 @@ public class ProposalEntryRequest {
 		this.polEmployeeDetails = polEmployeeDetails;
 	}
 
-	public FormFieldsDTO getPolBrokerDetails() {
+	public List<FormFieldsDTO> getPolBrokerDetails() {
 		return polBrokerDetails;
 	}
 
-	public void setPolBrokerDetails(FormFieldsDTO polBrokerDetails) {
+	public void setPolBrokerDetails(List<FormFieldsDTO> polBrokerDetails) {
 		this.polBrokerDetails = polBrokerDetails;
 	}
 

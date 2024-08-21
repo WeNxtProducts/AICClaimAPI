@@ -8,7 +8,9 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -17,12 +19,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.wenxt.claims.model.FormFieldsDTO;
 import com.wenxt.claims.model.LT_POL_BROKER;
 import com.wenxt.claims.model.ProposalEntryRequest;
 import com.wenxt.claims.repository.LtPolBrokerRepository;
 import com.wenxt.claims.service.LtPolBrokerService;
 
 import jakarta.persistence.Column;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 public class LtPolBrokerServiceImpl implements LtPolBrokerService {
@@ -49,7 +53,7 @@ public class LtPolBrokerServiceImpl implements LtPolBrokerService {
 	private LtPolBrokerRepository polBrokerRepo;
 
 	@Override
-	public String createPolBroker(ProposalEntryRequest proposalEntryRequest) {
+	public String createPolBroker(ProposalEntryRequest proposalEntryRequest, Integer tranId, HttpServletRequest request) {
 		JSONObject response = new JSONObject();
 		JSONObject data = new JSONObject();
 
@@ -57,27 +61,25 @@ public class LtPolBrokerServiceImpl implements LtPolBrokerService {
 			LT_POL_BROKER polBroker = new LT_POL_BROKER();
 			
 			Map<String, Map<String, String>> fieldMaps = new HashMap<>();
-			if(proposalEntryRequest.getPolBrokerDetails() != null) {
-			fieldMaps.put("frontForm", proposalEntryRequest.getPolBrokerDetails().getFormFields());
-			}else {
-				fieldMaps.put("frontForm", proposalEntryRequest.getPolBrokerDetails().getFormFields());
+			for(FormFieldsDTO formFieldsDTO : proposalEntryRequest.getPolBrokerDetails()) {
+				polBroker = new LT_POL_BROKER();
+				fieldMaps = new HashMap<>();
+			if(formFieldsDTO != null) {
+			fieldMaps.put("frontForm", formFieldsDTO.getFormFields());
 			}
+			
 			for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
 				setPolBrokerFields(polBroker, entry.getValue());
 			}
 
-			try {
 				polBroker.setPBRK_INS_DT(new Date(System.currentTimeMillis()));
+				polBroker.setPBRK_POL_TRAN_ID(tranId);
 				LT_POL_BROKER savedPolBrokerDetails = polBrokerRepo.save(polBroker);
+			}
 				response.put(statusCode, successCode);
 				response.put(messageCode,
 						 "Pol Broker Details Created Successfully");
-				data.put("Id", savedPolBrokerDetails.getPBRK_TRAN_ID());
 				response.put(dataCode, data);
-			} catch (Exception e) {
-				response.put(statusCode, errorCode);
-				response.put(messageCode, "An error occurred: " + e.getMessage());
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.put("statusCode", errorCode);
@@ -159,25 +161,36 @@ public class LtPolBrokerServiceImpl implements LtPolBrokerService {
 		JSONObject response = new JSONObject();
 
 		try {
-			Optional<LT_POL_BROKER> optionalUser = polBrokerRepo.findById(polBrokerId);
-			LT_POL_BROKER polBroker = optionalUser.get();
-			if (polBroker != null) {
-				Map<String, Map<String, String>> fieldMaps = new HashMap<>();
-				fieldMaps.put("frontForm", proposalEntryRequest.getPolBrokerDetails().getFormFields());
-				for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
-					setPolBrokerFields(polBroker, entry.getValue());
-				}
+			List<LT_POL_BROKER> brokerList = polBrokerRepo.findByPolId(polBrokerId);
+			Optional<LT_POL_BROKER> polBroker = Optional.ofNullable(new LT_POL_BROKER());
+			Map<String, Map<String, String>> fieldMaps = new HashMap<>();
+			for (FormFieldsDTO formFieldsDTO : proposalEntryRequest.getPolBrokerDetails()) {
+				if (formFieldsDTO.getFormFields().get("PBRK_TRAN_ID") != null) {
+					polBroker = polBrokerRepo
+							.findById(Integer.parseInt(formFieldsDTO.getFormFields().get("PBRK_TRAN_ID")));
+					LT_POL_BROKER polbroker = polBroker.get();
+					fieldMaps = new HashMap<>();
+					if (polbroker != null) {
+						fieldMaps.put("frontForm", formFieldsDTO.getFormFields());
+						for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
+							setPolBrokerFields(polbroker, entry.getValue());
+						}
 
-				try {
-					polBroker.setPBRK_MOD_DT(new Date(System.currentTimeMillis()));
-					LT_POL_BROKER savedPolBrokerDetails = polBrokerRepo.save(polBroker);
-					response.put(statusCode, successCode);
-					response.put(messageCode, "Pol Broker Details Updated Successfully");
-				} catch (Exception e) {
-					response.put("statusCode", errorCode);
-					response.put("message", "An error occurred: " + e.getMessage());
+						polbroker.setPBRK_MOD_DT(new Date(System.currentTimeMillis()));
+						LT_POL_BROKER savedPolBrokerDetails = polBrokerRepo.save(polbroker);
+					}
+				} else {
+					LT_POL_BROKER polbroker = new LT_POL_BROKER();
+					for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
+						setPolBrokerFields(polbroker, entry.getValue());
+					}
+
+					polbroker.setPBRK_INS_DT(new Date(System.currentTimeMillis()));
+					LT_POL_BROKER savedPolBrokerDetails = polBrokerRepo.save(polbroker);
 				}
 			}
+			response.put(statusCode, successCode);
+			response.put(messageCode, "Pol Broker Details Updated Successfully");
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.put("statusCode", errorCode);
@@ -215,26 +228,40 @@ public class LtPolBrokerServiceImpl implements LtPolBrokerService {
 	}
 	
 	@Override
-	public String getPolBrokerById(Integer polBrokerId) throws Exception {
+	public String getPolBrokerById(Integer polBrokerId, HttpServletRequest request) throws Exception {
 		Map<String, Object> parametermap = new HashMap<String, Object>();
 		JSONObject inputObject = new JSONObject();
-		Optional<LT_POL_BROKER> optionalUser = polBrokerRepo.findById(polBrokerId);
-		LT_POL_BROKER polBroker = optionalUser.get();
-		if (polBroker != null) {
-			for (int i = 0; i < polBroker.getClass().getDeclaredFields().length; i++) {
-				Field field = polBroker.getClass().getDeclaredFields()[i];
-				field.setAccessible(true);
-				String columnName = null;
-				if (field.isAnnotationPresent(Column.class)) {
-					Annotation annotation = field.getAnnotation(Column.class);
-					Column column = (Column) annotation;
-					Object value = field.get(polBroker);
-					columnName = column.name();
-					inputObject.put(columnName, value);
+		JSONObject innerObject = new JSONObject();
+		JSONObject outerObject = new JSONObject();
+		JSONObject result = new JSONObject();
+		List<JSONObject> resultList = new ArrayList<>();
+		List<LT_POL_BROKER> brokerList = polBrokerRepo.findByPolId(polBrokerId);
+		for (LT_POL_BROKER broker : brokerList) {
+//			innerObject = new JSONObject();
+			LT_POL_BROKER polBroker = broker;
+			if (polBroker != null) {
+				inputObject = new JSONObject();
+				for (int i = 0; i < polBroker.getClass().getDeclaredFields().length; i++) {
+					Field field = polBroker.getClass().getDeclaredFields()[i];
+					field.setAccessible(true);
+					String columnName = null;
+					if (field.isAnnotationPresent(Column.class)) {
+						Annotation annotation = field.getAnnotation(Column.class);
+						Column column = (Column) annotation;
+						Object value = field.get(polBroker);
+						columnName = column.name();
+						inputObject.put(columnName, value);
+					}
 				}
+				innerObject.put("formFields", inputObject);
 			}
 		}
-		return inputObject.toString();
+		result.put(statusCode, successCode);
+		result.put(messageCode, "Pol Broker Details Fetched Successfully");
+		resultList.add(innerObject);
+		outerObject.put("polBrokerDetails", resultList);
+		result.put(dataCode, outerObject);
+		return result.toString();
 	}
 
 }

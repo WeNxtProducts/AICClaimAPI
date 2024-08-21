@@ -69,13 +69,11 @@ public class LtPolConditionServiceImpl implements LtPolConditionService {
 			if (proposalEntryRequest.getConditions() != null) {
 				fieldMaps.put("frontForm", proposalEntryRequest.getConditions().getFormFields());
 				for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
-//					System.out.println(entry.getValue());
 					commonService.setFields(polCondition, LT_POL_CONDITION.class, entry.getValue());
 				}
 			} 
 
 			try {
-//				System.out.println(polCondition.getPCOND_REC_TYPE() + "*");
 				polCondition.setPCOND_POL_TRAN_ID(tranId);
 				polCondition.setPCOND_INS_ID(authRequest.getUsername());
 				polCondition.setPCOND_INS_DT(new Date(System.currentTimeMillis()));

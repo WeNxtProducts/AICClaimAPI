@@ -3,7 +3,7 @@ package com.wenxt.claims.serviceImpl;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.sql.Date;
+import java.util.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -53,7 +53,7 @@ public class MedExFeeDtlServiceImpl implements MedExFeeDtlService {
 	private MedExDtlRepository medExDtlRepo;
 
 	@Override
-	public String saveMedExFeeDtl(ProposalEntryRequest proposalEntryRequest, Integer tranId, Integer emptranId) {
+	public String saveMedExFeeDtl(ProposalEntryRequest proposalEntryRequest, Integer tranId, Integer emptranId, Integer mhtranId) {
 		JSONObject response = new JSONObject();
 		JSONObject data = new JSONObject();
 
@@ -75,13 +75,13 @@ public class MedExFeeDtlServiceImpl implements MedExFeeDtlService {
 			try {
 				medicalDetails.setMFD_INS_DT(new Date(System.currentTimeMillis()));
 				medicalDetails.setMFD_POL_TRAN_ID(tranId);
-//				medicalDetails.setMFD_MH_TRAN_ID(headertranId);
+				medicalDetails.setMFD_MH_TRAN_ID(mhtranId);
 				medicalDetails.setMFD_PEMP_TRAN_ID(emptranId);
 				
 				medDetails.setMD_INS_DT(new Date(System.currentTimeMillis()));
 				medDetails.setMD_POL_TRAN_ID(tranId);
 				medDetails.setMD_PEMP_TRAN_ID(emptranId);
-//				medDetails.setMD_MH_TRAN_ID(headertranId);
+				medDetails.setMD_MH_TRAN_ID(mhtranId);
 				LT_MEDEX_DTL savedMedicalDetails = medExDtlRepo.save(medDetails);
 				LT_MEDEX_FEE_DTL savedmedicalDetails = feeDtlRepository.save(medicalDetails);
 				response.put(statusCode, successCode);
@@ -119,7 +119,6 @@ public class MedExFeeDtlServiceImpl implements MedExFeeDtlService {
 				setter.invoke(medicalDetails, convertedValue);
 			}
 		} catch (NoSuchFieldException e) {
-			System.out.println("KEY" + key);
 			e.printStackTrace();
 		}
 	}
@@ -183,7 +182,6 @@ public class MedExFeeDtlServiceImpl implements MedExFeeDtlService {
 				setter.invoke(medicalDetails, convertedValue);
 			}
 		} catch (NoSuchFieldException e) {
-			System.out.println("KEY" + key);
 			e.printStackTrace();
 		}
 	}

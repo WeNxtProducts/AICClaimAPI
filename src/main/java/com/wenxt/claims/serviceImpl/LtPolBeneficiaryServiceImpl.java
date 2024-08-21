@@ -86,7 +86,6 @@ public class LtPolBeneficiaryServiceImpl implements LtPolBeneficiaryService {
 				polBeneficiary.setPGBEN_PEMP_TRAN_ID(poltranId);
 				}
 				
-				System.out.println(polBeneficiary.getPGBEN_SHARE_PERC());
 				polBeneficiary.setPGBEN_INS_DT(new Date(System.currentTimeMillis()));
 				LT_POL_BENEFICIARY savedPolBeneficiaryDetails = polBeneficiaryRepo.save(polBeneficiary);
 				response.put(statusCode, successCode);

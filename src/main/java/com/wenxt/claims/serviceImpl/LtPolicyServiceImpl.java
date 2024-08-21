@@ -510,7 +510,6 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 			if ("User Task".equals(task.getName())) {
 				String userId = loggedInDetails.getUsername();
 				taskService.setAssignee(task.getId(), userId);
-				System.out.println("Task " + task.getName() + " assigned to user: " + userId);
 			}
 		}
 		return null;
@@ -693,10 +692,11 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 		JSONObject response = new JSONObject();
 		try {
 			ProcessInstance existingProcessInstance = runtimeService.createProcessInstanceQuery()
-					.processDefinitionKey("proposal_forwarding").variableValueEquals("ID", tranId).singleResult();
+					.processDefinitionKey("forward_Proposal").variableValueEquals("ID", tranId).singleResult();
 
 			if (existingProcessInstance != null) {
-				System.out.println("Process instance already exists with ID: " + existingProcessInstance.getId());
+				response.put(statusCode, errorCode);
+				response.put(messageCode, "Data already Submitted");
 			} else {
 				String header = request.getHeader("Authorization");
 				String token = null;
@@ -707,22 +707,46 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 				variables.put("ID", tranId);
 				variables.put("Token", token);
 
-				ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("proposal_forwarding",
+				Map<String, Object> queryParams = new HashMap<>();
+
+				Map<String, Object> body = new HashMap<>();
+				body.put("queryParams", queryParams);
+
+				JSONObject jsonBody = new JSONObject(body);
+				String requestBody = jsonBody.toString();
+
+				String url = "http://localhost:8098/common/getMapQuery?queryId=171";
+				HttpHeaders headers = new HttpHeaders();
+				RestTemplate restTemplate = new RestTemplate();
+				headers.setContentType(MediaType.APPLICATION_JSON);
+				headers.set("Authorization", "Bearer " + token);
+				HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
+				ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, requestEntity, String.class);
+				JSONObject object = new JSONObject(responseEntity.getBody());
+
+				JSONArray jsonArray = (JSONArray) object.getJSONArray("Data");
+				List<String> values = new ArrayList<>();
+				for (int i = 0; i < jsonArray.length(); i++) {
+					Iterator<String> keys = ((JSONObject) jsonArray.get(i)).keys();
+					while (keys.hasNext()) {
+						String key = keys.next();
+						Object value = ((JSONObject) jsonArray.get(i)).get(key);
+						values.add(value.toString());
+					}
+				}
+
+				variables.put("assigneeList", values);
+
+				ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("forward_Proposal",
 						variables);
 
-				Map<String, Object> executionVariables = processInstance.getProcessVariables();
-				variables.put("assignees", executionVariables.get("assignee"));
+				Task userTask = taskService.createTaskQuery().processInstanceId(processInstance.getId())
+						.taskDefinitionKey("userTask").singleResult();
 
-				ProcessInstance existingMultiProcessInstance = runtimeService.createProcessInstanceQuery()
-						.processDefinitionKey("process_multi_instance").variableValueEquals("ID", tranId)
-						.singleResult();
-				if (existingMultiProcessInstance != null) {
-					runtimeService.setVariable(existingMultiProcessInstance.getProcessInstanceId(), "assignees",
-							variables);
-				} else {
-					ProcessInstance multiProcessInstance = runtimeService
-							.startProcessInstanceByKey("process_multi_instance", variables);
+				if (userTask != null) {
+					taskService.complete(userTask.getId());
 				}
+
 				response.put(statusCode, successCode);
 				response.put(messageCode, "Data Submitted Successfully");
 			}

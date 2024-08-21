@@ -683,6 +683,9 @@ public class LT_POLICY implements Serializable{
     
     @Column(name = "POL_ASSR_CUST_FLAG")
     private String POL_ASSR_CUST_FLAG;
+    
+    @Column(name = "POL_AGENT_COMM_BASIS")
+    private String POL_AGENT_COMM_BASIS;
 
 	public Long getPOL_TRAN_ID() {
 		return POL_TRAN_ID;
@@ -2458,6 +2461,14 @@ public class LT_POLICY implements Serializable{
 
 	public void setPOL_ASSR_CUST_FLAG(String pOL_ASSR_CUST_FLAG) {
 		POL_ASSR_CUST_FLAG = pOL_ASSR_CUST_FLAG;
+	}
+
+	public String getPOL_AGENT_COMM_BASIS() {
+		return POL_AGENT_COMM_BASIS;
+	}
+
+	public void setPOL_AGENT_COMM_BASIS(String pOL_AGENT_COMM_BASIS) {
+		POL_AGENT_COMM_BASIS = pOL_AGENT_COMM_BASIS;
 	}
 
 }

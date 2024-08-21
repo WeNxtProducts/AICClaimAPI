@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.wenxt.claims.model.ProposalEntryRequest;
 import com.wenxt.claims.service.LtPolBrokerService;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/polBroker")
 public class LtPolBrokerController {
@@ -18,9 +20,9 @@ public class LtPolBrokerController {
 	@Autowired
 	private LtPolBrokerService polBrokerService;
 	
-	@PostMapping("/save")
-	public String createPolBroketr(@RequestBody ProposalEntryRequest proposalEntryRequest) {
-		return polBrokerService.createPolBroker(proposalEntryRequest);
+	@PostMapping("/save/{tranId}")
+	public String createPolBroketr(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable Integer tranId, HttpServletRequest request) {
+		return polBrokerService.createPolBroker(proposalEntryRequest, tranId, request);
 	}
 	
 	@PostMapping("/polBrokerUpdate/{polBrokerId}")
@@ -34,9 +36,9 @@ public class LtPolBrokerController {
 	}
 	
 	@PostMapping("/getPolBrokerByid")
-	public String getPolBrokerById(@RequestParam Integer polBrokerId) {
+	public String getPolBrokerById(@RequestParam Integer tranId, HttpServletRequest request) {
 		try {
-		return polBrokerService.getPolBrokerById(polBrokerId);
+		return polBrokerService.getPolBrokerById(tranId, request);
 		}catch(Exception e) {
 			return e.getMessage();
 		}

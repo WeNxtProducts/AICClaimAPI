@@ -18,7 +18,7 @@ public class LT_MEDEX_DTL {
     @SequenceGenerator(name = "MedicalDetailsTranIdSeq", sequenceName = "MD_TRAN_ID_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MedicalDetailsTranIdSeq")
     @Column(name = "MD_TRAN_ID")
-    private Long MD_TRAN_ID;
+    private Integer MD_TRAN_ID;
 
     @Column(name = "MD_MH_TRAN_ID")
     private Integer MD_MH_TRAN_ID;
@@ -52,11 +52,11 @@ public class LT_MEDEX_DTL {
 
     // Getters and Setters
 
-    public Long getMD_TRAN_ID() {
+    public Integer getMD_TRAN_ID() {
         return MD_TRAN_ID;
     }
 
-    public void setMD_TRAN_ID(Long MD_TRAN_ID) {
+    public void setMD_TRAN_ID(Integer MD_TRAN_ID) {
         this.MD_TRAN_ID = MD_TRAN_ID;
     }
 

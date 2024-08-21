@@ -19,18 +19,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.expression.ParseException;
 import org.springframework.stereotype.Service;
 
-import com.wenxt.claims.model.LT_POL_EMP_COVER;
-import com.wenxt.claims.model.ProposalEntryRequest;
-import com.wenxt.claims.repository.LtPolEmpCoverRepository;
+import com.wenxt.claims.model.BrokerRequest;
+import com.wenxt.claims.model.LT_POL_BROKER_DTL;
+import com.wenxt.claims.repository.BrokerDetailRepository;
 import com.wenxt.claims.security.AuthRequest;
 import com.wenxt.claims.security.JwtService;
-import com.wenxt.claims.service.PolEmpCoverService;
+import com.wenxt.claims.service.BrokerDtlService;
 
 import jakarta.persistence.Column;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Service
-public class PolEmpCoverServiceImpl implements PolEmpCoverService {
+public class BrokerDtlServiceImpl implements BrokerDtlService {
 	
 	@Value("${spring.message.code}")
 	private String messageCode;
@@ -51,49 +51,38 @@ public class PolEmpCoverServiceImpl implements PolEmpCoverService {
 	private String warningCode;	
 	
 	@Autowired
-	private LtPolEmpCoverRepository polEmpCoverRepo;
+	private JwtService jwtService;
 	
 	@Autowired
-	private JwtService jwtService;
-
+	private BrokerDetailRepository brokerDetailRepository;
+	
 	@Override
-	public String createPolEmpCover(ProposalEntryRequest proposalEntryRequest, Integer tranId, Integer empTranId, HttpServletRequest request) {
+	public String save(BrokerRequest brokerRequest, HttpServletRequest request) {
+		
 		JSONObject response = new JSONObject();
 		JSONObject data = new JSONObject();
-
+		
 		String authorizationHeader = request.getHeader("Authorization");
 		String token = authorizationHeader.substring(7).trim();
-		
-		AuthRequest userDetails = jwtService.getLoggedInDetails(token);
 		try {
-			LT_POL_EMP_COVER polEmpCover = new LT_POL_EMP_COVER();
-			
-			Map<String, Map<String, String>> fieldMaps = new HashMap<>();
-			if(proposalEntryRequest.getPolEmpCoverDetails() != null) {
-			fieldMaps.put("frontForm", proposalEntryRequest.getPolEmpCoverDetails().getFormFields());
-			}else {
-				fieldMaps.put("frontForm", proposalEntryRequest.getPolEmpCoverDetails().getFormFields());
-			}
-			for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
-				setPolEmpCoverFields(polEmpCover, entry.getValue());
-			}
+			LT_POL_BROKER_DTL polBrokerDetails = new LT_POL_BROKER_DTL();
 
-			try {
-				polEmpCover.setPEC_PEMP_TRAN_ID(empTranId);
-				polEmpCover.setPEC_POL_TRAN_ID(tranId);
-				polEmpCover.setPEC_INS_DT(new Date(System.currentTimeMillis()));
-				polEmpCover.setPEC_INS_ID(userDetails.getUsername());
-				LT_POL_EMP_COVER savedPolEmpCoverDetails = polEmpCoverRepo.save(polEmpCover);
-				response.put(statusCode, successCode);
-				response.put(messageCode,
-						 "Policy Emp Cover Details Created Successfully");
-				data.put("Id", savedPolEmpCoverDetails.getPEC_TRAN_ID());
-				response.put(dataCode, data);
-			} catch (Exception e) {
-				response.put(statusCode, errorCode);
-				response.put(messageCode, "An error occurred: " + e.getMessage());
+			Map<String, Map<String, String>> fieldMaps = new HashMap<>();
+			if (brokerRequest.getBrokerDetails() != null) {
+				fieldMaps.put("frontForm", brokerRequest.getBrokerDetails().getFormFields());
+				for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
+						setPolBrokerDetailFields(polBrokerDetails, LT_POL_BROKER_DTL.class, entry.getValue());
+				}
 			}
-		} catch (Exception e) {
+				
+				AuthRequest authRequest = jwtService.getLoggedInDetails(token);
+				
+				polBrokerDetails.setPOBD_INS_DT(new Date(System.currentTimeMillis()));
+				polBrokerDetails.setPOBD_INS_ID(authRequest.getUsername());
+				LT_POL_BROKER_DTL savedPolBrokerDetails = brokerDetailRepository.save(polBrokerDetails);
+				response.put(statusCode, successCode);
+				response.put(messageCode, "Policy Broker Details Created Successfully");
+			} catch (Exception e) {
 			e.printStackTrace();
 			response.put("statusCode", errorCode);
 			response.put("message", "An error occurred: " + e.getMessage());
@@ -101,22 +90,25 @@ public class PolEmpCoverServiceImpl implements PolEmpCoverService {
 
 		return response.toString();
 	}
-	
-	private void setPolEmpCoverFields(LT_POL_EMP_COVER polEmpCover, Map<String, String> value)throws Exception {
+
+	private void setPolBrokerDetailFields(LT_POL_BROKER_DTL polBrokerDetails, Class<LT_POL_BROKER_DTL> clazz,
+			Map<String, String> value) throws Exception{
 		for (Map.Entry<String, String> entry : value.entrySet()) {
-			setPolEmpCoverField(polEmpCover, entry.getKey(), entry.getValue());
-		}
+			setPolBrokerDetailField(polBrokerDetails, clazz, entry.getKey(), entry.getValue());
+		}		
 	}
 
-	private void setPolEmpCoverField(LT_POL_EMP_COVER polEmpCover, String key, String value)throws Exception {
+	private void setPolBrokerDetailField(LT_POL_BROKER_DTL polBrokerDetails, Class<LT_POL_BROKER_DTL> clazz, String key,
+			String value) throws Exception{
 		try {
-			Field field = LT_POL_EMP_COVER.class.getDeclaredField(key);
+			Field field = clazz.getDeclaredField(key);
+			field.setAccessible(true);
 			Class<?> fieldType = field.getType();
 			Object convertedValue = convertStringToObject(value, fieldType);
 			String setterMethodName = "set" + key;
 			if (value != null && !value.isEmpty()) {
-				Method setter = LT_POL_EMP_COVER.class.getMethod(setterMethodName, fieldType);
-				setter.invoke(polEmpCover, convertedValue);
+				Method setter = clazz.getMethod(setterMethodName, fieldType);
+				setter.invoke(polBrokerDetails, convertedValue);
 			}
 		} catch (NoSuchFieldException e) {
 			e.printStackTrace();
@@ -141,14 +133,13 @@ public class PolEmpCoverServiceImpl implements PolEmpCoverService {
 		}
 	}
 
-	public Object dateConverter(String value) {
+	private Object dateConverter(String value) {
 		String dateStr = value;
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = null;
 		try {
 			date = (Date) sdf.parse(dateStr);
 		} catch (ParseException | java.text.ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -172,7 +163,7 @@ public class PolEmpCoverServiceImpl implements PolEmpCoverService {
 	}
 
 	@Override
-	public String updatePolEmpCover(ProposalEntryRequest proposalEntryRequest, Integer polEmpCoverId, HttpServletRequest request) {
+	public String update(BrokerRequest brokerRequest, Integer tranId, HttpServletRequest request) {
 		JSONObject response = new JSONObject();
 
 		String authorizationHeader = request.getHeader("Authorization");
@@ -180,25 +171,20 @@ public class PolEmpCoverServiceImpl implements PolEmpCoverService {
 		
 		AuthRequest userDetails = jwtService.getLoggedInDetails(token);
 		try {
-			Optional<LT_POL_EMP_COVER> optionalUser = polEmpCoverRepo.findById(polEmpCoverId);
-			LT_POL_EMP_COVER polEmpCover = optionalUser.get();
-			if (polEmpCover != null) {
+			Optional<LT_POL_BROKER_DTL> optionalUser = brokerDetailRepository.findById(tranId);
+			LT_POL_BROKER_DTL brokerDetails = optionalUser.get();
+			if (brokerDetails != null) {
 				Map<String, Map<String, String>> fieldMaps = new HashMap<>();
-				fieldMaps.put("frontForm", proposalEntryRequest.getPolEmpCoverDetails().getFormFields());
+				fieldMaps.put("frontForm", brokerRequest.getBrokerDetails().getFormFields());
 				for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
-					setPolEmpCoverFields(polEmpCover, entry.getValue());
+					setPolBrokerDetailFields(brokerDetails, LT_POL_BROKER_DTL.class, entry.getValue());
 				}
 
-				try {
-					polEmpCover.setPEC_MOD_DT(new Date(System.currentTimeMillis()));
-					polEmpCover.setPEC_MOD_ID(userDetails.getUsername());
-					LT_POL_EMP_COVER savedPolEmpCoverDetails = polEmpCoverRepo.save(polEmpCover);
+					brokerDetails.setPOBD_MOD_DT(new Date(System.currentTimeMillis()));
+					brokerDetails.setPOBD_MOD_ID(userDetails.getUsername());
+					LT_POL_BROKER_DTL policyBrokerDetails = brokerDetailRepository.save(brokerDetails);
 					response.put(statusCode, successCode);
-					response.put(messageCode, "Policy Emp Cover Details Updated Successfully");
-				} catch (Exception e) {
-					response.put("statusCode", errorCode);
-					response.put("message", "An error occurred: " + e.getMessage());
-				}
+					response.put(messageCode, "Policy Broker Details Updated Successfully");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -210,47 +196,47 @@ public class PolEmpCoverServiceImpl implements PolEmpCoverService {
 	}
 
 	@Override
-	public String deletePolEmpCoverById(Integer polEmpCoverId) {
+	public String delete(Integer tranId, HttpServletRequest request) {
 		try {
-			Optional<LT_POL_EMP_COVER> optionalEntity = polEmpCoverRepo.findById(polEmpCoverId);
+			Optional<LT_POL_BROKER_DTL> polBrokerDetails = brokerDetailRepository.findById(tranId);
 
-			if (optionalEntity.isPresent()) {
-				polEmpCoverRepo.deleteById(polEmpCoverId);
+			if (polBrokerDetails.isPresent()) {
+				brokerDetailRepository.deleteById(tranId);
 
 				JSONObject response = new JSONObject();
-				response.put(statusCode, successCode);
-				response.put(messageCode, "Record with ID " + polEmpCoverId + " deleted successfully");
+				response.put("Status", "SUCCESS");
+				response.put("Message", "Record with ID " + tranId + " deleted successfully");
 				return response.toString();
 
 			} else {
 				JSONObject response = new JSONObject();
-				response.put(statusCode, errorCode);
-				response.put(messageCode, "Record with ID " + polEmpCoverId + " not found");
+				response.put("Status", "ERROR");
+				response.put("Message", "Record with ID " + tranId + " not found");
 				return response.toString();
 			}
 		} catch (Exception e) {
 			JSONObject response = new JSONObject();
-			response.put(statusCode, errorCode);
-			response.put(messageCode, "Error deleting record with ID " + polEmpCoverId + ": " + e.getMessage());
+			response.put("Status", "ERROR");
+			response.put("Message", "Error deleting record with ID " + tranId + ": " + e.getMessage());
 			return response.toString();
 		}
 	}
-	
+
 	@Override
-	public String getPolEmpCoverByid(Integer polEmpCoverId) throws Exception {
+	public String get(Integer tranId, HttpServletRequest request) throws Exception{
 		Map<String, Object> parametermap = new HashMap<String, Object>();
 		JSONObject inputObject = new JSONObject();
-		Optional<LT_POL_EMP_COVER> optionalUser = polEmpCoverRepo.findById(polEmpCoverId);
-		LT_POL_EMP_COVER polEmpCover = optionalUser.get();
-		if (polEmpCover != null) {
-			for (int i = 0; i < polEmpCover.getClass().getDeclaredFields().length; i++) {
-				Field field = polEmpCover.getClass().getDeclaredFields()[i];
+		Optional<LT_POL_BROKER_DTL> optionalUser = brokerDetailRepository.findById(tranId);
+		LT_POL_BROKER_DTL brokerDetails = optionalUser.get();
+		if (brokerDetails != null) {
+			for (int i = 0; i < brokerDetails.getClass().getDeclaredFields().length; i++) {
+				Field field = brokerDetails.getClass().getDeclaredFields()[i];
 				field.setAccessible(true);
 				String columnName = null;
 				if (field.isAnnotationPresent(Column.class)) {
 					Annotation annotation = field.getAnnotation(Column.class);
 					Column column = (Column) annotation;
-					Object value = field.get(polEmpCover);
+					Object value = field.get(brokerDetails);
 					columnName = column.name();
 					inputObject.put(columnName, value);
 				}

@@ -32,36 +32,6 @@ public class ProposalForwarding implements JavaDelegate {
 	public void execute(DelegateExecution execution) {
 		String token = (String) execution.getVariable("Token");
 		
-		Map<String, Object> queryParams = new HashMap<>();
-
-		Map<String, Object> body = new HashMap<>();
-		body.put("queryParams", queryParams);
-
-		JSONObject jsonBody = new JSONObject(body);
-		String requestBody = jsonBody.toString();
-		
-		String url = "http://localhost:8098/common/getMapQuery?queryId=171";
-		HttpHeaders headers = new HttpHeaders();
-		RestTemplate restTemplate = new RestTemplate();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		headers.set("Authorization", "Bearer " + token);
-		HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
-		ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, requestEntity, String.class);
-		JSONObject object = new JSONObject(responseEntity.getBody());
-
-		JSONArray jsonArray = (JSONArray) object.getJSONArray("Data");
-		List<String> values = new ArrayList<>();
-		for (int i = 0; i < jsonArray.length(); i++) {
-			Iterator<String> keys = ((JSONObject) jsonArray.get(i)).keys();
-			while (keys.hasNext()) {
-				String key = keys.next();
-				Object value = ((JSONObject) jsonArray.get(i)).get(key);
-
-				values.add(value.toString());
-			}
-		}
-		execution.setVariable("assignee", values);
-		
 	}
 
 }

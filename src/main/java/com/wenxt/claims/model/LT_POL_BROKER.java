@@ -22,7 +22,7 @@ public class LT_POL_BROKER {
     private Long PBRK_TRAN_ID;
 
     @Column(name = "PBRK_POL_TRAN_ID")
-    private Long PBRK_POL_TRAN_ID;
+    private Integer PBRK_POL_TRAN_ID;
 
     @Column(name = "PBRK_BRK_CODE")
     private String PBRK_BRK_CODE;
@@ -144,6 +144,9 @@ public class LT_POL_BROKER {
     @Column(name = "PBRK_WHT_PERC")
     private BigDecimal PBRK_WHT_PERC;
 
+    @Column(name = "PBK_BRK_NAME")
+    private String PBK_BRK_NAME;
+    
 	public Long getPBRK_TRAN_ID() {
 		return PBRK_TRAN_ID;
 	}
@@ -152,11 +155,11 @@ public class LT_POL_BROKER {
 		PBRK_TRAN_ID = pBRK_TRAN_ID;
 	}
 
-	public Long getPBRK_POL_TRAN_ID() {
+	public Integer getPBRK_POL_TRAN_ID() {
 		return PBRK_POL_TRAN_ID;
 	}
 
-	public void setPBRK_POL_TRAN_ID(Long pBRK_POL_TRAN_ID) {
+	public void setPBRK_POL_TRAN_ID(Integer pBRK_POL_TRAN_ID) {
 		PBRK_POL_TRAN_ID = pBRK_POL_TRAN_ID;
 	}
 
@@ -478,6 +481,14 @@ public class LT_POL_BROKER {
 
 	public void setPBRK_WHT_PERC(BigDecimal pBRK_WHT_PERC) {
 		PBRK_WHT_PERC = pBRK_WHT_PERC;
+	}
+
+	public String getPBK_BRK_NAME() {
+		return PBK_BRK_NAME;
+	}
+
+	public void setPBK_BRK_NAME(String pBK_BRK_NAME) {
+		PBK_BRK_NAME = pBK_BRK_NAME;
 	}
 
 }

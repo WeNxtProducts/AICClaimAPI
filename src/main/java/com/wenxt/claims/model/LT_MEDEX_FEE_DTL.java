@@ -18,7 +18,7 @@ public class LT_MEDEX_FEE_DTL {
     @SequenceGenerator(name = "FeeDetailsTranIdSeq", sequenceName = "MFD_TRAN_ID_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FeeDetailsTranIdSeq")
     @Column(name = "MFD_TRAN_ID", nullable = false)
-    private Long MFD_TRAN_ID;
+    private Integer MFD_TRAN_ID;
 
     @Column(name = "MFD_MH_TRAN_ID", nullable = false)
     private Integer MFD_MH_TRAN_ID;
@@ -100,11 +100,11 @@ public class LT_MEDEX_FEE_DTL {
 
     // Getters and Setters
 
-    public Long getMFD_TRAN_ID() {
+    public Integer getMFD_TRAN_ID() {
         return MFD_TRAN_ID;
     }
 
-    public void setMFD_TRAN_ID(Long MFD_TRAN_ID) {
+    public void setMFD_TRAN_ID(Integer MFD_TRAN_ID) {
         this.MFD_TRAN_ID = MFD_TRAN_ID;
     }
 

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.wenxt.claims.model.ReceiptRequest;
 import com.wenxt.claims.service.InstallHdrService;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/installHdr")
 public class InstallHdrController {
@@ -19,13 +21,13 @@ public class InstallHdrController {
 	private InstallHdrService installHdrService;
 	
 	@PostMapping("/save")
-	public String saveInstallHdr(@RequestBody ReceiptRequest receiptRequest) {
-		return installHdrService.save(receiptRequest);
+	public String saveInstallHdr(@RequestBody ReceiptRequest receiptRequest, HttpServletRequest request) {
+		return installHdrService.save(receiptRequest, request);
 	}
 	
 	@PostMapping("/update/{tranId}")
-	public String updateInstallHdr(@RequestBody ReceiptRequest receiptRequest, @PathVariable Integer tranId) {
-		return installHdrService.update(receiptRequest, tranId);
+	public String updateInstallHdr(@RequestBody ReceiptRequest receiptRequest, @PathVariable Integer tranId, HttpServletRequest request) {
+		return installHdrService.update(receiptRequest, tranId, request);
 	}
 	
 	@PostMapping("/delete/{tranId}")

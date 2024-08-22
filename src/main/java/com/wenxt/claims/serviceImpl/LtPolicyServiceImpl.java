@@ -355,23 +355,6 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 				}
 
 				try {
-//					Map<String, Object> variables = new HashMap<>();
-//					variables.put("instance", policy);
-//					variables.put("queryId", 159);
-//					variables.put("class", LT_POLICY.class.getName());
-//					String authorizationHeader = request.getHeader("Authorization");
-//					String token = authorizationHeader.substring(7).trim();
-//
-//					variables.put("token", token);
-//					variables.put("process", "create");
-//					ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("TestProcess",
-//							variables);
-
-//					Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
-//					policy = (LT_POLICY) runtimeService.getVariable(processInstance.getId(), "instance");
-//					Map<String, Object> taskVariables = new HashMap<>();
-//					taskVariables.put("decision", "yes");
-//					taskService.complete(task.getId(), taskVariables);
 
 					if(policy.getPOL_ASSR_CUST_FLAG().equals("Yes")) {
 						policy.setPOL_ASSRD_REF_ID(policy.getPOL_CUST_REF_ID());
@@ -534,7 +517,7 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 		for (Task task : tasks) {
 			System.out.println("Task ID: " + task.getId() + ", Task Name: " + task.getName() + ", Assignee Name: "
 					+ task.getAssignee());
-			System.out.println("VARIABLES: " + task.getProcessVariables());
+			System.out.println("VARIABLES: " + runtimeService.getVariables(task.getProcessInstanceId()));
 		}
 		return null;
 	}
@@ -691,6 +674,15 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 	public String onSubmit(Integer tranId, HttpServletRequest request) {
 		JSONObject response = new JSONObject();
 		try {
+			
+			Optional<LT_POLICY> optionalUser = ltPolicyRepo.findById(tranId);
+			LT_POLICY policy = optionalUser.get();
+			
+			if(policy != null) {
+				policy.setPOL_WF_STS("S");
+				ltPolicyRepo.save(policy);
+			}
+			
 			ProcessInstance existingProcessInstance = runtimeService.createProcessInstanceQuery()
 					.processDefinitionKey("forward_Proposal").variableValueEquals("ID", tranId).singleResult();
 

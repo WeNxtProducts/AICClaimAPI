@@ -88,5 +88,10 @@ public class LtPolicyController {
 	public String onSubmit(@RequestParam Integer tranId, HttpServletRequest request) {
 		return policyService.onSubmit(tranId, request);
 	}
+	
+	@PostMapping("/uwSubmit")
+	public String uwSubmit(@RequestParam("DECISION") String decision, @RequestParam("REASON") String reason, @RequestParam Integer tranId, HttpServletRequest request) {
+		return policyService.uwSubmit(decision, reason, tranId, request);
+	}
 
 }

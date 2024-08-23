@@ -32,4 +32,6 @@ public interface LtPolicyService {
 
 	String onSubmit(Integer tranId, HttpServletRequest request);
 
+	String uwSubmit(String decision, String reason, Integer tranId, HttpServletRequest request);
+
 }

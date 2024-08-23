@@ -17,9 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.wenxt.claims.model.LT_POLICY;
 import com.wenxt.claims.model.LT_POL_EMPLOYEE;
 import com.wenxt.claims.model.ProposalEntryRequest;
 import com.wenxt.claims.repository.LtPolEmployeeRepository;
+import com.wenxt.claims.repository.LtPolicyRepository;
 import com.wenxt.claims.security.AuthRequest;
 import com.wenxt.claims.security.JwtService;
 import com.wenxt.claims.service.LtPolEmployeeService;
@@ -50,6 +52,9 @@ public class LtPolEmployeeServiceImpl implements LtPolEmployeeService {
 	
 	@Autowired
 	private LtPolEmployeeRepository polEmployeeRepo;
+	
+	@Autowired
+	private LtPolicyRepository policyRepo;
 	
 	@Autowired
 	private JwtService jwtService;
@@ -195,6 +200,16 @@ public class LtPolEmployeeServiceImpl implements LtPolEmployeeService {
 				}
 
 				try {
+					
+					Optional<LT_POLICY> optPolicy = policyRepo.findById(polEmployee.getPEMP_POL_TRAN_ID());
+					LT_POLICY policy = optPolicy.get();
+					
+					if(policy != null) {
+						policy.setPOL_FLEX_02("N");
+						
+						policyRepo.save(policy);
+					}
+					
 					polEmployee.setPEMP_LC_SA(polEmployee.getPEMP_FC_SA());
 					polEmployee.setPEMP_INS_ID(userDetails.getUsername());
 					polEmployee.setPEMP_MOD_ID(userDetails.getUsername());

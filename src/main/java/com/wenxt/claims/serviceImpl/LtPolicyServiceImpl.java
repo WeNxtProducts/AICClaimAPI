@@ -39,8 +39,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.wenxt.claims.model.LT_POLICY;
+import com.wenxt.claims.model.LT_POL_STATUS;
 import com.wenxt.claims.model.ProposalEntryRequest;
 import com.wenxt.claims.repository.LtPolicyRepository;
+import com.wenxt.claims.repository.PolStatusRepository;
 import com.wenxt.claims.security.AuthRequest;
 import com.wenxt.claims.security.JwtService;
 import com.wenxt.claims.service.LtPolicyService;
@@ -83,6 +85,9 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 
 	@Autowired
 	private HistoryService historyService;
+	
+	@Autowired
+	private PolStatusRepository polStatusRepo;
 
 	@Override
 	public String createPolicy(ProposalEntryRequest proposalEntryRequest, HttpServletRequest request) {
@@ -392,6 +397,7 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 
 					policy.setPOL_MOD_DT(new Date(System.currentTimeMillis()));
 					policy.setPOL_MOD_ID(userDetails.getUsername());
+					policy.setPOL_FLEX_02("N");
 					LT_POLICY savedPolicyDetails = ltPolicyRepo.save(policy);
 					response.put(statusCode, successCode);
 					response.put(messageCode, "Policy Details Updated Successfully");
@@ -679,6 +685,7 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 			LT_POLICY policy = optionalUser.get();
 			
 			if(policy != null) {
+				policy.setPOL_FLEX_02("Y");
 				policy.setPOL_WF_STS("S");
 				ltPolicyRepo.save(policy);
 			}
@@ -696,7 +703,6 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 					token = header.substring(7);
 				}
 				Map<String, Object> variables = new HashMap<>();
-				variables.put("ID", tranId);
 				variables.put("Token", token);
 
 				Map<String, Object> queryParams = new HashMap<>();
@@ -731,6 +737,8 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 
 				ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("forward_Proposal",
 						variables);
+				runtimeService.setVariable(processInstance.getId(), "ID", tranId);
+
 
 				Task userTask = taskService.createTaskQuery().processInstanceId(processInstance.getId())
 						.taskDefinitionKey("userTask").singleResult();
@@ -746,6 +754,34 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 			response.put(statusCode, errorCode);
 			response.put(messageCode, e.getMessage());
 		}
+		return response.toString();
+	}
+
+	@Override
+	public String uwSubmit(String decision, String reason, Integer tranId, HttpServletRequest request) {
+		JSONObject response = new JSONObject();
+		
+		String authorizationHeader = request.getHeader("Authorization");
+		String token = authorizationHeader.substring(7).trim();
+		
+		AuthRequest userDetails = jwtService.getLoggedInDetails(token);
+		
+		LT_POL_STATUS polStatus = new LT_POL_STATUS();
+		polStatus.setPSTAT_STATUS_CODE(decision);
+		polStatus.setPSTAT_REMARKS(reason);
+		polStatus.setPSTAT_POL_TRAN_ID(tranId);
+		polStatus.setPSTAT_INS_DT(new Date(System.currentTimeMillis()));
+		polStatus.setPSTAT_INS_ID(userDetails.getUsername());
+		polStatus.setPSTAT_STATUS_DT(new Date(System.currentTimeMillis()));
+		try {
+			LT_POL_STATUS savedPolStatus = polStatusRepo.save(polStatus);
+			response.put(statusCode, successCode);
+			response.put(messageCode, "Decision Submitted Successfully");
+		}catch(Exception e) {
+			response.put(statusCode, errorCode);
+			response.put(messageCode, e.getMessage());
+		}
+		
 		return response.toString();
 	}
 

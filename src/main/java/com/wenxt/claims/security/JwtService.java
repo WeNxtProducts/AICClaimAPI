@@ -104,6 +104,7 @@ public class JwtService {
 			            loggedInDetails.setDepartment(tokenDetails.get("Department", String.class));
 			            loggedInDetails.setBaseCurrency(tokenDetails.get("Currency", String.class));
 			            loggedInDetails.setCompany(tokenDetails.get("Company", String.class));
+			            loggedInDetails.setRole(tokenDetails.get("Role", String.class));
 			            return loggedInDetails;
 			        } catch (SignatureException e) {
 			            System.out.println("Invalid JWT signature");

@@ -746,9 +746,11 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 				if (userTask != null) {
 					taskService.complete(userTask.getId());
 				}
-
+				
+				AuthRequest userDetails = jwtService.getLoggedInDetails(token);
 				response.put(statusCode, successCode);
 				response.put(messageCode, "Data Submitted Successfully");
+				response.put("ROLE", userDetails.getRole());
 			}
 		} catch (Exception e) {
 			response.put(statusCode, errorCode);

@@ -19,7 +19,7 @@ public class LT_POLICY implements Serializable{
     @SequenceGenerator(name = "PolicyTranIdSeq", sequenceName = "POL_TRAN_ID_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PolicyTranIdSeq")
     @Column(name = "POL_TRAN_ID")
-    private Long POL_TRAN_ID;
+    private Integer POL_TRAN_ID;
 
     @Column(name = "POL_DIVN_CODE")
     private String POL_DIVN_CODE;
@@ -687,11 +687,11 @@ public class LT_POLICY implements Serializable{
     @Column(name = "POL_AGENT_COMM_BASIS")
     private String POL_AGENT_COMM_BASIS;
 
-	public Long getPOL_TRAN_ID() {
+	public Integer getPOL_TRAN_ID() {
 		return POL_TRAN_ID;
 	}
 
-	public void setPOL_TRAN_ID(Long pOL_TRAN_ID) {
+	public void setPOL_TRAN_ID(Integer pOL_TRAN_ID) {
 		POL_TRAN_ID = pOL_TRAN_ID;
 	}
 

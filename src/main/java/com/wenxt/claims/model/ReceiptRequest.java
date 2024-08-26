@@ -12,6 +12,12 @@ public class ReceiptRequest {
 	
 	@JsonProperty("installHdr")
 	public FormFieldsDTO installHdr;
+	
+	@JsonProperty("deposit")
+	public FormFieldsDTO deposit;
+	
+	@JsonProperty("pymntDetails")
+	public FormFieldsDTO pymntDetails;
 
 	public FormFieldsDTO getReceiptHeader() {
 		return receiptHeader;
@@ -35,6 +41,22 @@ public class ReceiptRequest {
 
 	public void setInstallHdr(FormFieldsDTO installHdr) {
 		this.installHdr = installHdr;
+	}
+
+	public FormFieldsDTO getDeposit() {
+		return deposit;
+	}
+
+	public void setDeposit(FormFieldsDTO deposit) {
+		this.deposit = deposit;
+	}
+
+	public FormFieldsDTO getPymntDetails() {
+		return pymntDetails;
+	}
+
+	public void setPymntDetails(FormFieldsDTO pymntDetails) {
+		this.pymntDetails = pymntDetails;
 	}
 
 }

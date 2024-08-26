@@ -31,8 +31,9 @@ public class LtPolicyController {
 	}
 	
 	@PostMapping("/deletePolicy/{policy_id}")
-	public String deletePolicyByid(@PathVariable("policy_id") Integer policy_id) {
-		return policyService.deletePolicyByid(policy_id);
+	public String deletePolicyByid(@PathVariable("policy_id") String policy_id) {
+	    Integer policyId = Integer.parseInt(policy_id);
+	    return policyService.deletePolicyByid(policyId);
 	}
 	
 	@PostMapping("/getPolicyByid")

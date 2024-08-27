@@ -242,6 +242,7 @@ public class LtPolBrokerServiceImpl implements LtPolBrokerService {
 			if (polBroker != null) {
 				inputObject = new JSONObject();
 				for (int i = 0; i < polBroker.getClass().getDeclaredFields().length; i++) {
+					innerObject = new JSONObject();
 					Field field = polBroker.getClass().getDeclaredFields()[i];
 					field.setAccessible(true);
 					String columnName = null;

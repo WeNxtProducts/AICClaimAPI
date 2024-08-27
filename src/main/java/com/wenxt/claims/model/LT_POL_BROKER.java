@@ -144,8 +144,8 @@ public class LT_POL_BROKER {
     @Column(name = "PBRK_WHT_PERC")
     private BigDecimal PBRK_WHT_PERC;
 
-    @Column(name = "PBK_BRK_NAME")
-    private String PBK_BRK_NAME;
+    @Column(name = "PBRK_BRK_NAME")
+    private String PBRK_BRK_NAME;
     
 	public Long getPBRK_TRAN_ID() {
 		return PBRK_TRAN_ID;
@@ -483,12 +483,12 @@ public class LT_POL_BROKER {
 		PBRK_WHT_PERC = pBRK_WHT_PERC;
 	}
 
-	public String getPBK_BRK_NAME() {
-		return PBK_BRK_NAME;
+	public String getPBRK_BRK_NAME() {
+		return PBRK_BRK_NAME;
 	}
 
-	public void setPBK_BRK_NAME(String pBK_BRK_NAME) {
-		PBK_BRK_NAME = pBK_BRK_NAME;
+	public void setPBRK_BRK_NAME(String pBRK_BRK_NAME) {
+		PBRK_BRK_NAME = pBRK_BRK_NAME;
 	}
 
 }

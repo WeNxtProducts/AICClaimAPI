@@ -254,11 +254,11 @@ public class LtPolBrokerServiceImpl implements LtPolBrokerService {
 					}
 				}
 				innerObject.put("formFields", inputObject);
+				resultList.add(innerObject);
 			}
 		}
 		result.put(statusCode, successCode);
 		result.put(messageCode, "Pol Broker Details Fetched Successfully");
-		resultList.add(innerObject);
 		outerObject.put("polBrokerDetails", resultList);
 		result.put(dataCode, outerObject);
 		return result.toString();

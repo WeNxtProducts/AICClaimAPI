@@ -15,10 +15,13 @@ import org.springframework.stereotype.Service;
 import com.wenxt.claims.model.LT_RCPT_HDR;
 import com.wenxt.claims.model.ReceiptRequest;
 import com.wenxt.claims.repository.ReceiptHeaderRepository;
+import com.wenxt.claims.security.AuthRequest;
+import com.wenxt.claims.security.JwtService;
 import com.wenxt.claims.service.CommonService;
 import com.wenxt.claims.service.ReceiptHeaderService;
 
 import jakarta.persistence.Column;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 public class ReceiptHeaderServiceImpl implements ReceiptHeaderService {
@@ -46,12 +49,17 @@ public class ReceiptHeaderServiceImpl implements ReceiptHeaderService {
 	
 	@Autowired
 	private ReceiptHeaderRepository receiptHeaderRepo;
+	
+	@Autowired
+	private JwtService jwtService;
 
 	@Override
-	public String save(ReceiptRequest receiptRequest) {
+	public String save(ReceiptRequest receiptRequest, HttpServletRequest request) {
 		JSONObject response = new JSONObject();
 		JSONObject data = new JSONObject();
 
+		String authorizationHeader = request.getHeader("Authorization");
+		String token = authorizationHeader.substring(7).trim();
 		try {
 			LT_RCPT_HDR receiptHeader = new LT_RCPT_HDR();
 			
@@ -66,7 +74,9 @@ public class ReceiptHeaderServiceImpl implements ReceiptHeaderService {
 			}
 
 			try {
+				AuthRequest userDetails = jwtService.getLoggedInDetails(token);
 				receiptHeader.setRH_INS_DT(new Date(System.currentTimeMillis()));
+				receiptHeader.setRH_INS_ID(userDetails.getUsername());
 				LT_RCPT_HDR savedReceiptHeaderDetails = receiptHeaderRepo.save(receiptHeader);
 				response.put(statusCode, successCode);
 				response.put(messageCode,

@@ -180,6 +180,9 @@ public class LT_RCPT_HDR {
 
     @Column(name = "RH_COMM_RECPT_YN")
     private String RH_COMM_RECPT_YN;
+    
+    @Column(name = "RH_RCPT_BAS")
+    private String RH_RCPT_BAS;
 
 	public Integer getRH_TRAN_ID() {
 		return RH_TRAN_ID;
@@ -596,5 +599,14 @@ public class LT_RCPT_HDR {
 	public void setRH_COMM_RECPT_YN(String rH_COMM_RECPT_YN) {
 		RH_COMM_RECPT_YN = rH_COMM_RECPT_YN;
 	}
+
+	public String getRH_RCPT_BAS() {
+		return RH_RCPT_BAS;
+	}
+
+	public void setRH_RCPT_BAS(String rH_RCPT_BAS) {
+		RH_RCPT_BAS = rH_RCPT_BAS;
+	}
+	
 }
 

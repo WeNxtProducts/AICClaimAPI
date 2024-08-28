@@ -1,5 +1,7 @@
 package com.wenxt.claims.model;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ReceiptRequest {
@@ -8,7 +10,7 @@ public class ReceiptRequest {
 	public FormFieldsDTO receiptHeader;
 	
 	@JsonProperty("receiptProcess")
-	public FormFieldsDTO receiptProcess;
+	public List<FormFieldsDTO> receiptProcess;
 	
 	@JsonProperty("installHdr")
 	public FormFieldsDTO installHdr;
@@ -27,11 +29,11 @@ public class ReceiptRequest {
 		this.receiptHeader = receiptHeader;
 	}
 
-	public FormFieldsDTO getReceiptProcess() {
+	public List<FormFieldsDTO> getReceiptProcess() {
 		return receiptProcess;
 	}
 
-	public void setReceiptProcess(FormFieldsDTO receiptProcess) {
+	public void setReceiptProcess(List<FormFieldsDTO> receiptProcess) {
 		this.receiptProcess = receiptProcess;
 	}
 

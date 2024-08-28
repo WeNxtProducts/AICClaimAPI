@@ -237,7 +237,6 @@ public class LtPolBrokerServiceImpl implements LtPolBrokerService {
 		List<JSONObject> resultList = new ArrayList<>();
 		List<LT_POL_BROKER> brokerList = polBrokerRepo.findByPolId(polBrokerId);
 		for (LT_POL_BROKER broker : brokerList) {
-//			innerObject = new JSONObject();
 			LT_POL_BROKER polBroker = broker;
 			if (polBroker != null) {
 				inputObject = new JSONObject();

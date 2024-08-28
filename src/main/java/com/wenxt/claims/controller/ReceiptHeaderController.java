@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.wenxt.claims.model.ReceiptRequest;
 import com.wenxt.claims.service.ReceiptHeaderService;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/receiptHdr")
 public class ReceiptHeaderController {
@@ -19,8 +21,8 @@ public class ReceiptHeaderController {
 	private ReceiptHeaderService receiptHeaderService;
 	
 	@PostMapping("/save")
-	public String saveReceiptHeader(@RequestBody ReceiptRequest receiptRequest) {
-		return receiptHeaderService.save(receiptRequest);
+	public String saveReceiptHeader(@RequestBody ReceiptRequest receiptRequest, HttpServletRequest request) {
+		return receiptHeaderService.save(receiptRequest, request);
 	}
 	
 	@PostMapping("/update/{tranId}")

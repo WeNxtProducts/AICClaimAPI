@@ -18,6 +18,7 @@ import com.wenxt.claims.repository.ReceiptHeaderRepository;
 import com.wenxt.claims.security.AuthRequest;
 import com.wenxt.claims.security.JwtService;
 import com.wenxt.claims.service.CommonService;
+import com.wenxt.claims.service.ElasticSearchProxy;
 import com.wenxt.claims.service.ReceiptHeaderService;
 
 import jakarta.persistence.Column;
@@ -52,6 +53,9 @@ public class ReceiptHeaderServiceImpl implements ReceiptHeaderService {
 	
 	@Autowired
 	private JwtService jwtService;
+	
+	@Autowired
+	private ElasticSearchProxy elasticSearch;
 
 	@Override
 	public String save(ReceiptRequest receiptRequest, HttpServletRequest request) {
@@ -112,6 +116,7 @@ public class ReceiptHeaderServiceImpl implements ReceiptHeaderService {
 
 				try {
 					receiptHeader.setRH_MOD_DT(new Date(System.currentTimeMillis()));
+					receiptHeader.setRH_FLEX_03("Y");
 					LT_RCPT_HDR savedReceiptHeaderDetails = receiptHeaderRepo.save(receiptHeader);
 					response.put(statusCode, successCode);
 					response.put(messageCode, "Receipt Header Details Updated Successfully");
@@ -160,6 +165,7 @@ public class ReceiptHeaderServiceImpl implements ReceiptHeaderService {
 	public String get(Integer tranId) throws Exception{
 		Map<String, Object> parametermap = new HashMap<String, Object>();
 		JSONObject inputObject = new JSONObject();
+		JSONObject response = new JSONObject();
 		Optional<LT_RCPT_HDR> optionalUser = receiptHeaderRepo.findById(tranId);
 		LT_RCPT_HDR receiptHeader = optionalUser.get();
 		if (receiptHeader != null) {
@@ -175,8 +181,21 @@ public class ReceiptHeaderServiceImpl implements ReceiptHeaderService {
 					inputObject.put(columnName, value);
 				}
 			}
+			response.put(statusCode, successCode);
+			response.put(dataCode, inputObject);
+			response.put(messageCode, "Receipt Header Details Fetched Successfully");
+		}else {
+			response.put(statusCode, errorCode);
+			response.put(messageCode, "No Record found for Id " + tranId);
 		}
-		return inputObject.toString();
+
+		return response.toString();
+	}
+
+	@Override
+	public String searchReceiptHeader(String searchTerm, HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

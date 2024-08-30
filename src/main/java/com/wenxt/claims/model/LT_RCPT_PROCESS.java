@@ -126,6 +126,12 @@ public class LT_RCPT_PROCESS {
 
 	    @Column(name = "RP_DRIP_FLAG")
 	    private String RP_DRIP_FLAG;
+	    
+	    @Column(name = "RP_PYBL_FC_AMT")
+	    private Double RP_PYBL_FC_AMT;
+	    
+	    @Column(name = "RP_CURR_CODE")
+	    private String RP_CURR_CODE;
 
 		public Integer getRP_TRAN_ID() {
 			return RP_TRAN_ID;
@@ -405,6 +411,22 @@ public class LT_RCPT_PROCESS {
 
 		public void setRP_DRIP_FLAG(String rP_DRIP_FLAG) {
 			RP_DRIP_FLAG = rP_DRIP_FLAG;
+		}
+
+		public Double getRP_PYBL_FC_AMT() {
+			return RP_PYBL_FC_AMT;
+		}
+
+		public void setRP_PYBL_FC_AMT(Double rP_PYBL_FC_AMT) {
+			RP_PYBL_FC_AMT = rP_PYBL_FC_AMT;
+		}
+
+		public String getRP_CURR_CODE() {
+			return RP_CURR_CODE;
+		}
+
+		public void setRP_CURR_CODE(String rP_CURR_CODE) {
+			RP_CURR_CODE = rP_CURR_CODE;
 		}
 
 }

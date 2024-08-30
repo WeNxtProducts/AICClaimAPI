@@ -183,6 +183,9 @@ public class LT_RCPT_HDR {
     
     @Column(name = "RH_RCPT_BAS")
     private String RH_RCPT_BAS;
+    
+    @Column(name = "RH_BATCH_LC_AMT")
+    private Double RH_BATCH_LC_AMT;
 
 	public Integer getRH_TRAN_ID() {
 		return RH_TRAN_ID;
@@ -606,6 +609,14 @@ public class LT_RCPT_HDR {
 
 	public void setRH_RCPT_BAS(String rH_RCPT_BAS) {
 		RH_RCPT_BAS = rH_RCPT_BAS;
+	}
+
+	public Double getRH_BATCH_LC_AMT() {
+		return RH_BATCH_LC_AMT;
+	}
+
+	public void setRH_BATCH_LC_AMT(Double rH_BATCH_LC_AMT) {
+		RH_BATCH_LC_AMT = rH_BATCH_LC_AMT;
 	}
 	
 }

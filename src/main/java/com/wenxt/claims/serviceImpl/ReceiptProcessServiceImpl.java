@@ -23,8 +23,10 @@ import org.springframework.stereotype.Service;
 
 import com.wenxt.claims.model.FormFieldsDTO;
 import com.wenxt.claims.model.LT_POL_BROKER;
+import com.wenxt.claims.model.LT_RCPT_HDR;
 import com.wenxt.claims.model.LT_RCPT_PROCESS;
 import com.wenxt.claims.model.ReceiptRequest;
+import com.wenxt.claims.repository.ReceiptHeaderRepository;
 import com.wenxt.claims.repository.ReceiptProcessRepository;
 import com.wenxt.claims.service.CommonService;
 import com.wenxt.claims.service.ReceiptProcessService;
@@ -57,6 +59,9 @@ public class ReceiptProcessServiceImpl implements ReceiptProcessService {
 	
 	@Autowired
 	private ReceiptProcessRepository receiptProcessRepo;
+	
+	@Autowired
+	private ReceiptHeaderRepository receiptHeaderRepo;
 
 	@Override
 	public String save(ReceiptRequest receiptRequest) {
@@ -172,6 +177,13 @@ public class ReceiptProcessServiceImpl implements ReceiptProcessService {
 	public String update(ReceiptRequest receiptRequest, Integer tranId) {
 		JSONObject response = new JSONObject();
 
+		Optional<LT_RCPT_HDR> header = receiptHeaderRepo.findById(tranId);
+		if(header.get() != null) {
+			LT_RCPT_HDR headerDetails = new LT_RCPT_HDR();
+			headerDetails.setRH_FLEX_03("N");
+			
+			receiptHeaderRepo.save(headerDetails);
+		}
 		try {
 //			List<LT_RCPT_PROCESS> receiptProcess = receiptProcessRepo.findByPolId(polBrokerId);
 			Optional<LT_RCPT_PROCESS> receiptProcesss = Optional.ofNullable(new LT_RCPT_PROCESS());
@@ -243,6 +255,7 @@ public class ReceiptProcessServiceImpl implements ReceiptProcessService {
 	public String get(Integer tranId)throws Exception {
 		Map<String, Object> parametermap = new HashMap<String, Object>();
 		JSONObject inputObject = new JSONObject();
+		JSONObject response = new JSONObject();
 		Optional<LT_RCPT_PROCESS> optionalUser = receiptProcessRepo.findById(tranId);
 		LT_RCPT_PROCESS receiptProcess = optionalUser.get();
 		if (receiptProcess != null) {
@@ -258,8 +271,14 @@ public class ReceiptProcessServiceImpl implements ReceiptProcessService {
 					inputObject.put(columnName, value);
 				}
 			}
+			response.put(statusCode, successCode);
+			response.put(messageCode, "Receipt Process Get Successfully");
+			response.put(dataCode, inputObject);
+		}else {
+			response.put(statusCode, errorCode);
+			response.put(messageCode, "No Record Found for Id " + tranId);
 		}
-		return inputObject.toString();
+		return response.toString();
 	}
 
 }

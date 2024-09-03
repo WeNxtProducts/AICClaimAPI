@@ -20,9 +20,9 @@ public class ReceiptDetailController {
 	@Autowired
 	private ReceiptDetailService receiptDetailService;
 	
-	@PostMapping("/save")
-	public String saveReceiptHeader(@RequestBody ReceiptRequest receiptRequest, HttpServletRequest request) {
-		return receiptDetailService.save(receiptRequest, request);
+	@PostMapping("/save/{tranId}")
+	public String saveReceiptHeader(@RequestBody ReceiptRequest receiptRequest, @PathVariable Integer tranId, HttpServletRequest request) {
+		return receiptDetailService.save(receiptRequest, tranId, request);
 	}
 	
 	@PostMapping("/update/{tranId}")

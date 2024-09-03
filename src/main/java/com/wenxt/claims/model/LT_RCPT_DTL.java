@@ -23,7 +23,7 @@ public class LT_RCPT_DTL {
     private Integer RD_SR_NO;
 
     @Column(name = "RD_RH_TRAN_ID")
-    private Long RD_RH_TRAN_ID;
+    private Integer RD_RH_TRAN_ID;
 
     @Column(name = "RD_PAY_MODE")
     private String RD_PAY_MODE;
@@ -210,6 +210,9 @@ public class LT_RCPT_DTL {
 
     @Column(name = "RD_ATM_CARD_NO")
     private String RD_ATM_CARD_NO;
+    
+    @Column(name = "RD_BANK_ACNT_NAME")
+    private String RD_BANK_ACNT_NAME;
 
 	public Integer getRD_TRAN_ID() {
 		return RD_TRAN_ID;
@@ -227,11 +230,11 @@ public class LT_RCPT_DTL {
 		RD_SR_NO = rD_SR_NO;
 	}
 
-	public Long getRD_RH_TRAN_ID() {
+	public Integer getRD_RH_TRAN_ID() {
 		return RD_RH_TRAN_ID;
 	}
 
-	public void setRD_RH_TRAN_ID(Long rD_RH_TRAN_ID) {
+	public void setRD_RH_TRAN_ID(Integer rD_RH_TRAN_ID) {
 		RD_RH_TRAN_ID = rD_RH_TRAN_ID;
 	}
 
@@ -729,6 +732,14 @@ public class LT_RCPT_DTL {
 
 	public void setRD_ATM_CARD_NO(String rD_ATM_CARD_NO) {
 		RD_ATM_CARD_NO = rD_ATM_CARD_NO;
+	}
+
+	public String getRD_BANK_ACNT_NAME() {
+		return RD_BANK_ACNT_NAME;
+	}
+
+	public void setRD_BANK_ACNT_NAME(String rD_BANK_ACNT_NAME) {
+		RD_BANK_ACNT_NAME = rD_BANK_ACNT_NAME;
 	}
 
 }

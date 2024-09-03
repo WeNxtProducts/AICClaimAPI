@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public interface ReceiptDetailService {
 
-	String save(ReceiptRequest receiptRequest, HttpServletRequest request);
+	String save(ReceiptRequest receiptRequest, Integer tranId, HttpServletRequest request);
 
 	String update(ReceiptRequest receiptRequest, Integer tranId);
 

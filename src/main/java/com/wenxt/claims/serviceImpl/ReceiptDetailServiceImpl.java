@@ -55,7 +55,7 @@ public class ReceiptDetailServiceImpl implements ReceiptDetailService {
 	private CommonService commonService;
 
 	@Override
-	public String save(ReceiptRequest receiptRequest, HttpServletRequest request) {
+	public String save(ReceiptRequest receiptRequest, Integer tranId, HttpServletRequest request) {
 		JSONObject response = new JSONObject();
 		JSONObject data = new JSONObject();
 
@@ -78,6 +78,7 @@ public class ReceiptDetailServiceImpl implements ReceiptDetailService {
 				AuthRequest userDetails = jwtService.getLoggedInDetails(token);
 				receiptDetail.setRD_INS_DT(new Date(System.currentTimeMillis()));
 				receiptDetail.setRD_INS_ID(userDetails.getUsername());
+				receiptDetail.setRD_RH_TRAN_ID(tranId);
 				LT_RCPT_DTL savedReceiptDetails = receiptDetailRepo.save(receiptDetail);
 				response.put(statusCode, successCode);
 				response.put(messageCode,

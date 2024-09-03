@@ -102,6 +102,8 @@ public class SecurityConfig {
 				.and()
 				.authorizeHttpRequests().requestMatchers("/pymntDetails/**").authenticated() 
 				.and()
+				.authorizeHttpRequests().requestMatchers("/receiptDetail/**").authenticated() 
+				.and()
 				.sessionManagement() 
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS) 
 				.and() 

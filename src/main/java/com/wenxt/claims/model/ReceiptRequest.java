@@ -18,8 +18,8 @@ public class ReceiptRequest {
 	@JsonProperty("deposit")
 	public FormFieldsDTO deposit;
 	
-	@JsonProperty("pymntDetails")
-	public FormFieldsDTO pymntDetails;
+	@JsonProperty("receiptDetails")
+	public FormFieldsDTO receiptDetails;
 
 	public FormFieldsDTO getReceiptHeader() {
 		return receiptHeader;
@@ -53,12 +53,12 @@ public class ReceiptRequest {
 		this.deposit = deposit;
 	}
 
-	public FormFieldsDTO getPymntDetails() {
-		return pymntDetails;
+	public FormFieldsDTO getReceiptDetails() {
+		return receiptDetails;
 	}
 
-	public void setPymntDetails(FormFieldsDTO pymntDetails) {
-		this.pymntDetails = pymntDetails;
+	public void setReceiptDetails(FormFieldsDTO receiptDetails) {
+		this.receiptDetails = receiptDetails;
 	}
 
 }

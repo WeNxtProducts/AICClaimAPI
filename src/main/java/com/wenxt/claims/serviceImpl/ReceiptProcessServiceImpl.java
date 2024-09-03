@@ -179,7 +179,7 @@ public class ReceiptProcessServiceImpl implements ReceiptProcessService {
 
 		Optional<LT_RCPT_HDR> header = receiptHeaderRepo.findById(tranId);
 		if(header.get() != null) {
-			LT_RCPT_HDR headerDetails = new LT_RCPT_HDR();
+			LT_RCPT_HDR headerDetails = header.get();
 			headerDetails.setRH_FLEX_03("N");
 			
 			receiptHeaderRepo.save(headerDetails);

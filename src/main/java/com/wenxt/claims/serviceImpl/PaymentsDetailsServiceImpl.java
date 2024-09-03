@@ -67,7 +67,7 @@ public class PaymentsDetailsServiceImpl implements PaymentsDetailsService {
 			LT_PYMT_DTLS paymentDetails = new LT_PYMT_DTLS();
 
 			Map<String, Map<String, String>> fieldMaps = new HashMap<>();
-			fieldMaps.put("frontForm", receiptRequest.getPymntDetails().getFormFields());
+			fieldMaps.put("frontForm", receiptRequest.getReceiptDetails().getFormFields());
 			for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
 				setPymntDtlsFields(paymentDetails, LT_PYMT_DTLS.class, entry.getValue());
 			}
@@ -178,7 +178,7 @@ public class PaymentsDetailsServiceImpl implements PaymentsDetailsService {
 			LT_PYMT_DTLS paymentDetails = optionalUser.get();
 			if (paymentDetails != null) {
 				Map<String, Map<String, String>> fieldMaps = new HashMap<>();
-				fieldMaps.put("frontForm", receiptRequest.getPymntDetails().getFormFields());
+				fieldMaps.put("frontForm", receiptRequest.getReceiptDetails().getFormFields());
 				for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {			
 					setPymntDtlsFields(paymentDetails, LT_PYMT_DTLS.class, entry.getValue());
 				}

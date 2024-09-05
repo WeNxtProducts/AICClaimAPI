@@ -3,6 +3,8 @@ package com.wenxt.claims.serviceImpl;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.flowable.engine.HistoryService;
 import org.flowable.engine.ProcessEngine;
 import org.flowable.engine.ProcessEngines;
@@ -33,6 +37,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.expression.ParseException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -41,10 +46,12 @@ import org.springframework.web.client.RestTemplate;
 import com.wenxt.claims.model.LT_POLICY;
 import com.wenxt.claims.model.LT_POL_STATUS;
 import com.wenxt.claims.model.ProposalEntryRequest;
+import com.wenxt.claims.model.SearchRequestDTO;
 import com.wenxt.claims.repository.LtPolicyRepository;
 import com.wenxt.claims.repository.PolStatusRepository;
 import com.wenxt.claims.security.AuthRequest;
 import com.wenxt.claims.security.JwtService;
+import com.wenxt.claims.service.ElasticSearchProxy;
 import com.wenxt.claims.service.LtPolicyService;
 
 import jakarta.persistence.Column;
@@ -88,6 +95,9 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 	
 	@Autowired
 	private PolStatusRepository polStatusRepo;
+	
+	@Autowired
+	private ElasticSearchProxy elasticSearch;
 
 	@Override
 	public String createPolicy(ProposalEntryRequest proposalEntryRequest, HttpServletRequest request) {
@@ -786,5 +796,59 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 		
 		return response.toString();
 	}
+	
+	@Override
+	public String search(SearchRequestDTO searchRequest, HttpServletRequest request) {
+		JSONObject response = new JSONObject();
+
+		String authorizationHeader = request.getHeader("Authorization");
+		String token = authorizationHeader.substring(7).trim();
+		QueryBuilder query = QueryBuilders.matchQuery("_all", searchRequest.getSearchTerm());
+
+		try {
+			String url = "http://localhost:8098/common/getlistingdata?queryId="+searchRequest.getQueryId()
+			+"&limit="+searchRequest.getLimit()+"&offset="+searchRequest.getOffset();
+			HttpHeaders headers = new HttpHeaders();
+			RestTemplate restTemplate = new RestTemplate();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			headers.set("Authorization", "Bearer " + token);
+			HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+			ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, String.class);
+			JSONObject resultObject = new JSONObject(responseEntity.getBody());
+
+			JSONArray jsonArray = (JSONArray) resultObject.getJSONArray("Data");
+			
+			ResultSet results = elasticSearch.search(query, "LT_POLICY", "POL_TRAN_ID", searchRequest.getLimit(), searchRequest.getOffset());
+
+			JSONObject object = new JSONObject();
+			List<JSONObject> resultList = new ArrayList();
+			while (results.next()) {
+				object = new JSONObject();
+				ResultSetMetaData metaData = results.getMetaData();
+				if(results.getObject("POL_DS_TYPE").equals(1)) {
+					object.put("ID", results.getObject("POL_TRAN_ID"));
+					object.put("Pol No", results.getObject("POL_NO"));
+					object.put("Customer_Code", results.getObject("POL_CUST_CODE"));
+					object.put("Start_Dt", results.getObject("POL_FM_DT"));
+					object.put("Stepper_Id", results.getObject("POL_PROGRS_UPD"));
+					object.put("Freeze_Flag", results.getObject("POL_FREEZE_RATE"));
+					object.put("Proposal_No", results.getObject("POL_QUOT_NO"));
+					
+					resultList.add(object);
+				}
+			}
+			
+			response.put(messageCode, "Search Results Fetched Successfully");
+			response.put("Heading", resultObject.get("Heading"));
+			response.put(dataCode, resultList);
+			response.put("Count", results.getFetchSize());
+			response.put(statusCode, successCode);
+		} catch (Exception e) {
+			response.put(statusCode, errorCode);
+			response.put(messageCode, e.getMessage());
+		}
+		return response.toString();
+	}
+
 
 }

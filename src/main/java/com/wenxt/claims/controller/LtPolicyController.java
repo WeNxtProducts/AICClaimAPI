@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wenxt.claims.model.ProposalEntryRequest;
+import com.wenxt.claims.model.SearchRequestDTO;
 import com.wenxt.claims.service.LtPolicyService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -93,6 +94,11 @@ public class LtPolicyController {
 	@PostMapping("/uwSubmit")
 	public String uwSubmit(@RequestParam("DECISION") String decision, @RequestParam("REASON") String reason, @RequestParam Integer tranId, HttpServletRequest request) {
 		return policyService.uwSubmit(decision, reason, tranId, request);
+	}
+	
+	@PostMapping("/search")
+	public String search(@RequestBody SearchRequestDTO searchRequest, HttpServletRequest request) {
+		return policyService.search(searchRequest, request);
 	}
 
 }

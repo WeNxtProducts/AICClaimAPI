@@ -1,6 +1,7 @@
 package com.wenxt.claims.service;
 
 import com.wenxt.claims.model.ProposalEntryRequest;
+import com.wenxt.claims.model.SearchRequestDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -33,5 +34,7 @@ public interface LtPolicyService {
 	String onSubmit(Integer tranId, HttpServletRequest request);
 
 	String uwSubmit(String decision, String reason, Integer tranId, HttpServletRequest request);
+
+	String search(SearchRequestDTO searchRequest, HttpServletRequest request);
 
 }

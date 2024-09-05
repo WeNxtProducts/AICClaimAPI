@@ -213,6 +213,10 @@ public class ReceiptHeaderServiceImpl implements ReceiptHeaderService {
 		String authorizationHeader = request.getHeader("Authorization");
 		String token = authorizationHeader.substring(7).trim();
 		QueryBuilder query = QueryBuilders.matchQuery("_all", searchRequest.getSearchTerm());
+		
+		if(searchRequest.getOffset() == 1) {
+			searchRequest.setOffset(0);
+		}
 
 		try {
 			String url = "http://localhost:8098/common/getlistingdata?queryId="+searchRequest.getQueryId()

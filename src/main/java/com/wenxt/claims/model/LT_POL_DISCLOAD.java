@@ -146,6 +146,12 @@ public class LT_POL_DISCLOAD {
 
     @Column(name = "PDL_COVER_TYPE")
     private String PDL_COVER_TYPE;
+    
+    @Column(name = "PDL_FC_VALUE")
+    private BigDecimal PDL_FC_VALUE;
+    
+    @Column(name = "PDL_LC_VALUE")
+    private BigDecimal PDL_LC_VALUE;
 
 	public Long getPDL_TRAN_ID() {
 		return PDL_TRAN_ID;
@@ -489,6 +495,22 @@ public class LT_POL_DISCLOAD {
 
 	public void setPDL_COVER_TYPE(String pDL_COVER_TYPE) {
 		PDL_COVER_TYPE = pDL_COVER_TYPE;
+	}
+
+	public BigDecimal getPDL_FC_VALUE() {
+		return PDL_FC_VALUE;
+	}
+
+	public void setPDL_FC_VALUE(BigDecimal pDL_FC_VALUE) {
+		PDL_FC_VALUE = pDL_FC_VALUE;
+	}
+
+	public BigDecimal getPDL_LC_VALUE() {
+		return PDL_LC_VALUE;
+	}
+
+	public void setPDL_LC_VALUE(BigDecimal pDL_LC_VALUE) {
+		PDL_LC_VALUE = pDL_LC_VALUE;
 	}
 
 }

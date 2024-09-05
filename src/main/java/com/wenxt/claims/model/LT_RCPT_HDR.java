@@ -133,8 +133,8 @@ public class LT_RCPT_HDR {
     @Column(name = "RH_BATCH_NO")
     private String RH_BATCH_NO;
 
-    @Column(name = "RH_BH_SYS_ID")
-    private Long RH_BH_SYS_ID;
+//    @Column(name = "RH_BH_SYS_ID")
+//    private Long RH_BH_SYS_ID;
 
     @Column(name = "RH_BILL_NO")
     private String RH_BILL_NO;
@@ -475,13 +475,13 @@ public class LT_RCPT_HDR {
 		RH_BATCH_NO = rH_BATCH_NO;
 	}
 
-	public Long getRH_BH_SYS_ID() {
-		return RH_BH_SYS_ID;
-	}
-
-	public void setRH_BH_SYS_ID(Long rH_BH_SYS_ID) {
-		RH_BH_SYS_ID = rH_BH_SYS_ID;
-	}
+//	public Long getRH_BH_SYS_ID() {
+//		return RH_BH_SYS_ID;
+//	}
+//
+//	public void setRH_BH_SYS_ID(Long rH_BH_SYS_ID) {
+//		RH_BH_SYS_ID = rH_BH_SYS_ID;
+//	}
 
 	public String getRH_BILL_NO() {
 		return RH_BILL_NO;

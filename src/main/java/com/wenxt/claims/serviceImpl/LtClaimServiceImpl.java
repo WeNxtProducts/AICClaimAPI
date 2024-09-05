@@ -121,21 +121,21 @@ public class LtClaimServiceImpl implements LtClaimService {
 			LtClaimHdr savedClaimDetails = ltClaimHdrRepo.save(claim);
 			
 
-			RestClientBuilder builder = RestClient.builder(new HttpHost("localhost", 9200, "http"));
-			RestHighLevelClient client = new RestHighLevelClient(builder);
-
-			IndexRequest req = new IndexRequest("claimheader").id(savedClaimDetails.getCH_TRAN_ID().toString())
-					.source(claimHdrFields);
-
-			IndexResponse res = client.index(req, RequestOptions.DEFAULT);
-
-			if (res.getResult() == Result.CREATED) {
-				System.out.println("Document indexed successfully!");
-			} else {
-				System.out.println("DOCUMENT NOT INDEXED");
-			}
-
-			client.close();
+//			RestClientBuilder builder = RestClient.builder(new HttpHost("localhost", 9200, "http"));
+//			RestHighLevelClient client = new RestHighLevelClient(builder);
+//
+//			IndexRequest req = new IndexRequest("claimheader").id(savedClaimDetails.getCH_TRAN_ID().toString())
+//					.source(claimHdrFields);
+//
+//			IndexResponse res = client.index(req, RequestOptions.DEFAULT);
+//
+//			if (res.getResult() == Result.CREATED) {
+//				System.out.println("Document indexed successfully!");
+//			} else {
+//				System.out.println("DOCUMENT NOT INDEXED");
+//			}
+//
+//			client.close();
 
 			Map<String, Object> inputMap = new HashMap<>();
 			inputMap.put("P_CH_TRAN_ID", savedClaimDetails.getCH_TRAN_ID());

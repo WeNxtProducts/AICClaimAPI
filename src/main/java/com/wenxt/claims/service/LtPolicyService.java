@@ -29,7 +29,7 @@ public interface LtPolicyService {
 
 	String updateStepperFlag(Integer flag, Integer tranId);
 
-	String updateFreezeFlag(String flag, Integer tranId);
+	String updateFreezeFlag(String flag, Integer tranId, String pOL_PREM_CALC_YN);
 
 	String onSubmit(Integer tranId, HttpServletRequest request);
 

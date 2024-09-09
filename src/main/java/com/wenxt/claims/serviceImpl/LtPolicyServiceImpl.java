@@ -92,19 +92,19 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 
 	@Autowired
 	private HistoryService historyService;
-	
+
 	@Autowired
 	private PolStatusRepository polStatusRepo;
-	
+
 	@Autowired
 	private ElasticSearchProxy elasticSearch;
 
 	@Override
 	public String createPolicy(ProposalEntryRequest proposalEntryRequest, HttpServletRequest request) {
-		
+
 		JSONObject response = new JSONObject();
 		JSONObject data = new JSONObject();
-		
+
 		String authorizationHeader = request.getHeader("Authorization");
 		String token = authorizationHeader.substring(7).trim();
 		try {
@@ -118,106 +118,106 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 
 					Map<String, Object> queryParams = new HashMap<>();
 					queryParams.put("CustCode", policyDetailsMap.get("POL_CUST_CODE"));
-					
+
 					Map<String, Object> body = new HashMap<>();
 					body.put("queryParams", queryParams);
 
 					JSONObject jsonBody = new JSONObject(body);
 					String requestBody = jsonBody.toString();
-					
+
 					String url = "http://localhost:8098/common/getMapQuery?queryId=185";
 					HttpHeaders headers = new HttpHeaders();
 					RestTemplate restTemplate = new RestTemplate();
 					headers.setContentType(MediaType.APPLICATION_JSON);
 					headers.set("Authorization", "Bearer " + token);
 					HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
-					ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, requestEntity, String.class);
-					
+					ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, requestEntity,
+							String.class);
+
 					JSONObject object = new JSONObject(responseEntity.getBody());
 
 					JSONArray jsonArray = (JSONArray) object.getJSONArray("Data");
 					List<String> values = new ArrayList<>();
 					for (int i = 0; i < jsonArray.length(); i++) {
 						Iterator<String> keys = ((JSONObject) jsonArray.get(i)).keys();
-						while (keys.hasNext()) { 
+						while (keys.hasNext()) {
 							String key = keys.next();
 							Object value = ((JSONObject) jsonArray.get(i)).get(key);
 							policyDetailsMap.put(key, value.toString());
 						}
 					}
-					
-					
+
 					setPolicyFields(policy, LT_POLICY.class, policyDetailsMap);
 				}
 				fieldMaps.put("frontForm", proposalEntryRequest.getInParams());
 				for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
 					setPolicyFields(policy, LT_POLICY.class, entry.getValue());
 				}
-			} 
+			}
 //			for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
 //				setPolicyFields(policy, LT_POLICY.class, entry.getValue());
 //			}
-				Map<String, Object> variables = new HashMap<>();
-				variables.put("instance", policy);
-				variables.put("queryId", 158);
-				variables.put("class", LT_POLICY.class.getName());
-				variables.put("token", token);
-				variables.put("process", "create");
-				
-				AuthRequest authRequest = jwtService.getLoggedInDetails(token);
-				
-				//setting divn, dept & company details
-				policy.setPOL_DIVN_CODE(authRequest.getDivision());
-				policy.setPOL_DEPT_CODE(authRequest.getDepartment());
-				policy.setPOL_COMP_CODE(authRequest.getCompany());
-				
-				//setting ins id & ins dt 
-				policy.setPOL_INS_DT(new Date(System.currentTimeMillis()));
-				policy.setPOL_INS_ID(authRequest.getUsername());
-				
-				//other values to be set while saving
-				policy.setPOL_ISSUE_DT(new Date(System.currentTimeMillis()));
-				policy.setPOL_LC_SA(policy.getPOL_FC_SA());
-				policy.setPOL_LC_ANN_SAL(policy.getPOL_FC_ANN_SAL());
-				policy.setPOL_SA_EXCH_RATE(1);
-				policy.setPOL_CUST_EXCH_RATE(1);
-				policy.setPOL_CUST_CURR_CODE(policy.getPOL_SA_CURR_CODE());
-				if(policy.getPOL_ASSR_CUST_FLAG().equals("Yes")) {
-					policy.setPOL_ASSRD_REF_ID(policy.getPOL_CUST_REF_ID());
-				}else if(policy.getPOL_ASSR_CUST_FLAG().equals("No")){
-					Map<String, Object> queryParams = new HashMap<>();
-					queryParams.put("CustCode", policy.getPOL_ASSR_CODE());
-					
-					Map<String, Object> body = new HashMap<>();
-					body.put("queryParams", queryParams);
+			Map<String, Object> variables = new HashMap<>();
+			variables.put("instance", policy);
+			variables.put("queryId", 158);
+			variables.put("class", LT_POLICY.class.getName());
+			variables.put("token", token);
+			variables.put("process", "create");
 
-					JSONObject jsonBody = new JSONObject(body);
-					String requestBody = jsonBody.toString();
-					
-					String url = "http://localhost:8098/common/getMapQuery?queryId=191";
-					HttpHeaders headers = new HttpHeaders();
-					RestTemplate restTemplate = new RestTemplate();
-					headers.setContentType(MediaType.APPLICATION_JSON);
-					headers.set("Authorization", "Bearer " + token);
-					HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
-					ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, requestEntity, String.class);
-					
-					JSONObject object = new JSONObject(responseEntity.getBody());
+			AuthRequest authRequest = jwtService.getLoggedInDetails(token);
 
-					JSONArray jsonArray = (JSONArray) object.getJSONArray("Data");
-					List<String> values = new ArrayList<>();
-					for (int i = 0; i < jsonArray.length(); i++) {
-						Iterator<String> keys = ((JSONObject) jsonArray.get(i)).keys();
-						while (keys.hasNext()) { 
-							String key = keys.next();
-							Object value = ((JSONObject) jsonArray.get(i)).get(key);
-							policy.setPOL_ASSRD_REF_ID(value.toString());
-						}
+			// setting divn, dept & company details
+			policy.setPOL_DIVN_CODE(authRequest.getDivision());
+			policy.setPOL_DEPT_CODE(authRequest.getDepartment());
+			policy.setPOL_COMP_CODE(authRequest.getCompany());
+
+			// setting ins id & ins dt
+			policy.setPOL_INS_DT(new Date(System.currentTimeMillis()));
+			policy.setPOL_INS_ID(authRequest.getUsername());
+
+			// other values to be set while saving
+			policy.setPOL_ISSUE_DT(new Date(System.currentTimeMillis()));
+			policy.setPOL_LC_SA(policy.getPOL_FC_SA());
+			policy.setPOL_LC_ANN_SAL(policy.getPOL_FC_ANN_SAL());
+			policy.setPOL_SA_EXCH_RATE(1);
+			policy.setPOL_CUST_EXCH_RATE(1);
+			policy.setPOL_CUST_CURR_CODE(policy.getPOL_SA_CURR_CODE());
+			if (policy.getPOL_ASSR_CUST_FLAG().equals("Yes")) {
+				policy.setPOL_ASSRD_REF_ID(policy.getPOL_CUST_REF_ID());
+			} else if (policy.getPOL_ASSR_CUST_FLAG().equals("No")) {
+				Map<String, Object> queryParams = new HashMap<>();
+				queryParams.put("CustCode", policy.getPOL_ASSR_CODE());
+
+				Map<String, Object> body = new HashMap<>();
+				body.put("queryParams", queryParams);
+
+				JSONObject jsonBody = new JSONObject(body);
+				String requestBody = jsonBody.toString();
+
+				String url = "http://localhost:8098/common/getMapQuery?queryId=191";
+				HttpHeaders headers = new HttpHeaders();
+				RestTemplate restTemplate = new RestTemplate();
+				headers.setContentType(MediaType.APPLICATION_JSON);
+				headers.set("Authorization", "Bearer " + token);
+				HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
+				ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, requestEntity, String.class);
+
+				JSONObject object = new JSONObject(responseEntity.getBody());
+
+				JSONArray jsonArray = (JSONArray) object.getJSONArray("Data");
+				List<String> values = new ArrayList<>();
+				for (int i = 0; i < jsonArray.length(); i++) {
+					Iterator<String> keys = ((JSONObject) jsonArray.get(i)).keys();
+					while (keys.hasNext()) {
+						String key = keys.next();
+						Object value = ((JSONObject) jsonArray.get(i)).get(key);
+						policy.setPOL_ASSRD_REF_ID(value.toString());
 					}
 				}
-				
+			}
+
 //				policy.setPOL_CUST_ADDRESS_1(values.get(0));
-							
+
 //				ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("TestProcess", variables);
 //
 //				Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
@@ -226,18 +226,18 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 //				taskVariables.put("decision", "yes");
 //				taskService.complete(task.getId(), taskVariables);
 
-				LT_POLICY savedPolicyDetails = ltPolicyRepo.save(policy);
-				response.put(statusCode, successCode);
-				response.put(messageCode, "Policy Details Created Successfully");
-				data.put("Id", savedPolicyDetails.getPOL_TRAN_ID());
-				data.put("P_POL_END_NO_IDX",
-						savedPolicyDetails.getPOL_END_NO_IDX() != null ? savedPolicyDetails.getPOL_END_NO_IDX() : "");
-				data.put("P_POL_DS_CODE",
-						savedPolicyDetails.getPOL_DS_CODE() != null ? savedPolicyDetails.getPOL_DS_CODE() : "");
-				data.put("P_POL_DS_TYPE",
-						savedPolicyDetails.getPOL_DS_TYPE() != null ? savedPolicyDetails.getPOL_DS_TYPE() : "");
-				data.put("PROPOSAL_NO", savedPolicyDetails.getPOL_NO() != null ? savedPolicyDetails.getPOL_NO() : "");
-				response.put(dataCode, data);
+			LT_POLICY savedPolicyDetails = ltPolicyRepo.save(policy);
+			response.put(statusCode, successCode);
+			response.put(messageCode, "Policy Details Created Successfully");
+			data.put("Id", savedPolicyDetails.getPOL_TRAN_ID());
+			data.put("P_POL_END_NO_IDX",
+					savedPolicyDetails.getPOL_END_NO_IDX() != null ? savedPolicyDetails.getPOL_END_NO_IDX() : "");
+			data.put("P_POL_DS_CODE",
+					savedPolicyDetails.getPOL_DS_CODE() != null ? savedPolicyDetails.getPOL_DS_CODE() : "");
+			data.put("P_POL_DS_TYPE",
+					savedPolicyDetails.getPOL_DS_TYPE() != null ? savedPolicyDetails.getPOL_DS_TYPE() : "");
+			data.put("PROPOSAL_NO", savedPolicyDetails.getPOL_NO() != null ? savedPolicyDetails.getPOL_NO() : "");
+			response.put(dataCode, data);
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.put("statusCode", errorCode);
@@ -324,7 +324,7 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 
 		String authorizationHeader = request.getHeader("Authorization");
 		String token = authorizationHeader.substring(7).trim();
-		
+
 		AuthRequest userDetails = jwtService.getLoggedInDetails(token);
 		try {
 			Optional<LT_POLICY> optionalUser = ltPolicyRepo.findById(policy_id);
@@ -337,67 +337,68 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 
 					Map<String, Object> queryParams = new HashMap<>();
 					queryParams.put("CustCode", policyDetailsMap.get("POL_CUST_CODE"));
-					
+
 					Map<String, Object> body = new HashMap<>();
 					body.put("queryParams", queryParams);
 
 					JSONObject jsonBody = new JSONObject(body);
 					String requestBody = jsonBody.toString();
-					
+
 					String url = "http://localhost:8098/common/getMapQuery?queryId=185";
 					HttpHeaders headers = new HttpHeaders();
 					RestTemplate restTemplate = new RestTemplate();
 					headers.setContentType(MediaType.APPLICATION_JSON);
 					headers.set("Authorization", "Bearer " + token);
 					HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
-					ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, requestEntity, String.class);
-					
+					ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, requestEntity,
+							String.class);
+
 					JSONObject object = new JSONObject(responseEntity.getBody());
 
 					JSONArray jsonArray = (JSONArray) object.getJSONArray("Data");
 					List<String> values = new ArrayList<>();
 					for (int i = 0; i < jsonArray.length(); i++) {
 						Iterator<String> keys = ((JSONObject) jsonArray.get(i)).keys();
-						while (keys.hasNext()) { 
+						while (keys.hasNext()) {
 							String key = keys.next();
 							Object value = ((JSONObject) jsonArray.get(i)).get(key);
 							policyDetailsMap.put(key, value.toString());
 						}
 					}
-					
 
 					setPolicyFields(policy, LT_POLICY.class, entry.getValue());
 				}
 
 				try {
 
-					if(policy.getPOL_ASSR_CUST_FLAG().equals("Yes")) {
+					if (policy.getPOL_ASSR_CUST_FLAG().equals("Yes")) {
 						policy.setPOL_ASSRD_REF_ID(policy.getPOL_CUST_REF_ID());
-					}else if(policy.getPOL_ASSR_CUST_FLAG().equals("No")){
+					} else if (policy.getPOL_ASSR_CUST_FLAG().equals("No")) {
 						Map<String, Object> queryParams = new HashMap<>();
 						queryParams.put("CustCode", policy.getPOL_ASSR_CODE());
-						
+
 						Map<String, Object> body = new HashMap<>();
 						body.put("queryParams", queryParams);
 
 						JSONObject jsonBody = new JSONObject(body);
 						String requestBody = jsonBody.toString();
-						
+
 						String url = "http://localhost:8098/common/getMapQuery?queryId=191";
 						HttpHeaders headers = new HttpHeaders();
 						RestTemplate restTemplate = new RestTemplate();
 						headers.setContentType(MediaType.APPLICATION_JSON);
 						headers.set("Authorization", "Bearer " + token);
 						HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
-						ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, requestEntity, String.class);
-						
+						ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, requestEntity,
+								String.class);
+
 						JSONObject object = new JSONObject(responseEntity.getBody());
 
 						JSONArray jsonArray = (JSONArray) object.getJSONArray("Data");
 						List<String> values = new ArrayList<>();
 						for (int i = 0; i < jsonArray.length(); i++) {
 							Iterator<String> keys = ((JSONObject) jsonArray.get(i)).keys();
-							while (keys.hasNext()) { 
+							while (keys.hasNext()) {
 								String key = keys.next();
 								Object value = ((JSONObject) jsonArray.get(i)).get(key);
 								policy.setPOL_ASSRD_REF_ID(value.toString());
@@ -637,7 +638,6 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 			if (policyDetails.isPresent()) {
 				LT_POLICY policy = policyDetails.get();
 				policy.setPOL_PROGRS_UPD(flag);
-
 				ltPolicyRepo.save(policy);
 				response.put(statusCode, successCode);
 				response.put(messageCode, "Stepper Flag Updated Successfully");
@@ -656,7 +656,8 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 	}
 
 	@Override
-	public String updateFreezeFlag(String flag, Integer tranId) {
+	public String updateFreezeFlag(String flag, Integer tranId, String POL_PREM_CALC_YN) {
+
 		JSONObject response = new JSONObject();
 		try {
 			Optional<LT_POLICY> policyDetails = ltPolicyRepo.findById(tranId);
@@ -665,16 +666,22 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 				LT_POLICY policy = policyDetails.get();
 				policy.setPOL_FREEZE_RATE(flag);
 
-				ltPolicyRepo.save(policy);
-				response.put(statusCode, successCode);
-				if(flag.equals("Y")) {
-				response.put(messageCode, "Policy Details Froze Successfully");
-				}else {
-					response.put(messageCode, "Policy Details Un-Froze Successfully");
-				}
-				return response.toString();
+				if (flag.equals("Y")) {
+					if (POL_PREM_CALC_YN != null && !POL_PREM_CALC_YN.isEmpty()) {
+						policy.setPOL_PREM_CALC_YN(POL_PREM_CALC_YN);
 
-			} else {
+					}
+					response.put("messageCode", "Policy Details Froze Successfully");
+				} else {
+					response.put("messageCode", "Policy Details Un-Froze Successfully");
+				}
+
+				ltPolicyRepo.save(policy);
+
+				response.toString();
+			}
+
+			else {
 				response.put(statusCode, errorCode);
 				response.put(messageCode, "Record with ID " + tranId + " not found");
 				return response.toString();
@@ -684,22 +691,23 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 			response.put(messageCode, e.getMessage());
 			return response.toString();
 		}
+		return response.toString();
 	}
 
 	@Override
 	public String onSubmit(Integer tranId, HttpServletRequest request) {
 		JSONObject response = new JSONObject();
 		try {
-			
+
 			Optional<LT_POLICY> optionalUser = ltPolicyRepo.findById(tranId);
 			LT_POLICY policy = optionalUser.get();
-			
-			if(policy != null) {
+
+			if (policy != null) {
 				policy.setPOL_FLEX_02("Y");
 				policy.setPOL_WF_STS("S");
 				ltPolicyRepo.save(policy);
 			}
-			
+
 			ProcessInstance existingProcessInstance = runtimeService.createProcessInstanceQuery()
 					.processDefinitionKey("forward_Proposal").variableValueEquals("ID", tranId).singleResult();
 
@@ -749,14 +757,13 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 						variables);
 				runtimeService.setVariable(processInstance.getId(), "ID", tranId);
 
-
 				Task userTask = taskService.createTaskQuery().processInstanceId(processInstance.getId())
 						.taskDefinitionKey("userTask").singleResult();
 
 				if (userTask != null) {
 					taskService.complete(userTask.getId());
 				}
-				
+
 				AuthRequest userDetails = jwtService.getLoggedInDetails(token);
 				response.put(statusCode, successCode);
 				response.put(messageCode, "Data Submitted Successfully");
@@ -772,12 +779,12 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 	@Override
 	public String uwSubmit(String decision, String reason, Integer tranId, HttpServletRequest request) {
 		JSONObject response = new JSONObject();
-		
+
 		String authorizationHeader = request.getHeader("Authorization");
 		String token = authorizationHeader.substring(7).trim();
-		
+
 		AuthRequest userDetails = jwtService.getLoggedInDetails(token);
-		
+
 		LT_POL_STATUS polStatus = new LT_POL_STATUS();
 		polStatus.setPSTAT_STATUS_CODE(decision);
 		polStatus.setPSTAT_REMARKS(reason);
@@ -789,14 +796,14 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 			LT_POL_STATUS savedPolStatus = polStatusRepo.save(polStatus);
 			response.put(statusCode, successCode);
 			response.put(messageCode, "Decision Submitted Successfully");
-		}catch(Exception e) {
+		} catch (Exception e) {
 			response.put(statusCode, errorCode);
 			response.put(messageCode, e.getMessage());
 		}
-		
+
 		return response.toString();
 	}
-	
+
 	@Override
 	public String search(SearchRequestDTO searchRequest, HttpServletRequest request) {
 		JSONObject response = new JSONObject();
@@ -806,26 +813,28 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 		QueryBuilder query = QueryBuilders.matchQuery("_all", searchRequest.getSearchTerm());
 
 		try {
-			String url = "http://localhost:8098/common/getlistingdata?queryId="+searchRequest.getQueryId()
-			+"&limit="+searchRequest.getLimit()+"&offset="+searchRequest.getOffset();
+			String url = "http://localhost:8098/common/getlistingdata?queryId=" + searchRequest.getQueryId() + "&limit="
+					+ searchRequest.getLimit() + "&offset=" + searchRequest.getOffset();
 			HttpHeaders headers = new HttpHeaders();
 			RestTemplate restTemplate = new RestTemplate();
 			headers.setContentType(MediaType.APPLICATION_JSON);
 			headers.set("Authorization", "Bearer " + token);
 			HttpEntity<String> requestEntity = new HttpEntity<>(headers);
-			ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, String.class);
+			ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity,
+					String.class);
 			JSONObject resultObject = new JSONObject(responseEntity.getBody());
 
 			JSONArray jsonArray = (JSONArray) resultObject.getJSONArray("Data");
-			
-			ResultSet results = elasticSearch.search(query, "LT_POLICY", "POL_TRAN_ID", searchRequest.getLimit(), searchRequest.getOffset());
+
+			ResultSet results = elasticSearch.search(query, "LT_POLICY", "POL_TRAN_ID", searchRequest.getLimit(),
+					searchRequest.getOffset());
 
 			JSONObject object = new JSONObject();
 			List<JSONObject> resultList = new ArrayList();
 			while (results.next()) {
 				object = new JSONObject();
 				ResultSetMetaData metaData = results.getMetaData();
-				if(results.getObject("POL_DS_TYPE").equals(1)) {
+				if (results.getObject("POL_DS_TYPE").equals(1)) {
 					object.put("ID", results.getObject("POL_TRAN_ID"));
 					object.put("Pol No", results.getObject("POL_NO"));
 					object.put("Customer_Code", results.getObject("POL_CUST_CODE"));
@@ -833,11 +842,11 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 					object.put("Stepper_Id", results.getObject("POL_PROGRS_UPD"));
 					object.put("Freeze_Flag", results.getObject("POL_FREEZE_RATE"));
 					object.put("Proposal_No", results.getObject("POL_QUOT_NO"));
-					
+
 					resultList.add(object);
 				}
 			}
-			
+
 			response.put(messageCode, "Search Results Fetched Successfully");
 			response.put("Heading", resultObject.get("Heading"));
 			response.put(dataCode, resultList);
@@ -849,6 +858,5 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 		}
 		return response.toString();
 	}
-
 
 }

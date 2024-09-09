@@ -687,6 +687,9 @@ public class LT_POLICY implements Serializable{
     @Column(name = "POL_AGENT_COMM_BASIS")
     private String POL_AGENT_COMM_BASIS;
 
+    @Column(name = "POL_PREM_CALC_YN")
+    private String POL_PREM_CALC_YN;
+    
 	public Integer getPOL_TRAN_ID() {
 		return POL_TRAN_ID;
 	}
@@ -2469,6 +2472,14 @@ public class LT_POLICY implements Serializable{
 
 	public void setPOL_AGENT_COMM_BASIS(String pOL_AGENT_COMM_BASIS) {
 		POL_AGENT_COMM_BASIS = pOL_AGENT_COMM_BASIS;
+	}
+
+	public String getPOL_PREM_CALC_YN() {
+		return POL_PREM_CALC_YN;
+	}
+
+	public void setPOL_PREM_CALC_YN(String pOL_PREM_CALC_YN) {
+		POL_PREM_CALC_YN = pOL_PREM_CALC_YN;
 	}
 
 }

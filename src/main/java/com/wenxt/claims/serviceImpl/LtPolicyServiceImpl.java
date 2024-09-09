@@ -671,9 +671,11 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 						policy.setPOL_PREM_CALC_YN(POL_PREM_CALC_YN);
 
 					}
-					response.put("messageCode", "Policy Details Froze Successfully");
+					response.put(statusCode, successCode);
+					response.put(messageCode, "Policy Details Froze Successfully");
 				} else {
-					response.put("messageCode", "Policy Details Un-Froze Successfully");
+					response.put(statusCode, successCode);
+					response.put(messageCode, "Policy Details Un-Froze Successfully");
 				}
 
 				ltPolicyRepo.save(policy);

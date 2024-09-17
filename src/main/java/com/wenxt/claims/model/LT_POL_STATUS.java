@@ -4,14 +4,23 @@ import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "LT_POL_STATUS", schema = "LIFE_DEV")
 public class LT_POL_STATUS {
 
-    @Column(name = "PSTAT_POL_TRAN_ID")
+	@Id
+	@Column(name = "PSTAT_TRAN_ID")
+	@SequenceGenerator(name = "PolStatusTranIdSeq", sequenceName = "PSTAT_TRAN_ID_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PolStatusTranIdSeq")
+	private Integer PSTAT_TRAN_ID;
+	
+	@Column(name = "PSTAT_POL_TRAN_ID")
     private Integer PSTAT_POL_TRAN_ID;
 
     @Column(name = "PSTAT_END_NO_IDX")
@@ -44,7 +53,6 @@ public class LT_POL_STATUS {
     @Column(name = "PSTAT_REC_TYPE", length = 1)
     private String PSTAT_REC_TYPE;
 
-    @Id
     @Column(name = "PSTAT_INS_ID", length = 12, nullable = false)
     private String PSTAT_INS_ID;
 
@@ -57,8 +65,15 @@ public class LT_POL_STATUS {
     @Column(name = "PSTAT_MOD_DT")
     private Date PSTAT_MOD_DT;
 
-    // Getters and Setters
-    public Integer getPSTAT_POL_TRAN_ID() {
+    public Integer getPSTAT_TRAN_ID() {
+		return PSTAT_TRAN_ID;
+	}
+
+	public void setPSTAT_TRAN_ID(Integer pSTAT_TRAN_ID) {
+		PSTAT_TRAN_ID = pSTAT_TRAN_ID;
+	}
+
+	public Integer getPSTAT_POL_TRAN_ID() {
         return PSTAT_POL_TRAN_ID;
     }
 

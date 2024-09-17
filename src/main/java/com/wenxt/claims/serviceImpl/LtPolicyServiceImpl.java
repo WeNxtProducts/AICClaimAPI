@@ -779,21 +779,32 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 	}
 
 	@Override
-	public String uwSubmit(String decision, String reason, Integer tranId, HttpServletRequest request) {
+	public String uwSubmit(String decision, String reason, Integer tranId, Integer id, HttpServletRequest request) {
 		JSONObject response = new JSONObject();
 
 		String authorizationHeader = request.getHeader("Authorization");
 		String token = authorizationHeader.substring(7).trim();
 
 		AuthRequest userDetails = jwtService.getLoggedInDetails(token);
-
 		LT_POL_STATUS polStatus = new LT_POL_STATUS();
+
+		if(id == null) {
 		polStatus.setPSTAT_STATUS_CODE(decision);
 		polStatus.setPSTAT_REMARKS(reason);
 		polStatus.setPSTAT_POL_TRAN_ID(tranId);
 		polStatus.setPSTAT_INS_DT(new Date(System.currentTimeMillis()));
 		polStatus.setPSTAT_INS_ID(userDetails.getUsername());
 		polStatus.setPSTAT_STATUS_DT(new Date(System.currentTimeMillis()));
+		}else {
+			Optional<LT_POL_STATUS> polStatuss = polStatusRepo.findById(id);
+			if(polStatuss != null) {
+				polStatus = polStatuss.get();
+			polStatus.setPSTAT_REMARKS(reason);
+			polStatus.setPSTAT_STATUS_CODE(decision);
+			polStatus.setPSTAT_MOD_DT(new Date(System.currentTimeMillis()));
+			polStatus.setPSTAT_MOD_ID(userDetails.getUsername());
+			}
+		}
 		try {
 			LT_POL_STATUS savedPolStatus = polStatusRepo.save(polStatus);
 			response.put(statusCode, successCode);

@@ -12,6 +12,7 @@ import com.wenxt.claims.model.ProposalEntryRequest;
 import com.wenxt.claims.model.SearchRequestDTO;
 import com.wenxt.claims.service.LtPolicyService;
 
+import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
@@ -96,8 +97,8 @@ public class LtPolicyController {
 
 	@PostMapping("/uwSubmit")
 	public String uwSubmit(@RequestParam("DECISION") String decision, @RequestParam("REASON") String reason,
-			@RequestParam Integer tranId, HttpServletRequest request) {
-		return policyService.uwSubmit(decision, reason, tranId, request);
+			@RequestParam Integer tranId, @RequestParam @Nullable Integer id, HttpServletRequest request) {
+		return policyService.uwSubmit(decision, reason, tranId, id, request);
 	}
 
 	@PostMapping("/search")

@@ -79,6 +79,7 @@ public class ReceiptDetailServiceImpl implements ReceiptDetailService {
 				receiptDetail.setRD_INS_DT(new Date(System.currentTimeMillis()));
 				receiptDetail.setRD_INS_ID(userDetails.getUsername());
 				receiptDetail.setRD_RH_TRAN_ID(tranId);
+				receiptDetail.setRD_LC_AMT(Double.parseDouble(receiptRequest.getReceiptDetails().getFormFields().get("RD_FC_AMT")));
 				LT_RCPT_DTL savedReceiptDetails = receiptDetailRepo.save(receiptDetail);
 				response.put(statusCode, successCode);
 				response.put(messageCode,

@@ -175,6 +175,7 @@ public class ReceiptProcessServiceImpl implements ReceiptProcessService {
 
 	@Override
 	public String update(ReceiptRequest receiptRequest, Integer tranId) {
+		System.out.println("IN");
 		JSONObject response = new JSONObject();
 
 		Optional<LT_RCPT_HDR> header = receiptHeaderRepo.findById(tranId);
@@ -188,6 +189,12 @@ public class ReceiptProcessServiceImpl implements ReceiptProcessService {
 //			List<LT_RCPT_PROCESS> receiptProcess = receiptProcessRepo.findByPolId(polBrokerId);
 			Optional<LT_RCPT_PROCESS> receiptProcesss = Optional.ofNullable(new LT_RCPT_PROCESS());
 			Map<String, Map<String, String>> fieldMaps = new HashMap<>();
+			Optional<LT_RCPT_HDR> receiptHeader = receiptHeaderRepo.findById(tranId);
+			LT_RCPT_HDR receiptHdr = new LT_RCPT_HDR();
+			if(receiptHeader != null) {
+				receiptHdr = receiptHeader.get();
+			}
+			Double lcAmount = (receiptHdr.getRH_BATCH_LC_AMT() != null) ? receiptHdr.getRH_BATCH_LC_AMT() : 0.0;
 			for (FormFieldsDTO formFieldsDTO : receiptRequest.getReceiptProcess()) {
 				if (formFieldsDTO.getFormFields().get("RP_TRAN_ID") != null) {
 					receiptProcesss = receiptProcessRepo
@@ -199,7 +206,17 @@ public class ReceiptProcessServiceImpl implements ReceiptProcessService {
 						for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
 							setReceiptProcessFields(receiptProcess, entry.getValue());
 						}
-
+						
+						if(receiptProcess.getRP_PROCESS_YN().equals("Y")) {
+							System.out.println(receiptProcess.getRP_PYBL_LC_AMT());
+							lcAmount = lcAmount + receiptProcess.getRP_PYBL_LC_AMT();
+						}else if(receiptProcess.getRP_PROCESS_YN().equals("N")) {
+							System.out.println(receiptProcess.getRP_PYBL_LC_AMT());
+							lcAmount = lcAmount - receiptProcess.getRP_PYBL_LC_AMT();
+						}
+						System.out.println(lcAmount + " : LC AMOUNT");
+						receiptHdr.setRH_BATCH_LC_AMT(lcAmount);
+						receiptHeaderRepo.save(receiptHdr);
 						receiptProcess.setRP_MOD_DT(new Date(System.currentTimeMillis()));
 						LT_RCPT_PROCESS savedReceiptProcessDetails = receiptProcessRepo.save(receiptProcess);
 					}

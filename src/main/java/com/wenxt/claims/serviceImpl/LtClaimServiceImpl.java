@@ -3,12 +3,15 @@ package com.wenxt.claims.serviceImpl;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -23,11 +26,15 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -40,10 +47,12 @@ import com.wenxt.claims.model.LhClaimEstimate;
 import com.wenxt.claims.model.LtClaimDed;
 import com.wenxt.claims.model.LtClaimHdr;
 import com.wenxt.claims.model.ProcedureInput;
+import com.wenxt.claims.model.SearchRequestDTO;
 import com.wenxt.claims.repository.ClaimDeducRepo;
 import com.wenxt.claims.repository.ClaimHistoryRepo;
 import com.wenxt.claims.repository.LtClaimHdrRepo;
 import com.wenxt.claims.repository.LtClaimRepository;
+import com.wenxt.claims.service.ElasticSearchProxy;
 import com.wenxt.claims.service.LtClaimService;
 
 import jakarta.persistence.Column;
@@ -84,6 +93,9 @@ public class LtClaimServiceImpl implements LtClaimService {
 	
 	@Autowired
 	private ClaimDeducRepo claimDedRepo;
+	
+	@Autowired
+	private ElasticSearchProxy elasticSearch;
 
 //	private static final String JDBC_URL = "jdbc:mysql://baseapi.cr4u8emg2x3o.eu-north-1.rds.amazonaws.com:3306/baseapi";
 //	private static final String USERNAME = "admin";
@@ -497,6 +509,64 @@ public class LtClaimServiceImpl implements LtClaimService {
 				response.put(statusCode, successCode);
 				response.put(messageCode, "Claim Flag Details Updated Successfully");
 			}
+		} catch (Exception e) {
+			response.put(statusCode, errorCode);
+			response.put(messageCode, e.getMessage());
+		}
+		return response.toString();
+	}
+
+	@Override
+	public String search(SearchRequestDTO searchRequest, HttpServletRequest request) {
+		JSONObject response = new JSONObject();
+
+		String authorizationHeader = request.getHeader("Authorization");
+		String token = authorizationHeader.substring(7).trim();
+		QueryBuilder query = QueryBuilders.matchQuery("_all", searchRequest.getSearchTerm());
+		
+		if(searchRequest.getOffset() == 1) {
+			searchRequest.setOffset(0);
+		}
+
+		try {
+			String url = "http://localhost:8098/common/getlistingdata?queryId="+searchRequest.getQueryId()
+			+"&limit="+searchRequest.getLimit()+"&offset="+searchRequest.getOffset();
+			HttpHeaders headers = new HttpHeaders();
+			RestTemplate restTemplate = new RestTemplate();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			headers.set("Authorization", "Bearer " + token);
+			HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+			ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, String.class);
+			JSONObject resultObject = new JSONObject(responseEntity.getBody());
+
+//			System.out.println(resultObject);
+			JSONArray jsonArray = (JSONArray) resultObject.getJSONArray("Data");
+			
+			ResultSet results = elasticSearch.search(query, "LT_CLAIM_HDR", "CH_TRAN_ID", searchRequest.getLimit(), searchRequest.getOffset()
+					, null, null);
+
+			JSONObject object = new JSONObject();
+			List<JSONObject> resultList = new ArrayList();
+			while (results.next()) {
+				object = new JSONObject();
+				ResultSetMetaData metaData = results.getMetaData();
+					object.put("ID", results.getObject("CH_TRAN_ID"));
+					object.put("Status", results.getObject("CH_STATUS"));
+					object.put("Intimation_Date", results.getObject("CH_INTIM_DT"));
+					object.put("Loss_Date", results.getObject("CH_LOSS_DT"));
+					object.put("Basis_Value", results.getObject("CH_CLAIM_BAS_VAL"));
+					object.put("Claim_Basis", results.getObject("CH_CLAIM_BAS"));
+					object.put("Claim_Type", results.getObject("CH_CLAIM_TYPE"));
+					object.put("Reference_No", results.getObject("CH_REF_NO"));
+					
+					resultList.add(object);
+			}
+			
+			response.put(messageCode, "Search Results Fetched Successfully");
+			response.put("Heading", resultObject.get("Heading"));
+			response.put(dataCode, resultList);
+			response.put("Count", results.getFetchSize());
+			response.put(statusCode, successCode);
 		} catch (Exception e) {
 			response.put(statusCode, errorCode);
 			response.put(messageCode, e.getMessage());

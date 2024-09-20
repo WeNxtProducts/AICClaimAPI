@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wenxt.claims.model.ClaimRequestDTO;
 import com.wenxt.claims.model.ClaimsRequestDTO;
+import com.wenxt.claims.model.SearchRequestDTO;
 import com.wenxt.claims.service.LtClaimService;
 
+import co.elastic.clients.elasticsearch.core.SearchRequest;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
@@ -110,4 +112,9 @@ public class LtClaimController {
 	public String saveClaimFlagDetails(@RequestParam Integer tranId, @RequestParam String CLM_STATUS, @RequestParam String CLM_STATUS_CODE, @RequestParam String FreezeFlag) {
 		return ltclaimservice.saveClaimFlagDetails(tranId, CLM_STATUS, CLM_STATUS_CODE, FreezeFlag);
 	}	
+	
+	@PostMapping("/search")
+	public String search(@RequestBody SearchRequestDTO searchRequestDTO, HttpServletRequest request) {
+		return ltclaimservice.search(searchRequestDTO, request);
+	}
 }

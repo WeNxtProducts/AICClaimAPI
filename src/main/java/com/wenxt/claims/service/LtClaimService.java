@@ -2,6 +2,7 @@ package com.wenxt.claims.service;
 
 import com.wenxt.claims.model.ClaimRequestDTO;
 import com.wenxt.claims.model.ClaimsRequestDTO;
+import com.wenxt.claims.model.SearchRequestDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -30,5 +31,7 @@ public interface LtClaimService {
 	String deleteClaimHdrDetails(Integer tranId);
 
 	String saveClaimFlagDetails(Integer tranId, String cLM_STATUS, String cLM_STATUS_CODE, String freezeFlag);
+
+	String search(SearchRequestDTO searchRequestDTO, HttpServletRequest request);
 
 }

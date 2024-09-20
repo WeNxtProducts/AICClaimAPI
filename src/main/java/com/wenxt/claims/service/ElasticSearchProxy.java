@@ -6,6 +6,6 @@ import org.elasticsearch.index.query.QueryBuilder;
 
 public interface ElasticSearchProxy {
 	
-	public ResultSet search(QueryBuilder query, String tableName, String orderColumn, Integer limit, Integer offset)throws Exception;
+	public ResultSet search(QueryBuilder query, String tableName, String orderColumn, Integer limit, Integer offset, String where, Object value)throws Exception;
 
 }

@@ -232,7 +232,8 @@ public class ReceiptHeaderServiceImpl implements ReceiptHeaderService {
 //			System.out.println(resultObject);
 			JSONArray jsonArray = (JSONArray) resultObject.getJSONArray("Data");
 			
-			ResultSet results = elasticSearch.search(query, "LT_RCPT_HDR", "RH_TRAN_ID", searchRequest.getLimit(), searchRequest.getOffset());
+			ResultSet results = elasticSearch.search(query, "LT_RCPT_HDR", "RH_TRAN_ID", searchRequest.getLimit(), searchRequest.getOffset()
+					, null, null);
 
 			JSONObject object = new JSONObject();
 			List<JSONObject> resultList = new ArrayList();

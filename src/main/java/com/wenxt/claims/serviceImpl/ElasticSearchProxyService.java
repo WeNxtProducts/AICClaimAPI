@@ -42,20 +42,27 @@ public class ElasticSearchProxyService implements ElasticSearchProxy {
         return columns;
     }
 
-    private String translateQuery(QueryBuilder queryBuilder, String tableName, String orderColumn, Integer limit, Integer offset) throws SQLException {
+    private String translateQuery(QueryBuilder queryBuilder, String tableName, String orderColumn, Integer limit, Integer offset, String where, Object value) throws SQLException {
         List<String> columns = getColumnNames(tableName);
         String searchValue = ((org.elasticsearch.index.query.MatchQueryBuilder) queryBuilder).value().toString();
 
         StringBuilder sql = new StringBuilder("SELECT * FROM " + tableName + " WHERE ");
+        if(where != null && value != null) {
+        	sql.append(where + " = " + value + " AND (");
+        }
         for (int i = 0; i < columns.size(); i++) {
             sql.append(columns.get(i)).append(" LIKE '%").append(searchValue).append("%'");
             if (i < columns.size() - 1) {
                 sql.append(" OR ");
             }
             if(i == columns.size() - 1) {
+            	if(where != null && value != null) {
+            		sql.append(")");
+            	}
             	sql.append(" ORDER BY "+ orderColumn  + " DESC OFFSET " + offset + " ROWS FETCH NEXT " + limit + " ROWS ONLY" );
             }
         }
+        System.out.println(sql.toString());
         return sql.toString();
     }
 
@@ -64,8 +71,9 @@ public class ElasticSearchProxyService implements ElasticSearchProxy {
         return statement.executeQuery(sql);
     }
 
-    public ResultSet search(QueryBuilder queryBuilder, String tableName, String orderColumn, Integer limit, Integer offset) throws SQLException {
-        String sql = translateQuery(queryBuilder, tableName, orderColumn, limit, offset);
+    @Override
+    public ResultSet search(QueryBuilder queryBuilder, String tableName, String orderColumn, Integer limit, Integer offset, String where, Object value) throws SQLException {
+        String sql = translateQuery(queryBuilder, tableName, orderColumn, limit, offset, where, value);
         return executeSQL(sql);
     }
 }

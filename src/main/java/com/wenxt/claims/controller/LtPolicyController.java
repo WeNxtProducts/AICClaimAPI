@@ -105,5 +105,10 @@ public class LtPolicyController {
 	public String search(@RequestBody SearchRequestDTO searchRequest, HttpServletRequest request) {
 		return policyService.search(searchRequest, request);
 	}
+	
+	@PostMapping("/polSearch")
+	public String polSearch(@RequestBody SearchRequestDTO searchRequest, HttpServletRequest request) {
+		return policyService.polSearch(searchRequest, request);
+	}
 
 }

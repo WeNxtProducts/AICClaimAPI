@@ -847,13 +847,69 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 			while (results.next()) {
 				object = new JSONObject();
 				ResultSetMetaData metaData = results.getMetaData();
-				if (results.getObject("POL_DS_TYPE").equals(1)) {
+				if (results.getObject("POL_DS_TYPE") != null && results.getObject("POL_DS_TYPE").equals("1")) {
 					object.put("ID", results.getObject("POL_TRAN_ID"));
 					object.put("Pol No", results.getObject("POL_NO"));
 					object.put("Customer_Code", results.getObject("POL_CUST_CODE"));
 					object.put("Start_Dt", results.getObject("POL_FM_DT"));
 					object.put("Stepper_Id", results.getObject("POL_PROGRS_UPD"));
 					object.put("Freeze_Flag", results.getObject("POL_FREEZE_RATE"));
+					object.put("Proposal_No", results.getObject("POL_QUOT_NO"));
+					object.put("Status", results.getObject("POL_WF_STS"));
+					
+					resultList.add(object);
+				}
+			}
+
+			response.put(messageCode, "Search Results Fetched Successfully");
+			response.put("Heading", resultObject.get("Heading"));
+			response.put(dataCode, resultList);
+			response.put("Count", results.getFetchSize());
+			response.put(statusCode, successCode);
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.put(statusCode, errorCode);
+			response.put(messageCode, e.getMessage());
+		}
+		return response.toString();
+	}
+
+	@Override
+	public String polSearch(SearchRequestDTO searchRequest, HttpServletRequest request) {
+		JSONObject response = new JSONObject();
+
+		String authorizationHeader = request.getHeader("Authorization");
+		String token = authorizationHeader.substring(7).trim();
+		QueryBuilder query = QueryBuilders.matchQuery("_all", searchRequest.getSearchTerm());
+
+		try {
+			String url = "http://localhost:8098/common/getlistingdata?queryId=" + searchRequest.getQueryId() + "&limit="
+					+ searchRequest.getLimit() + "&offset=" + searchRequest.getOffset();
+			HttpHeaders headers = new HttpHeaders();
+			RestTemplate restTemplate = new RestTemplate();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			headers.set("Authorization", "Bearer " + token);
+			HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+			ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity,
+					String.class);
+			JSONObject resultObject = new JSONObject(responseEntity.getBody());
+
+			JSONArray jsonArray = (JSONArray) resultObject.getJSONArray("Data");
+
+			ResultSet results = elasticSearch.search(query, "LT_POLICY", "POL_TRAN_ID", searchRequest.getLimit(),
+					searchRequest.getOffset());
+
+			JSONObject object = new JSONObject();
+			List<JSONObject> resultList = new ArrayList();
+			while (results.next()) {
+				object = new JSONObject();
+				ResultSetMetaData metaData = results.getMetaData();
+				if (results.getObject("POL_DS_TYPE") != null && results.getObject("POL_DS_TYPE").equals(2)) {
+					object.put("ID", results.getObject("POL_TRAN_ID"));
+					object.put("Pol No", results.getObject("POL_NO"));
+					object.put("Customer_Code", results.getObject("POL_CUST_CODE"));
+					object.put("Start_Dt", results.getObject("POL_FM_DT"));
+					object.put("Status", results.getObject("POL_STATUS"));
 					object.put("Proposal_No", results.getObject("POL_QUOT_NO"));
 
 					resultList.add(object);

@@ -37,4 +37,6 @@ public interface LtPolicyService {
 
 	String search(SearchRequestDTO searchRequest, HttpServletRequest request);
 
+	String polSearch(SearchRequestDTO searchRequest, HttpServletRequest request);
+
 }

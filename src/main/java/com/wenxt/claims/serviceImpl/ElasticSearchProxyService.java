@@ -56,7 +56,6 @@ public class ElasticSearchProxyService implements ElasticSearchProxy {
             	sql.append(" ORDER BY "+ orderColumn  + " DESC OFFSET " + offset + " ROWS FETCH NEXT " + limit + " ROWS ONLY" );
             }
         }
-        System.out.println(sql.toString());
         return sql.toString();
     }
 
@@ -69,21 +68,5 @@ public class ElasticSearchProxyService implements ElasticSearchProxy {
         String sql = translateQuery(queryBuilder, tableName, orderColumn, limit, offset);
         return executeSQL(sql);
     }
-
-//    public static void main(String[] args) throws Exception {
-//        ElasticSearchProxy middleware = new ElasticSearchProxy();
-//
-//        QueryBuilder query = QueryBuilders.matchQuery("_all", "PR");
-//
-//        ResultSet results = middleware.search(query, "LT_POLICY");
-//
-//        while (results.next()) {
-//            ResultSetMetaData metaData = results.getMetaData();
-////            for (int i = 1; i <= metaData.getColumnCount(); i++) {
-//////                System.out.print(results.getString(i) + " | ");
-////            }
-////            System.out.println();
-//        }
-//    }
 }
 

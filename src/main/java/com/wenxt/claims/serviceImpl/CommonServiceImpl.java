@@ -2,6 +2,7 @@ package com.wenxt.claims.serviceImpl;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -55,6 +56,8 @@ public class CommonServiceImpl implements CommonService {
 			return dateConverter(value);
 		} else if (fieldType.equals(Long.class) && value.isEmpty() == false && value != null) {
 			return Long.parseLong(value);
+		} else if (fieldType.equals(BigDecimal.class) && value.isEmpty() == false && value != null) {
+			return new BigDecimal(value);
 		} else {
 			return value;
 		}

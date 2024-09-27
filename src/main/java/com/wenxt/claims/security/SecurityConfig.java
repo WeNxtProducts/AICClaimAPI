@@ -114,6 +114,8 @@ public class SecurityConfig {
 				.and()
 				.authorizeHttpRequests().requestMatchers("/loanRepymnt/**").authenticated() 
 				.and()
+				.authorizeHttpRequests().requestMatchers("/surrMattValues/**").authenticated() 
+				.and()
 				.sessionManagement() 
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS) 
 				.and() 

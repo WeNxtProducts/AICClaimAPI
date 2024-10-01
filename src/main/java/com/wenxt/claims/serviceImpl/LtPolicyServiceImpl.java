@@ -784,6 +784,17 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 
 		String authorizationHeader = request.getHeader("Authorization");
 		String token = authorizationHeader.substring(7).trim();
+		
+		LT_POLICY policy = new LT_POLICY();
+		Optional<LT_POLICY> optionalEntity = ltPolicyRepo.findById(tranId);
+		
+		if(optionalEntity != null) {
+			policy = optionalEntity.get();
+			
+			policy.setPOL_ADDL_STAT(decision);
+			
+			ltPolicyRepo.save(policy);
+		}
 
 		AuthRequest userDetails = jwtService.getLoggedInDetails(token);
 		LT_POL_STATUS polStatus = new LT_POL_STATUS();

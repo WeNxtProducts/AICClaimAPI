@@ -147,7 +147,9 @@ public class SurrMattValuesServiceImpl implements SurrMattValuesService {
 	@Override
 	public String get(Integer tranId, HttpServletRequest servletRequest)throws Exception {
 		Map<String, Object> parametermap = new HashMap<String, Object>();
+		JSONObject response = new JSONObject();
 		JSONObject inputObject = new JSONObject();
+		try {
 		Optional<LT_SURR_MAT_VALUES> optionalUser = surrMattValuesRepo.findById(tranId);
 		LT_SURR_MAT_VALUES surrMat = optionalUser.get();
 		if (surrMat != null) {
@@ -163,8 +165,15 @@ public class SurrMattValuesServiceImpl implements SurrMattValuesService {
 					inputObject.put(columnName, value);
 				}
 			}
+			response.put(statusCode, successCode);
+			response.put(messageCode, "Surrender Values Fetched Successfully");
+			response.put(dataCode, inputObject);
 		}
-		return inputObject.toString();
+		}catch(Exception e) {
+			response.put(statusCode, errorCode);
+			response.put(messageCode, e.getMessage());
+		}
+		return response.toString();
 		}
 
 }

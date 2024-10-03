@@ -17,7 +17,7 @@ import jakarta.persistence.Table;
 public class LT_POL_CONDITION {
 
     @Id
-    @SequenceGenerator(name = "PolicyConditionTranIdSeq", sequenceName = "PCONDD_TRAN_ID_SEQ", allocationSize = 1)
+    @SequenceGenerator(name = "PolicyConditionTranIdSeq", sequenceName = "LSEQ_PCOND_TRAN_ID", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PolicyConditionTranIdSeq")
     @Column(name = "PCOND_TRAN_ID")
     @JsonProperty("PCOND_TRAN_ID")

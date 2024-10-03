@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 public class LT_POL_EMP_COVER {
 
     @Id
-    @SequenceGenerator(name = "PolEmpCoverTranIDSeq", sequenceName = "PEC_TRAN_ID_SEQ", allocationSize = 1)
+    @SequenceGenerator(name = "PolEmpCoverTranIDSeq", sequenceName = "LS_PEC_TRAN_ID", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PolEmpCoverTranIDSeq")
     @Column(name = "PEC_TRAN_ID")
     private Long PEC_TRAN_ID;

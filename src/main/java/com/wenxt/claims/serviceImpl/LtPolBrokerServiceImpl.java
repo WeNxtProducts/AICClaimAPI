@@ -267,15 +267,14 @@ public class LtPolBrokerServiceImpl implements LtPolBrokerService {
 		for (LT_POL_BROKER data : brokerList) {
 			if (data.getPBRK_PARENT_CODE() == null) {
 				LT_POL_BROKER brok = data;
+				bResult = new BrokerResult();
 				childerns = new ArrayList<>();
 					for(LT_POL_BROKER child : brokerList) {
 						if(child.getPBRK_PARENT_CODE() != null && child.getPBRK_PARENT_CODE().equals(data.getPBRK_BRK_CODE())) {
 							childerns.add(child);
 						}
 					}
-//					brok = data;
 					brok.setChildren(childerns);
-//					brokerResults.add(brok);
 					bResult.setFormFields(brok);
 					brokerResults.add(bResult);
 

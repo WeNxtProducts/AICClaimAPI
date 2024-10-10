@@ -19,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.wenxt.claims.model.BrokerResult;
+import com.wenxt.claims.model.BrokerResultDTO;
 import com.wenxt.claims.model.FormFieldsDTO;
 import com.wenxt.claims.model.LT_POL_BROKER;
 import com.wenxt.claims.model.ProposalEntryRequest;
@@ -257,10 +259,36 @@ public class LtPolBrokerServiceImpl implements LtPolBrokerService {
 				resultList.add(innerObject);
 			}
 		}
+		
+		BrokerResultDTO brokerResult = new BrokerResultDTO();
+		BrokerResult bResult = new BrokerResult();
+		List<BrokerResult> brokerResults = new ArrayList<>();
+		List<LT_POL_BROKER> childerns = new ArrayList<>();
+		for (LT_POL_BROKER data : brokerList) {
+			if (data.getPBRK_PARENT_CODE() == null) {
+				LT_POL_BROKER brok = data;
+				childerns = new ArrayList<>();
+					for(LT_POL_BROKER child : brokerList) {
+						if(child.getPBRK_PARENT_CODE() != null && child.getPBRK_PARENT_CODE().equals(data.getPBRK_BRK_CODE())) {
+							childerns.add(child);
+						}
+					}
+//					brok = data;
+					brok.setChildren(childerns);
+//					brokerResults.add(brok);
+					bResult.setFormFields(brok);
+					brokerResults.add(bResult);
+
+			}
+		}
+
+		brokerResult.setPolBrokerDetails(brokerResults);
+
+		JSONObject newJ = new JSONObject(brokerResult);
 		result.put(statusCode, successCode);
 		result.put(messageCode, "Pol Broker Details Fetched Successfully");
-		outerObject.put("polBrokerDetails", resultList);
-		result.put(dataCode, outerObject);
+//		outerObject.put("polBrokerDetails", resultList);
+		result.put(dataCode, newJ);
 		return result.toString();
 	}
 

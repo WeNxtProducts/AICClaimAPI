@@ -2,6 +2,7 @@ package com.wenxt.claims.model;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "LT_POL_BROKER", schema = "LIFE_DEV")
@@ -152,6 +154,9 @@ public class LT_POL_BROKER {
     
     @Column(name = "PBRK_AGENT_HIERARCHY")
     private String PBRK_AGENT_HIERARCHY;
+    
+    @Transient
+    private List<?> children;
     
 	public Long getPBRK_TRAN_ID() {
 		return PBRK_TRAN_ID;
@@ -511,6 +516,14 @@ public class LT_POL_BROKER {
 
 	public void setPBRK_AGENT_HIERARCHY(String pBRK_AGENT_HIERARCHY) {
 		PBRK_AGENT_HIERARCHY = pBRK_AGENT_HIERARCHY;
+	}
+
+	public List<?> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<?> children) {
+		this.children = children;
 	}
 
 }

@@ -147,6 +147,12 @@ public class LT_POL_BROKER {
     @Column(name = "PBRK_BRK_NAME")
     private String PBRK_BRK_NAME;
     
+    @Column(name = "PBRK_PARENT_CODE")
+    private String PBRK_PARENT_CODE;
+    
+    @Column(name = "PBRK_AGENT_HIERARCHY")
+    private String PBRK_AGENT_HIERARCHY;
+    
 	public Long getPBRK_TRAN_ID() {
 		return PBRK_TRAN_ID;
 	}
@@ -489,6 +495,22 @@ public class LT_POL_BROKER {
 
 	public void setPBRK_BRK_NAME(String pBRK_BRK_NAME) {
 		PBRK_BRK_NAME = pBRK_BRK_NAME;
+	}
+
+	public String getPBRK_PARENT_CODE() {
+		return PBRK_PARENT_CODE;
+	}
+
+	public void setPBRK_PARENT_CODE(String pBRK_PARENT_CODE) {
+		PBRK_PARENT_CODE = pBRK_PARENT_CODE;
+	}
+
+	public String getPBRK_AGENT_HIERARCHY() {
+		return PBRK_AGENT_HIERARCHY;
+	}
+
+	public void setPBRK_AGENT_HIERARCHY(String pBRK_AGENT_HIERARCHY) {
+		PBRK_AGENT_HIERARCHY = pBRK_AGENT_HIERARCHY;
 	}
 
 }

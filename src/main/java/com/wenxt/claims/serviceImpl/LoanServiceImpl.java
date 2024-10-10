@@ -146,6 +146,7 @@ public class LoanServiceImpl implements LoanService {
 	@Override
 	public String get(Integer tranId, HttpServletRequest request) throws Exception {
 		Map<String, Object> parametermap = new HashMap<String, Object>();
+		JSONObject response = new JSONObject();
 		JSONObject inputObject = new JSONObject();
 		Optional<LT_LOAN> optionalUser = loanRepo.findById(tranId);
 		LT_LOAN loan = optionalUser.get();
@@ -163,7 +164,10 @@ public class LoanServiceImpl implements LoanService {
 				}
 			}
 		}
-		return inputObject.toString();
+		response.put(statusCode, successCode);
+		response.put(dataCode, inputObject);
+		response.put(messageCode, "Loan Details Fetched Successfully");
+		return response.toString();
 		}
 
 }

@@ -203,13 +203,14 @@ public class LtPolBrokerServiceImpl implements LtPolBrokerService {
 	}
 
 	@Override
-	public String deletePolBrokerById(Integer polBrokerId) {
+	public String deletePolBrokerById(Integer polBrokerId, Integer parentId) {
 		try {
 			Optional<LT_POL_BROKER> polBrokerDetails = polBrokerRepo.findById(polBrokerId);
-
-			if (polBrokerDetails.isPresent()) {
+			Optional<LT_POL_BROKER> parentDetails = polBrokerRepo.findById(parentId);
+			if (polBrokerDetails.isPresent() && parentDetails.isPresent()) {
 				polBrokerRepo.deleteById(polBrokerId);
-
+				polBrokerRepo.deleteById(parentId);
+				
 				JSONObject response = new JSONObject();
 				response.put("Status", "SUCCESS");
 				response.put("Message", "Record with ID " + polBrokerId + " deleted successfully");

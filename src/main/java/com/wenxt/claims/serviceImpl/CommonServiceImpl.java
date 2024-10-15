@@ -3,13 +3,12 @@ package com.wenxt.claims.serviceImpl;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Map;
 
 import org.springframework.expression.ParseException;
@@ -28,6 +27,7 @@ public class CommonServiceImpl implements CommonService {
 	}
 
 	private void setField(Object instance, Class<?> clazz, String key, String value) throws Exception{
+		System.out.println(key);
 		try {
 			Field field = clazz.getDeclaredField(key);
 				field.setAccessible(true);
@@ -52,7 +52,7 @@ public class CommonServiceImpl implements CommonService {
 			return Short.parseShort(value);
 		} else if (fieldType.equals(LocalDateTime.class) && value.isEmpty() == false && value != null) {
 			return dateTimeConverter(value);
-		} else if (fieldType.equals(Date.class) && value.isEmpty() == false && value != null) {
+		} else if ((fieldType.equals(Date.class) || fieldType.equals(java.sql.Date.class))&& value.isEmpty() == false && value != null) {
 			return dateConverter(value);
 		} else if (fieldType.equals(Long.class) && value.isEmpty() == false && value != null) {
 			return Long.parseLong(value);

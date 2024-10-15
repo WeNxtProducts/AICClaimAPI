@@ -30,9 +30,9 @@ public class LtPolBrokerController {
 		return polBrokerService.updatePolBroker(proposalEntryRequest, polBrokerId);
 	}
 	
-	@PostMapping("/deletePolBroker/{polBrokerId}")
-	public String deletePolBroker(@PathVariable Integer polBrokerId) {
-		return polBrokerService.deletePolBrokerById(polBrokerId);
+	@PostMapping("/delete/{polBrokerId}/{parentId}")
+	public String deletePolBroker(@PathVariable Integer polBrokerId, @PathVariable Integer parentId) {
+		return polBrokerService.deletePolBrokerById(polBrokerId, parentId);
 	}
 	
 	@PostMapping("/getPolBrokerByid")

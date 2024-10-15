@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -156,6 +158,7 @@ public class LT_POL_BROKER {
     private String PBRK_AGENT_HIERARCHY;
     
     @Transient
+//    @JsonInclude(JsonInclude.Include.)
     private List<?> children;
     
 	public Long getPBRK_TRAN_ID() {

@@ -10,7 +10,7 @@ public interface LtPolBrokerService {
 
 	String updatePolBroker(ProposalEntryRequest proposalEntryRequest, Integer polBrokerId);
 
-	String deletePolBrokerById(Integer polBrokerId);
+	String deletePolBrokerById(Integer polBrokerId, Integer parentId);
 
 	String getPolBrokerById(Integer polBrokerId, HttpServletRequest request) throws Exception;
 

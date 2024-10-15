@@ -95,8 +95,8 @@ public class MedExFeeDtlServiceImpl implements MedExFeeDtlService {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			response.put("statusCode", errorCode);
-			response.put("message", "An error occurred: " + e.getMessage());
+			response.put(statusCode, errorCode);
+			response.put(messageCode, "An error occurred: " + e.getMessage());
 		}
 
 		return response.toString();
@@ -219,8 +219,8 @@ public class MedExFeeDtlServiceImpl implements MedExFeeDtlService {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			response.put("statusCode", errorCode);
-			response.put("message", "An error occurred: " + e.getMessage());
+			response.put(statusCode, errorCode);
+			response.put(messageCode, "An error occurred: " + e.getMessage());
 		}
 
 		return response.toString();
@@ -239,20 +239,20 @@ public class MedExFeeDtlServiceImpl implements MedExFeeDtlService {
 				medExDtlRepo.deleteById(tranId);
 
 				JSONObject response = new JSONObject();
-				response.put("Status", "SUCCESS");
-				response.put("Message", "Record with ID " + tranId + " deleted successfully");
+				response.put(statusCode, successCode);
+				response.put(messageCode, "Record with ID " + tranId + " deleted successfully");
 				return response.toString();
 
 			} else {
 				JSONObject response = new JSONObject();
-				response.put("Status", "ERROR");
-				response.put("Message", "Record with ID " + tranId + " not found");
+				response.put(statusCode, errorCode);
+				response.put(messageCode, "Record with ID " + tranId + " not found");
 				return response.toString();
 			}
 		} catch (Exception e) {
 			JSONObject response = new JSONObject();
-			response.put("Status", "ERROR");
-			response.put("Message", "Error deleting record with ID " + tranId + ": " + e.getMessage());
+			response.put(statusCode, errorCode);
+			response.put(messageCode, "Error deleting record with ID " + tranId + ": " + e.getMessage());
 			return response.toString();
 		}
 	}

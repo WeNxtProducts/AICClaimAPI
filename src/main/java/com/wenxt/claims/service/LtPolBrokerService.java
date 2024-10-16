@@ -8,7 +8,7 @@ public interface LtPolBrokerService {
 
 	String createPolBroker(ProposalEntryRequest proposalEntryRequest, Integer tranId, HttpServletRequest request);
 
-	String updatePolBroker(ProposalEntryRequest proposalEntryRequest, Integer polBrokerId);
+	String updatePolBroker(ProposalEntryRequest proposalEntryRequest);
 
 	String deletePolBrokerById(Integer polBrokerId, Integer parentId);
 

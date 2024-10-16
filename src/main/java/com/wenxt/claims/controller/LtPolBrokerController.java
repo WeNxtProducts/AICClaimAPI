@@ -25,9 +25,9 @@ public class LtPolBrokerController {
 		return polBrokerService.createPolBroker(proposalEntryRequest, tranId, request);
 	}
 	
-	@PostMapping("/polBrokerUpdate/{polBrokerId}")
-	public String updatePolBroker(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable Integer polBrokerId) {
-		return polBrokerService.updatePolBroker(proposalEntryRequest, polBrokerId);
+	@PostMapping("/polBrokerUpdate")
+	public String updatePolBroker(@RequestBody ProposalEntryRequest proposalEntryRequest) {
+		return polBrokerService.updatePolBroker(proposalEntryRequest);
 	}
 	
 	@PostMapping("/delete/{polBrokerId}/{parentId}")

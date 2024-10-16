@@ -159,11 +159,11 @@ public class LtPolBrokerServiceImpl implements LtPolBrokerService {
 	}
 
 	@Override
-	public String updatePolBroker(ProposalEntryRequest proposalEntryRequest, Integer polBrokerId) {
+	public String updatePolBroker(ProposalEntryRequest proposalEntryRequest) {
 		JSONObject response = new JSONObject();
 
 		try {
-			List<LT_POL_BROKER> brokerList = polBrokerRepo.findByPolId(polBrokerId);
+//			List<LT_POL_BROKER> brokerList = polBrokerRepo.findByPolId(polBrokerId);
 			Optional<LT_POL_BROKER> polBroker = Optional.ofNullable(new LT_POL_BROKER());
 			Map<String, Map<String, String>> fieldMaps = new HashMap<>();
 			for (FormFieldsDTO formFieldsDTO : proposalEntryRequest.getPolBrokerDetails()) {
@@ -266,12 +266,12 @@ public class LtPolBrokerServiceImpl implements LtPolBrokerService {
 		List<BrokerResult> brokerResults = new ArrayList<>();
 		List<LT_POL_BROKER> childerns = new ArrayList<>();
 		for (LT_POL_BROKER data : brokerList) {
-			if (data.getPBRK_PARENT_CODE() == null) {
+			if (data.getPBRK_PARENT_CODE() != null) {
 				LT_POL_BROKER brok = data;
 				bResult = new BrokerResult();
 				childerns = new ArrayList<>();
 					for(LT_POL_BROKER child : brokerList) {
-						if(child.getPBRK_PARENT_CODE() != null && child.getPBRK_PARENT_CODE().equals(data.getPBRK_BRK_CODE())) {
+						if(child.getPBRK_BRK_CODE() != null && child.getPBRK_BRK_CODE().equals(data.getPBRK_PARENT_CODE())) {
 							childerns.add(child);
 						}
 					}

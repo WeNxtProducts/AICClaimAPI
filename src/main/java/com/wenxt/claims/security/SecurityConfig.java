@@ -122,6 +122,8 @@ public class SecurityConfig {
 				.and()
 				.authorizeHttpRequests().requestMatchers("/riEmpDtl/**").authenticated() 
 				.and()
+				.authorizeHttpRequests().requestMatchers("/LtmedexFeeDtl/**").authenticated() 
+				.and()
 				.authorizeHttpRequests().requestMatchers("/riEmployee/**").authenticated() 
 				.and()
 				.sessionManagement() 

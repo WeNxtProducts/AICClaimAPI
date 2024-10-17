@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import com.wenxt.claims.model.BrokerResult;
 import com.wenxt.claims.model.BrokerResultDTO;
+import com.wenxt.claims.model.DeleteBrokerRequest;
 import com.wenxt.claims.model.FormFieldsDTO;
 import com.wenxt.claims.model.LT_POL_BROKER;
 import com.wenxt.claims.model.ProposalEntryRequest;
@@ -203,31 +204,49 @@ public class LtPolBrokerServiceImpl implements LtPolBrokerService {
 	}
 
 	@Override
-	public String deletePolBrokerById(Integer polBrokerId, Integer parentId) {
-		try {
-			Optional<LT_POL_BROKER> polBrokerDetails = polBrokerRepo.findById(polBrokerId);
-			Optional<LT_POL_BROKER> parentDetails = polBrokerRepo.findById(parentId);
-			if (polBrokerDetails.isPresent() && parentDetails.isPresent()) {
-				polBrokerRepo.deleteById(polBrokerId);
-				polBrokerRepo.deleteById(parentId);
-				
-				JSONObject response = new JSONObject();
-				response.put(statusCode, successCode);
-				response.put(messageCode, "Record with ID " + polBrokerId + " deleted successfully");
-				return response.toString();
+	public String deletePolBrokerById(DeleteBrokerRequest deleteBrokerRequest) {
+		JSONObject response = new JSONObject();
 
-			} else {
-				JSONObject response = new JSONObject();
-				response.put(statusCode, errorCode);
-				response.put(messageCode, "Record with ID " + polBrokerId + " not found");
-				return response.toString();
+		try {
+//			Optional<LT_POL_BROKER> polBrokerDetails = polBrokerRepo.findById(polBrokerId);
+//			Optional<LT_POL_BROKER> parentDetails = polBrokerRepo.findById(parentId);
+//			if (polBrokerDetails.isPresent() && parentDetails.isPresent()) {
+//				polBrokerRepo.deleteById(polBrokerId);
+//				polBrokerRepo.deleteById(parentId);
+//				
+//				JSONObject response = new JSONObject();
+//				response.put(statusCode, successCode);
+//				response.put(messageCode, "Record with ID " + polBrokerId + " deleted successfully");
+//				return response.toString();
+//
+//			} else {
+//				JSONObject response = new JSONObject();
+//				response.put(statusCode, errorCode);
+//				response.put(messageCode, "Record with ID " + polBrokerId + " not found");
+//				return response.toString();
+//			}
+
+			for(Integer id : deleteBrokerRequest.getPolBrokerIds()) {
+				Optional<LT_POL_BROKER> polBrokerDetails = polBrokerRepo.findById(id);
+				
+				if (polBrokerDetails.isPresent()) {
+					polBrokerRepo.deleteById(id);
+					
+					response.put(statusCode, successCode);
+					response.put(messageCode, "Broker Agent Details deleted Successfully");
+	
+				} else {
+					response.put(statusCode, errorCode);
+					response.put(messageCode, "The Broker Agent Details cannot be deleted");
+					return response.toString();
+				}
 			}
 		} catch (Exception e) {
-			JSONObject response = new JSONObject();
 			response.put(statusCode, errorCode);
-			response.put(messageCode, "Error deleting record with ID " + polBrokerId + ": " + e.getMessage());
+			response.put(messageCode, "Error deleting record" + e.getMessage());
 			return response.toString();
 		}
+		return response.toString();
 	}
 	
 	@Override

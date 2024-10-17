@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wenxt.claims.model.DeleteBrokerRequest;
 import com.wenxt.claims.model.ProposalEntryRequest;
 import com.wenxt.claims.service.LtPolBrokerService;
 
@@ -30,9 +31,9 @@ public class LtPolBrokerController {
 		return polBrokerService.updatePolBroker(proposalEntryRequest);
 	}
 	
-	@PostMapping("/delete/{polBrokerId}/{parentId}")
-	public String deletePolBroker(@PathVariable Integer polBrokerId, @PathVariable Integer parentId) {
-		return polBrokerService.deletePolBrokerById(polBrokerId, parentId);
+	@PostMapping("/delete")
+	public String deletePolBroker(@RequestBody DeleteBrokerRequest deleteBrokerRequest) {
+		return polBrokerService.deletePolBrokerById(deleteBrokerRequest);
 	}
 	
 	@PostMapping("/getPolBrokerByid")

@@ -308,6 +308,8 @@ public class LtPolBrokerServiceImpl implements LtPolBrokerService {
 				try {
 				LT_POL_BROKER brk = setChildrenHierarchy(hierarchies, agentData);
 //				agentData.setChildren(hierarchies);
+				List<LT_POL_BROKER> tempBrokerList = new ArrayList<>();
+				tempBrokerList.add(brk);
 				brokerResult.setFormFields(brk);
 				brokerLists.add(brokerResult);
 				}catch(Exception e) {
@@ -364,7 +366,7 @@ public class LtPolBrokerServiceImpl implements LtPolBrokerService {
 //			System.out.println("RECURSIVE CALL");
 			agentHolder[0].setChildren(setChildrenHierarchy(childHierarchies, agentHolder[0]).getChildren());
 		}
-		agentData.setChildren(agentHolder[0]);
+		agentData.setChildren(Collections.singletonList(agentHolder[0]));
 		return agentData;
 		    
 //		    // Base case: If no more child hierarchies, return the agentData

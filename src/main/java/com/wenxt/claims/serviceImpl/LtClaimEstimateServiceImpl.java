@@ -194,8 +194,10 @@ public class LtClaimEstimateServiceImpl implements LtClaimEstimateService{
 
 	@Override
 	public String getLtClaimEstById(Integer ce_TRAN_id) throws IllegalArgumentException, IllegalAccessException {
+		JSONObject response = new JSONObject();
 		Map<String, Object> parametermap = new HashMap<String, Object>();
 		JSONObject inputObject = new JSONObject();
+		try {
 		Optional<LT_CLAIM_ESTIMATE> optionalUser = claimEstrepo.findById(ce_TRAN_id);
 		LT_CLAIM_ESTIMATE claim = optionalUser.get();
 		if (claim != null) {
@@ -211,8 +213,19 @@ public class LtClaimEstimateServiceImpl implements LtClaimEstimateService{
 					inputObject.put(columnName, value);
 				}
 			}
+			return inputObject.toString();
+		}else {
+			System.out.println("IN");
+			response.put(statusCode, errorCode);
+			response.put(messageCode, "No Value Present");
+			return response.toString();
 		}
-		return inputObject.toString();
+		}catch(Exception e) {
+			response.put(statusCode, errorCode);
+			response.put(messageCode, e.getMessage());
+			return response.toString();
+		}
+
 	}
 
 	@Override

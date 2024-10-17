@@ -1,6 +1,5 @@
 package com.wenxt.claims.serviceImpl;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
@@ -9,10 +8,12 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,6 @@ import com.wenxt.claims.model.ProposalEntryRequest;
 import com.wenxt.claims.repository.LtPolBrokerRepository;
 import com.wenxt.claims.service.LtPolBrokerService;
 
-import jakarta.persistence.Column;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Service
@@ -212,20 +212,20 @@ public class LtPolBrokerServiceImpl implements LtPolBrokerService {
 				polBrokerRepo.deleteById(parentId);
 				
 				JSONObject response = new JSONObject();
-				response.put("Status", "SUCCESS");
-				response.put("Message", "Record with ID " + polBrokerId + " deleted successfully");
+				response.put(statusCode, successCode);
+				response.put(messageCode, "Record with ID " + polBrokerId + " deleted successfully");
 				return response.toString();
 
 			} else {
 				JSONObject response = new JSONObject();
-				response.put("Status", "ERROR");
-				response.put("Message", "Record with ID " + polBrokerId + " not found");
+				response.put(statusCode, errorCode);
+				response.put(messageCode, "Record with ID " + polBrokerId + " not found");
 				return response.toString();
 			}
 		} catch (Exception e) {
 			JSONObject response = new JSONObject();
-			response.put("Status", "ERROR");
-			response.put("Message", "Error deleting record with ID " + polBrokerId + ": " + e.getMessage());
+			response.put(statusCode, errorCode);
+			response.put(messageCode, "Error deleting record with ID " + polBrokerId + ": " + e.getMessage());
 			return response.toString();
 		}
 	}
@@ -239,57 +239,167 @@ public class LtPolBrokerServiceImpl implements LtPolBrokerService {
 		JSONObject result = new JSONObject();
 		List<JSONObject> resultList = new ArrayList<>();
 		List<LT_POL_BROKER> brokerList = polBrokerRepo.findByPolId(polBrokerId);
-		for (LT_POL_BROKER broker : brokerList) {
-			LT_POL_BROKER polBroker = broker;
-			if (polBroker != null) {
-				inputObject = new JSONObject();
-				for (int i = 0; i < polBroker.getClass().getDeclaredFields().length; i++) {
-					innerObject = new JSONObject();
-					Field field = polBroker.getClass().getDeclaredFields()[i];
-					field.setAccessible(true);
-					String columnName = null;
-					if (field.isAnnotationPresent(Column.class)) {
-						Annotation annotation = field.getAnnotation(Column.class);
-						Column column = (Column) annotation;
-						Object value = field.get(polBroker);
-						columnName = column.name();
-						inputObject.put(columnName, value);
-					}
-				}
-				innerObject.put("formFields", inputObject);
-				resultList.add(innerObject);
-			}
-		}
+//		for (LT_POL_BROKER broker : brokerList) {
+//			LT_POL_BROKER polBroker = broker;
+//			if (polBroker != null) {
+//				inputObject = new JSONObject();
+//				for (int i = 0; i < polBroker.getClass().getDeclaredFields().length; i++) {
+//					innerObject = new JSONObject();
+//					Field field = polBroker.getClass().getDeclaredFields()[i];
+//					field.setAccessible(true);
+//					String columnName = null;
+//					if (field.isAnnotationPresent(Column.class)) {
+//						Annotation annotation = field.getAnnotation(Column.class);
+//						Column column = (Column) annotation;
+//						Object value = field.get(polBroker);
+//						columnName = column.name();
+//						inputObject.put(columnName, value);
+//					}
+//				}
+//				innerObject.put("formFields", inputObject);
+//				resultList.add(innerObject);
+//			}
+//		}
 		
-		BrokerResultDTO brokerResult = new BrokerResultDTO();
-		BrokerResult bResult = new BrokerResult();
-		List<BrokerResult> brokerResults = new ArrayList<>();
-		List<LT_POL_BROKER> childerns = new ArrayList<>();
-		for (LT_POL_BROKER data : brokerList) {
-			if (data.getPBRK_PARENT_CODE() != null) {
-				LT_POL_BROKER brok = data;
-				bResult = new BrokerResult();
-				childerns = new ArrayList<>();
-					for(LT_POL_BROKER child : brokerList) {
-						if(child.getPBRK_BRK_CODE() != null && child.getPBRK_BRK_CODE().equals(data.getPBRK_PARENT_CODE())) {
-							childerns.add(child);
-						}
-					}
-					brok.setChildren(childerns);
-					bResult.setFormFields(brok);
-					brokerResults.add(bResult);
-
+//		BrokerResultDTO brokerResult = new BrokerResultDTO();
+//		BrokerResult bResult = new BrokerResult();
+//		List<BrokerResult> brokerResults = new ArrayList<>();
+//		List<LT_POL_BROKER> childerns = new ArrayList<>();
+//		for (LT_POL_BROKER data : brokerList) {       //rank Code Used to describe the levels 
+//			if (data.getPBRK_PARENT_CODE() != null) { //hierarchy used to describe which agent has which manager and so On
+//				LT_POL_BROKER brok = data;
+//				bResult = new BrokerResult();
+//				childerns = new ArrayList<>();
+//					for(LT_POL_BROKER child : brokerList) {
+//						if(child.getPBRK_BRK_CODE() != null && child.getPBRK_BRK_CODE().equals(data.getPBRK_PARENT_CODE())) {
+//							childerns.add(child);
+//						}
+//					}
+//					brok.setChildren(childerns);
+//					bResult.setFormFields(brok);
+//					brokerResults.add(bResult);
+//
+//			}
+//		}
+//
+//		brokerResult.setPolBrokerDetails(brokerResults);
+//
+//		JSONObject newJ = new JSONObject(brokerResult);
+//		result.put(statusCode, successCode);
+//		result.put(messageCode, "Pol Broker Details Fetched Successfully");
+////		outerObject.put("polBrokerDetails", resultList);
+//		result.put(dataCode, newJ);
+		
+//		System.out.println(brokerList.size());
+		
+		List<LT_POL_BROKER> agentList = brokerList.stream().filter(i -> i.getPBRK_AGENT_RANK_CODE().equals("01"))
+				.collect(Collectors.toList());
+		
+		
+		BrokerResultDTO brokerResultDto = new BrokerResultDTO();
+		BrokerResult brokerResult = new BrokerResult();
+		List<BrokerResult> brokerLists = new ArrayList<>();
+		for(LT_POL_BROKER agent : agentList) {
+			LT_POL_BROKER agentData = agent;
+			brokerResult = new BrokerResult();
+			List<LT_POL_BROKER> hierarchies = brokerList.stream().filter(i -> i.getPBRK_AGENT_HIERARCHY().equals(agent.getPBRK_AGENT_HIERARCHY()) && 
+					i.getPBRK_TRAN_ID() != agent.getPBRK_TRAN_ID()).collect(Collectors.toList());
+			if(hierarchies.size() > 1) {
+				try {
+				LT_POL_BROKER brk = setChildrenHierarchy(hierarchies, agentData);
+//				agentData.setChildren(hierarchies);
+				brokerResult.setFormFields(brk);
+				brokerLists.add(brokerResult);
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
+			}else {
+				agentData.setChildren(hierarchies);
+				brokerResult.setFormFields(agentData);
+				brokerLists.add(brokerResult);
 			}
 		}
-
-		brokerResult.setPolBrokerDetails(brokerResults);
-
-		JSONObject newJ = new JSONObject(brokerResult);
+		brokerResultDto.setPolBrokerDetails(brokerLists);
+		
+		JSONObject newJ = new JSONObject(brokerResultDto);
 		result.put(statusCode, successCode);
 		result.put(messageCode, "Pol Broker Details Fetched Successfully");
-//		outerObject.put("polBrokerDetails", resultList);
 		result.put(dataCode, newJ);
 		return result.toString();
+	}
+	
+	public static LT_POL_BROKER setChildrenHierarchy(List<LT_POL_BROKER> hierarchies, LT_POL_BROKER agentData) {
+		
+		if(hierarchies.size() == 1) {
+//			System.out.println("IN 1: " + agentData.getPBRK_BRK_CODE());
+			agentData.setChildren(hierarchies);
+			return agentData;
+			
+		}
+		
+		LT_POL_BROKER[] agentHolder = new LT_POL_BROKER[1];
+		Integer fromAgentRank = Integer.parseInt(agentData.getPBRK_AGENT_RANK_CODE());
+//		System.out.println("RANK: " + fromAgentRank);
+		String toAgnetRank = "0" + (fromAgentRank+1);
+//		System.out.println("TORANK: " + toAgnetRank);
+//		List<LT_POL_BROKER> childHierarchies = hierarchies.stream().filter(i -> !i.getPBRK_AGENT_RANK_CODE().equals(toAgnetRank))
+//				 .peek(i -> { 
+//					 System.out.println(i.getPBRK_BRK_CODE() + " " + i.getPBRK_AGENT_RANK_CODE());
+//					 if(i.getPBRK_AGENT_RANK_CODE().equals(toAgnetRank)) {
+//						 System.out.println("IF");
+//						 agentHolder[0] = i;
+//					 }
+//				    }).collect(Collectors.toList());
+		
+		List<LT_POL_BROKER> childHierarchies = hierarchies.stream().peek(i -> { 
+	        if (i.getPBRK_AGENT_RANK_CODE().equals(toAgnetRank)) {
+	            agentHolder[0] = i; 
+	        }
+	    })
+	    .filter(i -> !i.getPBRK_AGENT_RANK_CODE().equals(toAgnetRank))
+	    .collect(Collectors.toList());
+//		System.out.println("CHILDHIERARCHIES: " + childHierarchies.size());
+//		agentData.setChildren(agentHolder[0]);
+		if(childHierarchies.size() != 0) {
+//			System.out.println("RECURSIVE CALL");
+			agentHolder[0].setChildren(setChildrenHierarchy(childHierarchies, agentHolder[0]).getChildren());
+		}
+		agentData.setChildren(agentHolder[0]);
+		return agentData;
+		    
+//		    // Base case: If no more child hierarchies, return the agentData
+//		    if (hierarchies.isEmpty()) {
+//		        return agentData;
+//		    }
+//
+//		    // Mutable holder for the next agent in the hierarchy
+//		    LT_POL_BROKER[] agentHolder = new LT_POL_BROKER[1];
+//		    
+//		    // Get current agent's rank and the next rank to look for
+//		    Integer fromAgentRank = Integer.parseInt(agentData.getPBRK_AGENT_RANK_CODE());
+//		    String toAgentRank = "0" + (fromAgentRank + 1); // Rank for the next hierarchy level
+//		    
+//		    // Find child hierarchies and identify the next agent in the hierarchy
+//		    List<LT_POL_BROKER> childHierarchies = hierarchies.stream()
+//		        .peek(i -> { 
+//		            if (i.getPBRK_AGENT_RANK_CODE().equals(toAgentRank)) {
+//		                agentHolder[0] = i; // Set the next agent in the hierarchy
+//		            }
+//		        })
+//		        .filter(i -> !i.getPBRK_AGENT_RANK_CODE().equals(toAgentRank)) // Exclude the found agent
+//		        .collect(Collectors.toList());
+//		    
+//		    // If the next agent (agentHolder[0]) is found, set its children recursively
+//		    if (agentHolder[0] != null) {
+//		        // Recursively call setChildrenHierarchy for the remaining hierarchy
+//		        agentHolder[0].setChildren(setChildrenHierarchy(childHierarchies, agentHolder[0]).getChildren());
+//		    }
+//		    
+//		    // Set the children to the current agent
+//		    agentData.setChildren(Collections.singletonList(agentHolder[0])); // Add the agent as a single child
+//		    
+//		    return agentData;
+		
 	}
 
 }

@@ -159,7 +159,7 @@ public class LT_POL_BROKER {
     
     @Transient
 //    @JsonInclude(JsonInclude.Include.)
-    private List<?> children;
+    private Object children;
     
 	public Long getPBRK_TRAN_ID() {
 		return PBRK_TRAN_ID;
@@ -521,11 +521,11 @@ public class LT_POL_BROKER {
 		PBRK_AGENT_HIERARCHY = pBRK_AGENT_HIERARCHY;
 	}
 
-	public List<?> getChildren() {
+	public Object getChildren() {
 		return children;
 	}
 
-	public void setChildren(List<?> children) {
+	public void setChildren(Object children) {
 		this.children = children;
 	}
 

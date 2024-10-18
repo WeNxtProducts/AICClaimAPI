@@ -148,6 +148,7 @@ public class LoanServiceImpl implements LoanService {
 		Map<String, Object> parametermap = new HashMap<String, Object>();
 		JSONObject response = new JSONObject();
 		JSONObject inputObject = new JSONObject();
+		System.out.println(tranId);
 		Optional<LT_LOAN> optionalUser = loanRepo.findById(tranId);
 		LT_LOAN loan = optionalUser.get();
 		if (loan != null) {
@@ -167,7 +168,7 @@ public class LoanServiceImpl implements LoanService {
 		response.put(statusCode, successCode);
 		response.put(dataCode, inputObject);
 		response.put(messageCode, "Loan Details Fetched Successfully");
-		return response.toString();
+		return inputObject.toString();
 		}
 
 }

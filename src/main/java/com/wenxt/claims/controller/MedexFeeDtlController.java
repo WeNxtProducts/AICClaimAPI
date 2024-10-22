@@ -1,7 +1,6 @@
 package com.wenxt.claims.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.wenxt.claims.model.ProposalEntryRequest;
 import com.wenxt.claims.service.MedExFeeDtlService;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/medexFeeDtl")
 public class MedexFeeDtlController {
@@ -21,8 +22,8 @@ public class MedexFeeDtlController {
 	
 	@PostMapping("/save/{tranId}/{emptranId}/{mhtranId}")
 	public String saveMedExFeeDtl(@RequestBody ProposalEntryRequest proposalEntryRequest, @PathVariable("tranId") Integer tranId, 
-			@PathVariable("emptranId") Integer emptranId, @PathVariable("mhtranId") Integer mhtranId) {
-		return feeDtlService.saveMedExFeeDtl(proposalEntryRequest, tranId, emptranId, mhtranId);
+			@PathVariable("emptranId") Integer emptranId, @PathVariable("mhtranId") Integer mhtranId, HttpServletRequest request) {
+		return feeDtlService.saveMedExFeeDtl(proposalEntryRequest, tranId, emptranId, mhtranId, request);
 	}
 	
 	@PostMapping("/updateMedExFeeDtl/{tranId}")
@@ -35,7 +36,7 @@ public class MedexFeeDtlController {
 		return feeDtlService.deleteMedicalDetails(tranId);
 	}
 	
-	@GetMapping("/getMedDtl")
+	@PostMapping("/getMedDtl")
 	public String getMedicalDetails(@RequestParam("tranId") Integer tranId) {
 		try {
 		return feeDtlService.getMedicalDetails(tranId);

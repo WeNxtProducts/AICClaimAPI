@@ -21,9 +21,12 @@ import com.wenxt.claims.model.LT_MEDEX_FEE_DTL;
 import com.wenxt.claims.model.ProposalEntryRequest;
 import com.wenxt.claims.repository.MedExDtlRepository;
 import com.wenxt.claims.repository.MedExFeeDtlRepository;
+import com.wenxt.claims.security.AuthRequest;
+import com.wenxt.claims.security.JwtService;
 import com.wenxt.claims.service.MedExFeeDtlService;
 
 import jakarta.persistence.Column;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 public class MedExFeeDtlServiceImpl implements MedExFeeDtlService {
@@ -51,9 +54,12 @@ public class MedExFeeDtlServiceImpl implements MedExFeeDtlService {
 	
 	@Autowired
 	private MedExDtlRepository medExDtlRepo;
+	
+	@Autowired
+	private JwtService jwtService;
 
 	@Override
-	public String saveMedExFeeDtl(ProposalEntryRequest proposalEntryRequest, Integer tranId, Integer emptranId, Integer mhtranId) {
+	public String saveMedExFeeDtl(ProposalEntryRequest proposalEntryRequest, Integer tranId, Integer emptranId, Integer mhtranId, HttpServletRequest request) {
 		JSONObject response = new JSONObject();
 		JSONObject data = new JSONObject();
 
@@ -73,16 +79,26 @@ public class MedExFeeDtlServiceImpl implements MedExFeeDtlService {
 			}
 
 			try {
-				medicalDetails.setMFD_INS_DT(new Date(System.currentTimeMillis()));
-				medicalDetails.setMFD_POL_TRAN_ID(tranId);
-				medicalDetails.setMFD_MH_TRAN_ID(mhtranId);
-				medicalDetails.setMFD_PEMP_TRAN_ID(emptranId);
+				String authorizationHeader = request.getHeader("Authorization");
+				String token = authorizationHeader.substring(7).trim();
+				AuthRequest userDetails = jwtService.getLoggedInDetails(token);
+
 				
 				medDetails.setMD_INS_DT(new Date(System.currentTimeMillis()));
 				medDetails.setMD_POL_TRAN_ID(tranId);
 				medDetails.setMD_PEMP_TRAN_ID(emptranId);
 				medDetails.setMD_MH_TRAN_ID(mhtranId);
+				medDetails.setMD_INS_ID(userDetails.getUsername());
 				LT_MEDEX_DTL savedMedicalDetails = medExDtlRepo.save(medDetails);
+				
+				
+				medicalDetails.setMFD_INS_DT(new Date(System.currentTimeMillis()));
+				medicalDetails.setMFD_POL_TRAN_ID(tranId);
+				medicalDetails.setMFD_MH_TRAN_ID(mhtranId);
+				medicalDetails.setMFD_PEMP_TRAN_ID(emptranId);
+				medicalDetails.setMFD_INS_ID(userDetails.getUsername());
+				medicalDetails.setMFD_MD_TRAN_ID(savedMedicalDetails.getMD_TRAN_ID());
+
 				LT_MEDEX_FEE_DTL savedmedicalDetails = feeDtlRepository.save(medicalDetails);
 				response.put(statusCode, successCode);
 				response.put(messageCode,
@@ -197,7 +213,7 @@ public class MedExFeeDtlServiceImpl implements MedExFeeDtlService {
 			LT_MEDEX_DTL medicalDetails = optionalUser.get();
 			if (medicalDetails != null) {
 				Map<String, Map<String, String>> fieldMaps = new HashMap<>();
-				fieldMaps.put("frontForm", proposalEntryRequest.getPolEmployeeDetails().getFormFields());
+				fieldMaps.put("frontForm", proposalEntryRequest.getMedicalDetails().getFormFields());
 				for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
 					setmedicalDetailsFields(medicalDetails, entry.getValue());
 					if(feeDetails != null) {
@@ -259,13 +275,16 @@ public class MedExFeeDtlServiceImpl implements MedExFeeDtlService {
 
 	@Override
 	public String getMedicalDetails(Integer tranId)throws Exception {
+		System.out.println("TRANID: " + tranId);
 		Map<String, Object> parametermap = new HashMap<String, Object>();
+		JSONObject response = new JSONObject();
 		JSONObject inputObject = new JSONObject();
 		Optional<LT_MEDEX_DTL> optionalUser = medExDtlRepo.findById(tranId);
 		Optional<LT_MEDEX_FEE_DTL> feeDetail = feeDtlRepository.findByMedId(tranId);
 		LT_MEDEX_FEE_DTL feeDetails = feeDetail.get();
 		LT_MEDEX_DTL medicalDetails = optionalUser.get();
 		if (medicalDetails != null) {
+			System.out.println("IN IF");
 			for (int i = 0; i < medicalDetails.getClass().getDeclaredFields().length; i++) {
 				Field field = medicalDetails.getClass().getDeclaredFields()[i];
 				field.setAccessible(true);
@@ -292,8 +311,15 @@ public class MedExFeeDtlServiceImpl implements MedExFeeDtlService {
 					}
 				}
 			}
+			response.put(statusCode, successCode);
+			response.put(messageCode, "Medical Details Fetched Successfully");
+			response.put(dataCode, inputObject);
+			return inputObject.toString();
+		}else {
+			response.put(statusCode, errorCode);
+			response.put(messageCode, "NoValue Found");
 		}
-		return inputObject.toString();
+		return response.toString();
 	}
 	
 	

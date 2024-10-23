@@ -64,7 +64,7 @@ public class MedExFeeDtlServiceImpl implements MedExFeeDtlService {
 		JSONObject data = new JSONObject();
 
 		try {
-			LT_MEDEX_FEE_DTL medicalDetails = new LT_MEDEX_FEE_DTL();
+//			LT_MEDEX_FEE_DTL medicalDetails = new LT_MEDEX_FEE_DTL();
 			LT_MEDEX_DTL medDetails = new LT_MEDEX_DTL();
 			
 			Map<String, Map<String, String>> fieldMaps = new HashMap<>();
@@ -74,7 +74,7 @@ public class MedExFeeDtlServiceImpl implements MedExFeeDtlService {
 				fieldMaps.put("frontForm", proposalEntryRequest.getMedicalDetails().getFormFields());
 			}
 			for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
-				setmedicalFeeDetailsFields(medicalDetails, entry.getValue());
+//				setmedicalFeeDetailsFields(medicalDetails, entry.getValue());
 				setmedicalDetailsFields(medDetails, entry.getValue());
 			}
 
@@ -92,18 +92,18 @@ public class MedExFeeDtlServiceImpl implements MedExFeeDtlService {
 				LT_MEDEX_DTL savedMedicalDetails = medExDtlRepo.save(medDetails);
 				
 				
-				medicalDetails.setMFD_INS_DT(new Date(System.currentTimeMillis()));
-				medicalDetails.setMFD_POL_TRAN_ID(tranId);
-				medicalDetails.setMFD_MH_TRAN_ID(mhtranId);
-				medicalDetails.setMFD_PEMP_TRAN_ID(emptranId);
-				medicalDetails.setMFD_INS_ID(userDetails.getUsername());
-				medicalDetails.setMFD_MD_TRAN_ID(savedMedicalDetails.getMD_TRAN_ID());
+//				medicalDetails.setMFD_INS_DT(new Date(System.currentTimeMillis()));
+//				medicalDetails.setMFD_POL_TRAN_ID(tranId);
+//				medicalDetails.setMFD_MH_TRAN_ID(mhtranId);
+//				medicalDetails.setMFD_PEMP_TRAN_ID(emptranId);
+//				medicalDetails.setMFD_INS_ID(userDetails.getUsername());
+//				medicalDetails.setMFD_MD_TRAN_ID(savedMedicalDetails.getMD_TRAN_ID());
 
-				LT_MEDEX_FEE_DTL savedmedicalDetails = feeDtlRepository.save(medicalDetails);
+//				LT_MEDEX_FEE_DTL savedmedicalDetails = feeDtlRepository.save(medicalDetails);
 				response.put(statusCode, successCode);
 				response.put(messageCode,
 						 "Medical Details Created Successfully");
-				data.put("Id", savedmedicalDetails.getMFD_TRAN_ID());
+				data.put("Id", savedMedicalDetails.getMD_TRAN_ID());
 				response.put(dataCode, data);
 			} catch (Exception e) {
 				response.put(statusCode, errorCode);
@@ -208,23 +208,23 @@ public class MedExFeeDtlServiceImpl implements MedExFeeDtlService {
 
 		try {
 			Optional<LT_MEDEX_DTL> optionalUser = medExDtlRepo.findById(tranId);
-			Optional<LT_MEDEX_FEE_DTL> feeDetail = feeDtlRepository.findByMedId(tranId);
-			LT_MEDEX_FEE_DTL feeDetails = feeDetail.get();
+//			Optional<LT_MEDEX_FEE_DTL> feeDetail = feeDtlRepository.findByMedId(tranId);
+//			LT_MEDEX_FEE_DTL feeDetails = feeDetail.get();
 			LT_MEDEX_DTL medicalDetails = optionalUser.get();
 			if (medicalDetails != null) {
 				Map<String, Map<String, String>> fieldMaps = new HashMap<>();
 				fieldMaps.put("frontForm", proposalEntryRequest.getMedicalDetails().getFormFields());
 				for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
 					setmedicalDetailsFields(medicalDetails, entry.getValue());
-					if(feeDetails != null) {
-						setmedicalFeeDetailsFields(feeDetails, entry.getValue());
-					}
+//					if(feeDetails != null) {
+//						setmedicalFeeDetailsFields(feeDetails, entry.getValue());
+//					}
 				}
 
 				try {
 					medicalDetails.setMD_MOD_DT(new Date(System.currentTimeMillis()));
-					feeDetails.setMFD_MOD_DT(new Date(System.currentTimeMillis()));
-					feeDtlRepository.save(feeDetails);
+//					feeDetails.setMFD_MOD_DT(new Date(System.currentTimeMillis()));
+//					feeDtlRepository.save(feeDetails);
 					LT_MEDEX_DTL savedMedicalDetails = medExDtlRepo.save(medicalDetails);
 					response.put(statusCode, successCode);
 					response.put(messageCode, "Pol Employee Details Updated Successfully");

@@ -1,5 +1,6 @@
 package com.wenxt.claims.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import jakarta.persistence.Column;
@@ -49,6 +50,15 @@ public class LT_MEDEX_DTL {
 
     @Column(name = "MD_CLINIC_CODE")
     private String MD_CLINIC_CODE;
+    
+    @Column(name = "MD_EXAM_DT")
+    private Date MD_EXAM_DT;
+    
+    @Column(name = "MD_FC_FEE")
+    private BigDecimal MD_FC_FEE;
+    
+    @Column(name = "MD_PAY_TO")
+    private String MD_PAY_TO;
 
     // Getters and Setters
 
@@ -139,4 +149,28 @@ public class LT_MEDEX_DTL {
     public void setMD_CLINIC_CODE(String MD_CLINIC_CODE) {
         this.MD_CLINIC_CODE = MD_CLINIC_CODE;
     }
+
+	public Date getMD_EXAM_DT() {
+		return MD_EXAM_DT;
+	}
+
+	public void setMD_EXAM_DT(Date mD_EXAM_DT) {
+		MD_EXAM_DT = mD_EXAM_DT;
+	}
+
+	public BigDecimal getMD_FC_FEE() {
+		return MD_FC_FEE;
+	}
+
+	public void setMD_FC_FEE(BigDecimal mD_FC_FEE) {
+		MD_FC_FEE = mD_FC_FEE;
+	}
+
+	public String getMD_PAY_TO() {
+		return MD_PAY_TO;
+	}
+
+	public void setMD_PAY_TO(String mD_PAY_TO) {
+		MD_PAY_TO = mD_PAY_TO;
+	}   
 }

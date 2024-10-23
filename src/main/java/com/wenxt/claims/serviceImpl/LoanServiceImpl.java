@@ -148,7 +148,6 @@ public class LoanServiceImpl implements LoanService {
 		Map<String, Object> parametermap = new HashMap<String, Object>();
 		JSONObject response = new JSONObject();
 		JSONObject inputObject = new JSONObject();
-		System.out.println(tranId);
 		Optional<LT_LOAN> optionalUser = loanRepo.findById(tranId);
 		LT_LOAN loan = optionalUser.get();
 		if (loan != null) {

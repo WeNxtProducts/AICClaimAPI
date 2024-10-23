@@ -464,7 +464,13 @@ public class LtClaimServiceImpl implements LtClaimService {
 					Column column = (Column) annotation;
 					Object value = field.get(claimHeaderDetails);
 					columnName = column.name();
-					inputObject.put(columnName, value);
+		            if (value != null && field.getType().equals(Date.class)) {
+		                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		                String formattedDate = dateFormat.format((Date) value);
+		                inputObject.put(columnName, formattedDate);
+		            } else {
+		                inputObject.put(columnName, value);
+		            }
 				}
 			}
 			response.put(statusCode, successCode);

@@ -126,6 +126,8 @@ public class SecurityConfig {
 				.and()
 				.authorizeHttpRequests().requestMatchers("/riEmployee/**").authenticated() 
 				.and()
+				.authorizeHttpRequests().requestMatchers("/riEmpCvrDiscLoad/**").authenticated() 
+				.and()
 				.sessionManagement() 
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS) 
 				.and() 

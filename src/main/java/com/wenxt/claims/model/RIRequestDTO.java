@@ -9,6 +9,8 @@ public class RIRequestDTO {
 	private FormFieldsDTO riEmployee;
 	
 	private FormFieldsDTO riEmployeeDtl;
+	
+	private FormFieldsDTO riEmpCoverDiscLoad;
 
 	public FormFieldsDTO getRiPremAllocHead() {
 		return riPremAllocHead;
@@ -40,6 +42,14 @@ public class RIRequestDTO {
 
 	public void setRiEmployeeDtl(FormFieldsDTO riEmployeeDtl) {
 		this.riEmployeeDtl = riEmployeeDtl;
+	}
+
+	public FormFieldsDTO getRiEmpCoverDiscLoad() {
+		return riEmpCoverDiscLoad;
+	}
+
+	public void setRiEmpCoverDiscLoad(FormFieldsDTO riEmpCoverDiscLoad) {
+		this.riEmpCoverDiscLoad = riEmpCoverDiscLoad;
 	}
 
 }

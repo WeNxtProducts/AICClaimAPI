@@ -6,7 +6,10 @@ import java.lang.reflect.Method;
 import java.util.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -14,6 +17,7 @@ import java.util.Optional;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.expression.ParseException;
 import org.springframework.stereotype.Service;
 
 import com.wenxt.claims.model.LT_MEDEX_DTL;
@@ -23,6 +27,7 @@ import com.wenxt.claims.repository.MedExDtlRepository;
 import com.wenxt.claims.repository.MedExFeeDtlRepository;
 import com.wenxt.claims.security.AuthRequest;
 import com.wenxt.claims.security.JwtService;
+import com.wenxt.claims.service.CommonService;
 import com.wenxt.claims.service.MedExFeeDtlService;
 
 import jakarta.persistence.Column;
@@ -57,6 +62,9 @@ public class MedExFeeDtlServiceImpl implements MedExFeeDtlService {
 	
 	@Autowired
 	private JwtService jwtService;
+	
+	@Autowired
+	private CommonService commonService;
 
 	@Override
 	public String saveMedExFeeDtl(ProposalEntryRequest proposalEntryRequest, Integer tranId, Integer emptranId, Integer mhtranId, HttpServletRequest request) {
@@ -64,18 +72,14 @@ public class MedExFeeDtlServiceImpl implements MedExFeeDtlService {
 		JSONObject data = new JSONObject();
 
 		try {
-//			LT_MEDEX_FEE_DTL medicalDetails = new LT_MEDEX_FEE_DTL();
 			LT_MEDEX_DTL medDetails = new LT_MEDEX_DTL();
 			
 			Map<String, Map<String, String>> fieldMaps = new HashMap<>();
 			if(proposalEntryRequest.getMedicalDetails() != null) {
 			fieldMaps.put("frontForm", proposalEntryRequest.getMedicalDetails().getFormFields());
-			}else {
-				fieldMaps.put("frontForm", proposalEntryRequest.getMedicalDetails().getFormFields());
 			}
 			for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
-//				setmedicalFeeDetailsFields(medicalDetails, entry.getValue());
-				setmedicalDetailsFields(medDetails, entry.getValue());
+				commonService.setFields(medDetails, LT_MEDEX_DTL.class, entry.getValue());
 			}
 
 			try {
@@ -91,15 +95,6 @@ public class MedExFeeDtlServiceImpl implements MedExFeeDtlService {
 				medDetails.setMD_INS_ID(userDetails.getUsername());
 				LT_MEDEX_DTL savedMedicalDetails = medExDtlRepo.save(medDetails);
 				
-				
-//				medicalDetails.setMFD_INS_DT(new Date(System.currentTimeMillis()));
-//				medicalDetails.setMFD_POL_TRAN_ID(tranId);
-//				medicalDetails.setMFD_MH_TRAN_ID(mhtranId);
-//				medicalDetails.setMFD_PEMP_TRAN_ID(emptranId);
-//				medicalDetails.setMFD_INS_ID(userDetails.getUsername());
-//				medicalDetails.setMFD_MD_TRAN_ID(savedMedicalDetails.getMD_TRAN_ID());
-
-//				LT_MEDEX_FEE_DTL savedmedicalDetails = feeDtlRepository.save(medicalDetails);
 				response.put(statusCode, successCode);
 				response.put(messageCode,
 						 "Medical Details Created Successfully");
@@ -126,6 +121,7 @@ public class MedExFeeDtlServiceImpl implements MedExFeeDtlService {
 
 	private void setmedicalFeeDetailsField(LT_MEDEX_FEE_DTL medicalDetails, String key, String value)throws Exception {
 		try {
+			System.out.println(key);
 			Field field = LT_MEDEX_FEE_DTL.class.getDeclaredField(key);
 			Class<?> fieldType = field.getType();
 			Object convertedValue = convertStringToObject(value, fieldType);
@@ -135,6 +131,7 @@ public class MedExFeeDtlServiceImpl implements MedExFeeDtlService {
 				setter.invoke(medicalDetails, convertedValue);
 			}
 		} catch (NoSuchFieldException e) {
+			System.out.println(key);
 			e.printStackTrace();
 		}
 	}
@@ -147,9 +144,9 @@ public class MedExFeeDtlServiceImpl implements MedExFeeDtlService {
 		} else if (fieldType.equals(Short.class) && value.isEmpty() == false && value != null) {
 			return Short.parseShort(value);
 		} else if (fieldType.equals(LocalDateTime.class) && value.isEmpty() == false && value != null) {
-			return dateTimeConverter(value, fieldType);
+			return dateTimeConverter(value);
 		} else if (fieldType.equals(Date.class) && value.isEmpty() == false && value != null) {
-			return dateTimeConverter(value, fieldType);
+			return dateConverter(value);
 		} else if (fieldType.equals(Long.class) && value.isEmpty() == false && value != null) {
 			return Long.parseLong(value);
 		} else {
@@ -157,28 +154,34 @@ public class MedExFeeDtlServiceImpl implements MedExFeeDtlService {
 		}
 	}
 
-	private Object dateTimeConverter(String dateString, Class<?> type) {
-		SimpleDateFormat dateFormat;
-		if (type.equals(Date.class)) {
-			dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		} else if (type.equals(Timestamp.class)) {
-			dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		} else {
-			throw new IllegalArgumentException("Unsupported date type: " + type);
-		}
- 
+	public Object dateConverter(String value) {
+		String dateStr = value;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = null;
 		try {
-			Date parsedDate = (Date) dateFormat.parse(dateString);
-			if (type.equals(Date.class)) {
-				return type.cast(parsedDate);
-			} else if (type.equals(Timestamp.class)) {
-				return type.cast(new Timestamp(parsedDate.getTime()));
-			}
-		} catch (Exception e) {
+			date = (Date) sdf.parse(dateStr);
+		} catch (ParseException | java.text.ParseException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
- 
-		return null;
+
+		return date;
+	}
+
+	private Object dateTimeConverter(String value) {
+		String dateString = value;
+		if (value.length() > 10) {
+			dateString = value.substring(0, 10);
+		}
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalTime defaultTime = LocalTime.of(0, 0, 0);
+		LocalDate localDate = LocalDate.parse(dateString, formatter);
+		LocalDateTime dateTime = LocalDateTime.of(localDate, defaultTime);
+		String formattedDateTime = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+		DateTimeFormatter formatters = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		LocalDateTime parsedDateTime = LocalDateTime.parse(formattedDateTime, formatters);
+		return parsedDateTime;
 	}
 	
 	private void setmedicalDetailsFields(LT_MEDEX_DTL medicalDetails, Map<String, String> value)throws Exception {
@@ -208,23 +211,16 @@ public class MedExFeeDtlServiceImpl implements MedExFeeDtlService {
 
 		try {
 			Optional<LT_MEDEX_DTL> optionalUser = medExDtlRepo.findById(tranId);
-//			Optional<LT_MEDEX_FEE_DTL> feeDetail = feeDtlRepository.findByMedId(tranId);
-//			LT_MEDEX_FEE_DTL feeDetails = feeDetail.get();
 			LT_MEDEX_DTL medicalDetails = optionalUser.get();
 			if (medicalDetails != null) {
 				Map<String, Map<String, String>> fieldMaps = new HashMap<>();
 				fieldMaps.put("frontForm", proposalEntryRequest.getMedicalDetails().getFormFields());
 				for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
-					setmedicalDetailsFields(medicalDetails, entry.getValue());
-//					if(feeDetails != null) {
-//						setmedicalFeeDetailsFields(feeDetails, entry.getValue());
-//					}
+					commonService.setFields(medicalDetails, LT_MEDEX_DTL.class, entry.getValue());
 				}
 
 				try {
 					medicalDetails.setMD_MOD_DT(new Date(System.currentTimeMillis()));
-//					feeDetails.setMFD_MOD_DT(new Date(System.currentTimeMillis()));
-//					feeDtlRepository.save(feeDetails);
 					LT_MEDEX_DTL savedMedicalDetails = medExDtlRepo.save(medicalDetails);
 					response.put(statusCode, successCode);
 					response.put(messageCode, "Pol Employee Details Updated Successfully");

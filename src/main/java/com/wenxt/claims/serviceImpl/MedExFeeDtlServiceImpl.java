@@ -271,16 +271,12 @@ public class MedExFeeDtlServiceImpl implements MedExFeeDtlService {
 
 	@Override
 	public String getMedicalDetails(Integer tranId)throws Exception {
-		System.out.println("TRANID: " + tranId);
 		Map<String, Object> parametermap = new HashMap<String, Object>();
 		JSONObject response = new JSONObject();
 		JSONObject inputObject = new JSONObject();
 		Optional<LT_MEDEX_DTL> optionalUser = medExDtlRepo.findById(tranId);
-		Optional<LT_MEDEX_FEE_DTL> feeDetail = feeDtlRepository.findByMedId(tranId);
-		LT_MEDEX_FEE_DTL feeDetails = feeDetail.get();
 		LT_MEDEX_DTL medicalDetails = optionalUser.get();
 		if (medicalDetails != null) {
-			System.out.println("IN IF");
 			for (int i = 0; i < medicalDetails.getClass().getDeclaredFields().length; i++) {
 				Field field = medicalDetails.getClass().getDeclaredFields()[i];
 				field.setAccessible(true);
@@ -291,20 +287,6 @@ public class MedExFeeDtlServiceImpl implements MedExFeeDtlService {
 					Object value = field.get(medicalDetails);
 					columnName = column.name();
 					inputObject.put(columnName, value);
-				}
-			}
-			if(feeDetails != null) {
-				for (int i = 0; i < feeDetails.getClass().getDeclaredFields().length; i++) {
-					Field field = feeDetails.getClass().getDeclaredFields()[i];
-					field.setAccessible(true);
-					String columnName = null;
-					if (field.isAnnotationPresent(Column.class)) {
-						Annotation annotation = field.getAnnotation(Column.class);
-						Column column = (Column) annotation;
-						Object value = field.get(feeDetails);
-						columnName = column.name();
-						inputObject.put(columnName, value);
-					}
 				}
 			}
 			response.put(statusCode, successCode);

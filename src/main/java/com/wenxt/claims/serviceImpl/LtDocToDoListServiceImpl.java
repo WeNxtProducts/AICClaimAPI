@@ -287,7 +287,7 @@ public class LtDocToDoListServiceImpl implements LtDocToDoListService {
 		
 		try {
 			List<LtDocTodoListStatus> checkListList = ltDocToDoListRepo.getCheckListList(tranId, groupCode);
-			if(checkListList.size() > 1) {
+			if(checkListList.size() >= 1) {
 				for(LtDocTodoListStatus docToDoListStatus : checkListList) {
 										
 					docToDoListStatus.setDTLS_APPR_STS(statusFlag);

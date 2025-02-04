@@ -235,8 +235,8 @@ public class LtPolEmployeeServiceImpl implements LtPolEmployeeService {
 	public String deletePolEmployeeById(Integer polEmpId) {
 		try {
 			Optional<LT_POL_EMPLOYEE> optionalEntity = polEmployeeRepo.findById(polEmpId);
-
-			if (optionalEntity.isPresent()) {
+			System.out.println(optionalEntity.get().getPEMP_MEMBER_TYPE());
+			if (optionalEntity.isPresent() && !optionalEntity.get().getPEMP_MEMBER_TYPE().equals("P")) {
 				polEmployeeRepo.deleteById(polEmpId);
 
 				JSONObject response = new JSONObject();
@@ -244,7 +244,13 @@ public class LtPolEmployeeServiceImpl implements LtPolEmployeeService {
 				response.put(messageCode, "Record with ID " + polEmpId + " deleted successfully");
 				return response.toString();
 
-			} else {
+			}else if(optionalEntity.isPresent() && optionalEntity.get().getPEMP_MEMBER_TYPE().equals("P")) {
+				JSONObject response = new JSONObject();
+				response.put(statusCode, errorCode);
+				response.put(messageCode, "Primary Details Cannot be deleted");
+				return response.toString();
+				
+			}else {
 				JSONObject response = new JSONObject();
 				response.put(statusCode, errorCode);
 				response.put(messageCode, "Record with ID " + polEmpId + " not found");

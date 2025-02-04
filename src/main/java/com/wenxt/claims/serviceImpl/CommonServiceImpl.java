@@ -27,7 +27,6 @@ public class CommonServiceImpl implements CommonService {
 	}
 
 	private void setField(Object instance, Class<?> clazz, String key, String value) throws Exception{
-		System.out.println(key);
 		try {
 			Field field = clazz.getDeclaredField(key);
 				field.setAccessible(true);

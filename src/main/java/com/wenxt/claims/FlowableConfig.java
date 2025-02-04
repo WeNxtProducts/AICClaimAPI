@@ -21,7 +21,7 @@ public class FlowableConfig {
 	 @Bean
 	    public ProcessEngine processEngine() {
 	        ProcessEngineConfiguration cfg = ProcessEngineConfiguration.createStandaloneProcessEngineConfiguration()
-	            .setJdbcUrl("jdbc:oracle:thin:@//192.168.1.80:1521/orcl")
+	            .setJdbcUrl("jdbc:oracle:thin:@//192.168.1.155:1521/orcl")
 	            .setJdbcUsername("LIFE_DEV")
 	            .setJdbcPassword("LIFE_DEV")
 	            .setJdbcDriver("oracle.jdbc.OracleDriver")

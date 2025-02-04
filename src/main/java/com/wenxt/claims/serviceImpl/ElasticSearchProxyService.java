@@ -26,7 +26,7 @@ public class ElasticSearchProxyService implements ElasticSearchProxy {
 
     public ElasticSearchProxyService() throws SQLException {
         this.connection = DriverManager.getConnection(
-            "jdbc:oracle:thin:@//192.168.1.80:1521/orcl", 
+            "jdbc:oracle:thin:@//192.168.1.155:1521/orcl", 
             "LIFE_DEV", 
             "LIFE_DEV"
         );

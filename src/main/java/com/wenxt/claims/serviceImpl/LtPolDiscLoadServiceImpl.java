@@ -81,8 +81,8 @@ public class LtPolDiscLoadServiceImpl implements LtPolDiscLoadService {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			response.put("statusCode", errorCode);
-			response.put("message", "An error occurred: " + e.getMessage());
+			response.put(statusCode, errorCode);
+			response.put(messageCode, "An error occurred: " + e.getMessage());
 		}
 
 		return response.toString();
@@ -180,7 +180,7 @@ public class LtPolDiscLoadServiceImpl implements LtPolDiscLoadService {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			response.put("statusCode", errorCode);
+			response.put(statusCode, errorCode);
 			response.put("message", "An error occurred: " + e.getMessage());
 		}
 
@@ -196,20 +196,20 @@ public class LtPolDiscLoadServiceImpl implements LtPolDiscLoadService {
 				polDiscLoadRepo.deleteById(polDiscLoadId);
 
 				JSONObject response = new JSONObject();
-				response.put("Status", "SUCCESS");
-				response.put("Message", "Record with ID " + polDiscLoadId + " deleted successfully");
+				response.put(statusCode, successCode);
+				response.put(messageCode, "Record with ID " + polDiscLoadId + " deleted successfully");
 				return response.toString();
 
 			} else {
 				JSONObject response = new JSONObject();
-				response.put("Status", "ERROR");
-				response.put("Message", "Record with ID " + polDiscLoadId + " not found");
+				response.put(statusCode, errorCode);
+				response.put(messageCode, "Record with ID " + polDiscLoadId + " not found");
 				return response.toString();
 			}
 		} catch (Exception e) {
 			JSONObject response = new JSONObject();
-			response.put("Status", "ERROR");
-			response.put("Message", "Error deleting record with ID " + polDiscLoadId + ": " + e.getMessage());
+			response.put(statusCode, errorCode);
+			response.put(messageCode, "Error deleting record with ID " + polDiscLoadId + ": " + e.getMessage());
 			return response.toString();
 		}
 	}

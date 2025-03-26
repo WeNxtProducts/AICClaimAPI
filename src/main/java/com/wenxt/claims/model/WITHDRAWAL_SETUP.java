@@ -30,6 +30,9 @@ public class WITHDRAWAL_SETUP {
     @Column(name = "WDRA_MIN_MON")
     private Integer WDRA_MIN_MON;
     
+    @Column(name = "WDRA_PROD_CODE")
+    private String WDRA_PROD_CODE;
+    
     public Integer getWDRA_SYS_ID() {
         return WDRA_SYS_ID;
     }
@@ -69,5 +72,13 @@ public class WITHDRAWAL_SETUP {
     public void setWDRA_MIN_MON(Integer WDRA_MIN_MON) {
         this.WDRA_MIN_MON = WDRA_MIN_MON;
     }
+
+	public String getWDRA_PROD_CODE() {
+		return WDRA_PROD_CODE;
+	}
+
+	public void setWDRA_PROD_CODE(String wDRA_PROD_CODE) {
+		WDRA_PROD_CODE = wDRA_PROD_CODE;
+	}   
 }
 

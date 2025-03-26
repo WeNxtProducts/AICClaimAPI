@@ -52,7 +52,7 @@ public class WithdrawalSetupServiceImpl implements WithdrawalSetupService {
 	private String warningCode;
 
 	@Override
-	public String save(ProductMasterRequest prodMasterRequest, HttpServletRequest request) {
+	public String save(ProductMasterRequest prodMasterRequest, String productId, HttpServletRequest request) {
 		JSONObject response = new JSONObject();
 		JSONObject data = new JSONObject();
 
@@ -68,6 +68,7 @@ public class WithdrawalSetupServiceImpl implements WithdrawalSetupService {
 			}
 
 			try {
+				wdraSetup.setWDRA_PROD_CODE(productId);
 				WITHDRAWAL_SETUP savedWdraSetupDetails = wdraSetupRepo.save(wdraSetup);
 				response.put(statusCode, successCode);
 				response.put(messageCode,

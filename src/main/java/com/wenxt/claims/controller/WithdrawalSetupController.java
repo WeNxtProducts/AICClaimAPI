@@ -21,9 +21,9 @@ public class WithdrawalSetupController {
 	@Autowired
 	private WithdrawalSetupService wdraSetupService;
 	
-	@PostMapping("/save")
-	public String save(@RequestBody ProductMasterRequest prodMasterRequest, HttpServletRequest request) {
-		return wdraSetupService.save(prodMasterRequest, request);
+	@PostMapping("/save/{productId}")
+	public String save(@RequestBody ProductMasterRequest prodMasterRequest, @PathVariable String productId, HttpServletRequest request) {
+		return wdraSetupService.save(prodMasterRequest, productId, request);
 	}
 	
 	@PostMapping("/update/{tranId}")

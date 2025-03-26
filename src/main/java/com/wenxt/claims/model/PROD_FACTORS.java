@@ -81,5 +81,5 @@ public class PROD_FACTORS {
 
     public void setFACT_EFF_TO_DT(Date FACT_EFF_TO_DT) {
         this.FACT_EFF_TO_DT = FACT_EFF_TO_DT;
-    }
+    } 
 }

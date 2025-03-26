@@ -1,11 +1,14 @@
 package com.wenxt.claims.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class ProductMasterRequest {
 	
 	private FormFieldsDTO productMaster;
 	
 	private FormFieldsDTO withdrawalSetup;
 	
+	@JsonProperty("ProductFactor")
 	private FormFieldsDTO prodFactor;
 	
 	private FormFieldsDTO applicableCharges;

@@ -52,7 +52,7 @@ public class ProductFactorServiceImpl implements ProductFactorService {
 	private String warningCode;
 
 	@Override
-	public String save(ProductMasterRequest prodMasterRequest, HttpServletRequest request) {
+	public String save(ProductMasterRequest prodMasterRequest, String productId, HttpServletRequest request) {
 		JSONObject response = new JSONObject();
 		JSONObject data = new JSONObject();
 
@@ -68,6 +68,7 @@ public class ProductFactorServiceImpl implements ProductFactorService {
 			}
 
 			try {
+//				prodFactor.setFACT_PROD_CODE(productId);
 				PROD_FACTORS savedProdFactDetails = prodFactRepo.save(prodFactor);
 				response.put(statusCode, successCode);
 				response.put(messageCode,

@@ -21,9 +21,9 @@ public class ProductFactorsController {
 	@Autowired
 	private ProductFactorService prodFactorService;
 	
-	@PostMapping("/save")
-	public String save(@RequestBody ProductMasterRequest prodMasterRequest, HttpServletRequest request) {
-		return prodFactorService.save(prodMasterRequest, request);
+	@PostMapping("/save/{productId}")
+	public String save(@RequestBody ProductMasterRequest prodMasterRequest, @PathVariable String productId, HttpServletRequest request) {
+		return prodFactorService.save(prodMasterRequest, productId, request);
 	}
 	
 	@PostMapping("/update/{tranId}")

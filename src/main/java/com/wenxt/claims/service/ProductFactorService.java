@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public interface ProductFactorService {
 
-	String save(ProductMasterRequest prodMasterRequest, HttpServletRequest request);
+	String save(ProductMasterRequest prodMasterRequest, String productId, HttpServletRequest request);
 
 	String update(ProductMasterRequest prodMasterRequest, Integer tranId, HttpServletRequest request);
 

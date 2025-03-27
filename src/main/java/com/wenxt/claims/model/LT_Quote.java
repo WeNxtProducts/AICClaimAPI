@@ -117,4 +117,31 @@ public class LT_Quote {
 	@Column(name = "QUOT_PROD_CODE", length = 12)
     private String QUOT_PROD_CODE;
 	
+	@Column(name = "QMD_SPOUSE_NAME")
+	private String QMD_SPOUSE_NAME;
+	
+	@Column(name = "QMD_SPOUSE_DOB")
+	private Date QMD_SPOUSE_DOB;
+	
+	@Column(name = "QMD_SPOUSE_AGE")
+	private Integer QMD_SPOUSE_AGE;
+	
+	@Column(name = "QMD_CHILD1_NAME")
+	private String QMD_CHILD1_NAME;
+	
+	@Column(name = "QMD_CHILD1_DOB")
+	private Date QMD_CHILD1_DOB;
+	
+	@Column(name = "QMD_CHILD1_AGE")
+	private Integer QMD_CHILD1_AGE;
+	
+	@Column(name = "QMD_CHILD2_NAME")
+	private String QMD_CHILD2_NAME;
+	
+	@Column(name = "QMD_CHILD2_DOB")
+	private Date QMD_CHILD2_DOB;
+	
+	@Column(name = "QMD_CHILD2_AGE")
+	private Integer QMD_CHILD2_AGE;
+	
 }

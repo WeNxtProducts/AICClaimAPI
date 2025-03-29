@@ -290,8 +290,10 @@ public class LtQuoteServiceImpl implements LtQuoteService {
 					}
 				});
 			}
+			Integer result = ltqQuotApplCoverRepository.getSumAssured(coverages.get(0).getId());
 			response.put(statusCode, successCode);
 			response.put(messageCode, "Insurance coverages updated successfully!");
+			response.put(dataCode, result);
 			return response.toString();
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -18,6 +18,8 @@ public class InsuranceCoverageDTO {
 
 	    @JsonProperty("QQAC_FC_SA")
 	    private String qqacFcSa;  
+	    
+	    private Integer id;
 }
 
 

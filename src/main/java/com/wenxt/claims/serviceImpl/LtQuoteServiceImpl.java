@@ -290,6 +290,20 @@ public class LtQuoteServiceImpl implements LtQuoteService {
 					}
 				});
 			}
+			Map<String, Object> inputMap = new HashMap<>();
+			inputMap.put("P_TRAN_ID", coverages.get(0).getId());
+			/**** . Calculate Quotation Premium ****/
+			ProcedureInput input = new ProcedureInput();
+			input.setInParams(inputMap);
+
+			String url = baseDocPath + "common/invokeProcedure?procedureName=" + "P_QUOT_PREM";
+			HttpHeaders headers = new HttpHeaders();
+			RestTemplate restTemplate = new RestTemplate();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			// headers.set("Authorization", "Bearer " + token);
+			HttpEntity<ProcedureInput> requestEntity = new HttpEntity<>(input, headers);
+			ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, requestEntity, String.class);
+			
 			Integer result = ltqQuotApplCoverRepository.getSumAssured(coverages.get(0).getId());
 			response.put(statusCode, successCode);
 			response.put(messageCode, "Insurance coverages updated successfully!");

@@ -1,6 +1,8 @@
 package com.wenxt.claims.serviceImpl;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -12,8 +14,10 @@ import org.springframework.stereotype.Service;
 
 import com.wenxt.claims.model.LTQquotAssuredDtls;
 import com.wenxt.claims.model.LTQquotAssuredDtlsRequest;
+import com.wenxt.claims.model.LT_POL_BENEFICIARY;
 import com.wenxt.claims.model.LT_Quote;
 import com.wenxt.claims.repository.LTQQuotAssuredDLTSRepository;
+import com.wenxt.claims.security.AuthRequest;
 import com.wenxt.claims.service.CommonService;
 import com.wenxt.claims.service.LTQquotAssuredDtlsService;
 
@@ -83,35 +87,27 @@ public class LTQquotAssuredDtlsServiceImpl implements LTQquotAssuredDtlsService 
 
 	@Override
 	public String getById(Long itQuoteId) throws IllegalArgumentException, IllegalAccessException {
-		JSONObject response = new JSONObject();
-		Optional<LTQquotAssuredDtls> ltQquotAssuredDtlsData = ltQQuotAssuredDLTSRepository.findById(itQuoteId);
-
-		if (ltQquotAssuredDtlsData.isEmpty()) {
-			response.put(statusCode, errorCode);
-			response.put(messageCode, "ltQQuotAssuredDLTSData not found");
-			return response.toString();
-		}
-
-		LTQquotAssuredDtls quoteData = ltQquotAssuredDtlsData.get();
-		JSONObject dataObject = new JSONObject();
-
-		for (Field field : quoteData.getClass().getDeclaredFields()) {
-			field.setAccessible(true);
-			if (field.isAnnotationPresent(Column.class)) {
-				Column column = field.getAnnotation(Column.class);
-				Object value = field.get(quoteData);
-				if (value != null) {
-					dataObject.put(column.name(), value);
+		System.out.println("SERV");
+		Map<String, Object> parametermap = new HashMap<String, Object>();
+		JSONObject inputObject = new JSONObject();
+		Optional<LTQquotAssuredDtls> optionalUser = ltQQuotAssuredDLTSRepository.findById(itQuoteId);
+		LTQquotAssuredDtls polBeneficiary = optionalUser.get();
+		if (polBeneficiary != null) {
+			for (int i = 0; i < polBeneficiary.getClass().getDeclaredFields().length; i++) {
+				Field field = polBeneficiary.getClass().getDeclaredFields()[i];
+				field.setAccessible(true);
+				String columnName = null;
+				if (field.isAnnotationPresent(Column.class)) {
+					Annotation annotation = field.getAnnotation(Column.class);
+					Column column = (Column) annotation;
+					Object value = field.get(polBeneficiary);
+					columnName = column.name();
+					inputObject.put(columnName, value);
 				}
 			}
 		}
-
-		response.put(statusCode, successCode);
-		response.put(dataCode, dataObject);
-		response.put(messageCode, "ltQQuotAssuredDLTSData Fetched Successfully");
-
-		return response.toString();
-	}
+		return inputObject.toString();
+		}
 
 	@Override
 	public String update(LTQquotAssuredDtlsRequest ltquotAssuredDtlsRequest, Long tranId, HttpServletRequest request) {
@@ -119,25 +115,20 @@ public class LTQquotAssuredDtlsServiceImpl implements LTQquotAssuredDtlsService 
 
 		try {
 			Optional<LTQquotAssuredDtls> optionalUser = ltQQuotAssuredDLTSRepository.findById(tranId);
-			if (optionalUser.isEmpty()) {
-				response.put(statusCode, errorCode);
-				response.put(messageCode, "LTquoteData not found");
-				return response.toString();
-			}
-			LTQquotAssuredDtls quoteData = optionalUser.get();
-			if (quoteData != null) {
+			LTQquotAssuredDtls assuredDtls = optionalUser.get();
+			if (assuredDtls != null) {
 				Map<String, Map<String, String>> fieldMaps = new HashMap<>();
-				if (ltquotAssuredDtlsRequest.getLtqquotAssuredDtls() != null) {
-					fieldMaps.put("frontForm", ltquotAssuredDtlsRequest.getLtqquotAssuredDtls().getFormFields());
-				}
+				fieldMaps.put("frontForm", ltquotAssuredDtlsRequest.getLtqquotAssuredDtls().getFormFields());
 				for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
-					commonService.setFields(quoteData, LTQquotAssuredDtls.class, entry.getValue());
+					commonService.setFields(assuredDtls, LTQquotAssuredDtls.class, entry.getValue());
 				}
 
 				try {
-					LTQquotAssuredDtls saveLT_QuotedData = ltQQuotAssuredDLTSRepository.save(quoteData);
+//					polBeneficiary.setPGBEN_MOD_ID(userDetails.getUsername());
+//					polBeneficiary.setPGBEN_MOD_DT(new Date(System.currentTimeMillis()));
+					LTQquotAssuredDtls savedPolChargeDetails = ltQQuotAssuredDLTSRepository.save(assuredDtls);
 					response.put(statusCode, successCode);
-					response.put(messageCode, "Quote Assured Details Updated Successfully");
+					response.put(messageCode, "Policy Beneficiary Details Updated Successfully");
 				} catch (Exception e) {
 					response.put("statusCode", errorCode);
 					response.put("message", "An error occurred: " + e.getMessage());

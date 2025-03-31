@@ -83,7 +83,7 @@ public class LTQquotAssuredDtls {
     @Column(name = "QQAD_TYPE", length = 1)
     private String QQAD_TYPE;
 
-    @Column(name = "QQAD_ASSR_CODE", length = 12, nullable = false)
+    @Column(name = "QQAD_ASSR_CODE", length = 12)
     private String QQAD_ASSR_CODE;
 
     @Column(name = "QQAD_ASSR_REF_ID1", length = 60)
@@ -183,4 +183,19 @@ public class LTQquotAssuredDtls {
 
     @Column(name = "QQAD_RES_ADDRESS_3", length = 60)
     private String QQAD_RES_ADDRESS_3;
+    
+    @Column(name = "QQAD_EMPLOYER_CODE")
+    private String QQAD_EMPLOYER_CODE;
+    
+    @Column(name = "QQAD_SAL_CURR")
+    private String QQAD_SAL_CURR;
+    
+    @Column(name = "QQAD_ID_EXP_DT")
+    private Date QQAD_ID_EXP_DT; 
+    
+    @Column(name = "QQAD_JOB_TITLE")
+    private String QQAD_JOB_TITLE;
+    
+    @Column(name = "QQAD_BIRTH_PLACE")
+    private String QQAD_BIRTH_PLACE;
 }

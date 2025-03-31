@@ -1,6 +1,10 @@
 package com.wenxt.claims.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class LTQquotAssuredDtlsRequest {
+	
+	@JsonProperty("QuotAssuredDtls")
 	private FormFieldsDTO ltqquotAssuredDtls;
 
 	public FormFieldsDTO getLtqquotAssuredDtls() {

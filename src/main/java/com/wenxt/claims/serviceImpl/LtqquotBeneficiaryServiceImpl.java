@@ -60,7 +60,7 @@ public class LtqquotBeneficiaryServiceImpl implements LtqquotBeneficiaryService	
 	private String errorCode;
 	
 	@Override
-	public String save(LTQquotBeneficiaryRequest ltQquotBeneficiaryRequest, HttpServletRequest request) {
+	public String save(LTQquotBeneficiaryRequest ltQquotBeneficiaryRequest, Integer tranId, HttpServletRequest request) {
 		JSONObject response = new JSONObject();
 		JSONObject data = new JSONObject();
 
@@ -76,6 +76,7 @@ public class LtqquotBeneficiaryServiceImpl implements LtqquotBeneficiaryService	
 			}
 			try {
 				System.out.println(quotBeneficiary);
+				quotBeneficiary.setQBEN_QUOT_TRAN_ID((long) tranId);
 			 LTQquotBeneficiary save = ltQquotBeneficiaryRepository.save(quotBeneficiary);
 				response.put(statusCode, successCode);
 				response.put(messageCode, "LTQquotBeneficiary Details created successfully");

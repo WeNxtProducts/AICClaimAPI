@@ -10,7 +10,7 @@ public interface LtqquotBeneficiaryService {
 
 	String delete(Long tranId, HttpServletRequest servletRequest);
 
-	String save(LTQquotBeneficiaryRequest ltQquotBeneficiaryRequest, HttpServletRequest request);
+	String save(LTQquotBeneficiaryRequest ltQquotBeneficiaryRequest, Integer tranId, HttpServletRequest request);
 
 	String update(LTQquotBeneficiaryRequest ltQuoteRequest, Long tranId, HttpServletRequest request);
 

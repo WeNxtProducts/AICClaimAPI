@@ -18,9 +18,9 @@ public class LtqquotBeneficiaryController {
 @Autowired
 private LtqquotBeneficiaryService ltqquotBeneficiaryService;
 
-@PostMapping("/save")
-public String save(@RequestBody LTQquotBeneficiaryRequest ltQquotBeneficiaryRequest, HttpServletRequest request) {
-	return ltqquotBeneficiaryService.save(ltQquotBeneficiaryRequest, request);
+@PostMapping("/save/{tranId}")
+public String save(@RequestBody LTQquotBeneficiaryRequest ltQquotBeneficiaryRequest, @PathVariable Integer tranId, HttpServletRequest request) {
+	return ltqquotBeneficiaryService.save(ltQquotBeneficiaryRequest, tranId, request);
 }
 
 @PostMapping("/get")

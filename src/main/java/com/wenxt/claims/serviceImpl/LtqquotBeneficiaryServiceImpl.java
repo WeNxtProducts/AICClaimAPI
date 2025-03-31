@@ -15,6 +15,7 @@ import com.wenxt.claims.service.LtQuoteService;
 import jakarta.persistence.Column;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Map;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.wenxt.claims.model.LTQquotAssuredDtls;
 import com.wenxt.claims.model.LTQquotBeneficiary;
 import com.wenxt.claims.model.LTQquotBeneficiaryRequest;
 import com.wenxt.claims.model.LT_Quote;
@@ -64,9 +66,6 @@ public class LtqquotBeneficiaryServiceImpl implements LtqquotBeneficiaryService	
 		JSONObject response = new JSONObject();
 		JSONObject data = new JSONObject();
 
-		String authorizationHeader = request.getHeader("Authorization");
-		String token = authorizationHeader.substring(7).trim();
-
 		try {
 			LTQquotBeneficiary quotBeneficiary = new LTQquotBeneficiary();
 			Map<String, Map<String, String>> fieldMaps = new HashMap<>();
@@ -97,35 +96,27 @@ public class LtqquotBeneficiaryServiceImpl implements LtqquotBeneficiaryService	
 
 	@Override
 	public String getById(Long tranId) throws IllegalArgumentException, IllegalAccessException {
-		JSONObject response = new JSONObject();
+		System.out.println("SERV");
+		Map<String, Object> parametermap = new HashMap<String, Object>();
+		JSONObject inputObject = new JSONObject();
 		Optional<LTQquotBeneficiary> optionalUser = ltQquotBeneficiaryRepository.findById(tranId);
-
-		if (optionalUser.isEmpty()) {
-			response.put(statusCode, errorCode);
-			response.put(messageCode, "LTquoteBeneficiaryData not found");
-			return response.toString();
-		}
-
-		LTQquotBeneficiary quoteData = optionalUser.get();
-		JSONObject dataObject = new JSONObject();
-
-		for (Field field : quoteData.getClass().getDeclaredFields()) {
-			field.setAccessible(true);
-			if (field.isAnnotationPresent(Column.class)) {
-				Column column = field.getAnnotation(Column.class);
-				Object value = field.get(quoteData);
-				if (value != null) {
-					dataObject.put(column.name(), value);
+		LTQquotBeneficiary polBeneficiary = optionalUser.get();
+		if (polBeneficiary != null) {
+			for (int i = 0; i < polBeneficiary.getClass().getDeclaredFields().length; i++) {
+				Field field = polBeneficiary.getClass().getDeclaredFields()[i];
+				field.setAccessible(true);
+				String columnName = null;
+				if (field.isAnnotationPresent(Column.class)) {
+					Annotation annotation = field.getAnnotation(Column.class);
+					Column column = (Column) annotation;
+					Object value = field.get(polBeneficiary);
+					columnName = column.name();
+					inputObject.put(columnName, value);
 				}
 			}
 		}
-
-		response.put(statusCode, successCode);
-		response.put(dataCode, dataObject);
-		response.put(messageCode, "LTquoteBeneficiaryData Fetched Successfully");
-
-		return response.toString();
-	}
+		return inputObject.toString();
+		}
 
 	@Override
 	public String update(LTQquotBeneficiaryRequest ltQquotBeneficiaryRequest, Long tranId, HttpServletRequest request) {

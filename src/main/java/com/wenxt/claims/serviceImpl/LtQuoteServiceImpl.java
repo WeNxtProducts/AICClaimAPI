@@ -19,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wenxt.claims.model.InsuranceCoverageDTO;
 import com.wenxt.claims.model.LTQuoteRequest;
 import com.wenxt.claims.model.LT_Quote;
@@ -153,6 +155,26 @@ public class LtQuoteServiceImpl implements LtQuoteService {
 				ResponseEntity<String> responseEntity2 = restTemplate.postForEntity(url2, requestEntity2, String.class);
 				
 				System.out.println(responseEntity2.getBody());
+				
+				JSONObject res = new JSONObject(responseEntity2.getBody());
+				
+				 String responseBody = res.toString();
+
+			        // Parse JSON using ObjectMapper
+			        ObjectMapper objectMapper = new ObjectMapper();
+			        JsonNode rootNode = objectMapper.readTree(responseBody);
+
+			        // Extract P_DOC_NO
+			        String pDocNo = rootNode.path("Data").path("P_DOC_NO").asText();
+			        
+//			        System.out.println("P_DOC_NO: " + pDocNo);
+				
+//				System.out.println("DATA: " + dataRes);
+				
+				LT_Quote quote = ltQuoteRepository.getById(savedLT_QuoteData.getQUOT_TRAN_ID());
+				quote.setQUOT_NO(pDocNo);
+				
+				ltQuoteRepository.save(quote);
 				/******* Get QuotNO Procedure *****/
 				dataObj = new JSONObject();
 				dataObj.put("Id", savedLT_QuoteData.getQUOT_TRAN_ID());

@@ -114,6 +114,9 @@ public class LT_Quote {
 	@Column(name = "QUOT_AGE", precision = 3, scale = 0)
 	private Integer QUOT_AGE;
 	
+	@Column(name = "QUOT_NO")
+	private String QUOT_NO;
+	
 	@Column(name = "QUOT_PROD_CODE", length = 12)
     private String QUOT_PROD_CODE;
 	

@@ -284,7 +284,7 @@ public class LTQquotDiscLoadServiceImpl  implements LTQquotDiscLoadService	{
 	public String saveQuestionnaire(List<GetQuestionnaireResponse> getQuestionnaireRequest, HttpServletRequest request) {
 		JSONObject response = new JSONObject();
 		
-		
+		try {
 		for(int i=0; i<getQuestionnaireRequest.size(); i++) {
 			LtDocTodoListStatus masterQuestion = new LtDocTodoListStatus();
 			
@@ -320,6 +320,12 @@ public class LTQquotDiscLoadServiceImpl  implements LTQquotDiscLoadService	{
 				}
 			}
 			}
+		}
+		response.put(statusCode, successCode);
+		response.put(messageCode, "Questionnaire Fetched Successfully");
+		}catch(Exception e) {
+			response.put(statusCode, errorCode);
+			response.put(messageCode, e.getLocalizedMessage());
 		}
 		return response.toString();
 	}

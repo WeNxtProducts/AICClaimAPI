@@ -1,5 +1,7 @@
 package com.wenxt.claims.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,7 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wenxt.claims.model.GetQuestionnaireResponse;
 import com.wenxt.claims.model.LTQquotDiscLoadRequest;
+import com.wenxt.claims.model.QueryParametersDTO;
+import com.wenxt.claims.model.SaveQuestionnaireRequest;
 import com.wenxt.claims.service.LTQquotDiscLoadService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,5 +43,21 @@ public class LTQquotDiscLoadController {
 	@PostMapping("/delete/{tranId}")
 	public String delete(@PathVariable Long tranId, HttpServletRequest servletRequest) {
 		return ltQquotDiscLoadService.delete(tranId, servletRequest);
+	}
+	
+	@PostMapping("/getQuestionnaire")
+	public String getQuestionnaire(@RequestBody QueryParametersDTO queryParams,HttpServletRequest request) {
+		return ltQquotDiscLoadService.getQuestionnaire(queryParams, request);
+	}
+	
+	@PostMapping("/saveQuestionnaire")
+	public String saveQuestionnaire(@RequestBody SaveQuestionnaireRequest getQuestionnaireRequest, HttpServletRequest request) {
+		System.out.println(getQuestionnaireRequest.getSaveQuestions().size());
+		return ltQquotDiscLoadService.saveQuestionnaire(getQuestionnaireRequest.getSaveQuestions(), request);
+	}
+	
+	@PostMapping("/getQuestionnaireWithValues")
+	public String getQuestionnaireWithValues(@RequestParam Integer tranId,HttpServletRequest request) {
+		return ltQquotDiscLoadService.getQuestionnaireWithValues(tranId, request);
 	}
 }

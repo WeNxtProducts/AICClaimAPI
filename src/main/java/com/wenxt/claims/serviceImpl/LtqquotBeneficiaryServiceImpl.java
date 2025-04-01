@@ -78,7 +78,7 @@ public class LtqquotBeneficiaryServiceImpl implements LtqquotBeneficiaryService	
 				quotBeneficiary.setQBEN_QUOT_TRAN_ID((long) tranId);
 			 LTQquotBeneficiary save = ltQquotBeneficiaryRepository.save(quotBeneficiary);
 				response.put(statusCode, successCode);
-				response.put(messageCode, "LTQquotBeneficiary Details created successfully");
+				response.put(messageCode, "created successfully");
 				data.put("Id", save.getQBEN_TRAN_ID());
 				response.put("data", data);
 			} catch (Exception e) {
@@ -142,7 +142,7 @@ public class LtqquotBeneficiaryServiceImpl implements LtqquotBeneficiaryService	
 				try {
 					LTQquotBeneficiary saveLT_QuotedBenficiaryData = ltQquotBeneficiaryRepository.save(quoteData);
 					response.put(statusCode, successCode);
-					response.put(messageCode, "ltQquotBeneficiary Updated Successfully");
+					response.put(messageCode, "Updated Successfully");
 				} catch (Exception e) {
 					response.put("statusCode", errorCode);
 					response.put("message", "An error occurred: " + e.getMessage());

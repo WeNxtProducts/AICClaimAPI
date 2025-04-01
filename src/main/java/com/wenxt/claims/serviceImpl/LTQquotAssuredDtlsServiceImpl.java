@@ -69,7 +69,7 @@ public class LTQquotAssuredDtlsServiceImpl implements LTQquotAssuredDtlsService 
 				System.out.println(ltQquotAssuredDtls);
 				LTQquotAssuredDtls savedLTQquotAssuredDtlsData = ltQQuotAssuredDLTSRepository.save(ltQquotAssuredDtls);
 				response.put(statusCode, successCode);
-				response.put(messageCode, "LTQuote Assured Details created successfully");
+				response.put(messageCode, "created successfully");
 				data.put("Id", savedLTQquotAssuredDtlsData.getQQAD_TRAN_ID());
 				response.put("data", data);
 			} catch (Exception e) {
@@ -128,7 +128,7 @@ public class LTQquotAssuredDtlsServiceImpl implements LTQquotAssuredDtlsService 
 //					polBeneficiary.setPGBEN_MOD_DT(new Date(System.currentTimeMillis()));
 					LTQquotAssuredDtls savedPolChargeDetails = ltQQuotAssuredDLTSRepository.save(assuredDtls);
 					response.put(statusCode, successCode);
-					response.put(messageCode, "Policy Beneficiary Details Updated Successfully");
+					response.put(messageCode, "Updated Successfully");
 				} catch (Exception e) {
 					response.put("statusCode", errorCode);
 					response.put("message", "An error occurred: " + e.getMessage());

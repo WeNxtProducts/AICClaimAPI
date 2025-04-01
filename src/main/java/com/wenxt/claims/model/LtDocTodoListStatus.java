@@ -49,7 +49,7 @@ public class LtDocTodoListStatus {
     @Column(name = "DTLS_INS_DT", nullable = false)
     private Date DTLS_INS_DT;
 
-    @Column(name = "DTLS_INS_ID", nullable = false, length = 10)
+    @Column(name = "DTLS_INS_ID", length = 10)
     private String DTLS_INS_ID;
 
     @Column(name = "DTLS_MOD_DT")

@@ -176,7 +176,7 @@ public class SecurityConfig {
 				.and()
 				.authorizeHttpRequests().requestMatchers("/ltQuoteBeneficiary/**").permitAll() 
 				.and()
-				.authorizeHttpRequests().requestMatchers("/ltQquotDiscLoad/**").authenticated() 
+				.authorizeHttpRequests().requestMatchers("/ltQquotDiscLoad/**").permitAll() 
 				.and()
 				.sessionManagement() 
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS) 

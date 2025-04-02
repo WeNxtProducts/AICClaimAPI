@@ -78,4 +78,158 @@ public class LTQquotDiscLoad {
 
     @Column(name = "QQDL_INS_ID", length = 12, nullable = false)
     private String QQDL_INS_ID;
+
+	public Long getQQDL_TRAN_ID() {
+		return QQDL_TRAN_ID;
+	}
+
+	public void setQQDL_TRAN_ID(Long qQDL_TRAN_ID) {
+		QQDL_TRAN_ID = qQDL_TRAN_ID;
+	}
+
+	public Long getQQDL_QUOT_TRAN_ID() {
+		return QQDL_QUOT_TRAN_ID;
+	}
+
+	public void setQQDL_QUOT_TRAN_ID(Long qQDL_QUOT_TRAN_ID) {
+		QQDL_QUOT_TRAN_ID = qQDL_QUOT_TRAN_ID;
+	}
+
+	public String getQQDL_DISC_LOAD_TYPE() {
+		return QQDL_DISC_LOAD_TYPE;
+	}
+
+	public void setQQDL_DISC_LOAD_TYPE(String qQDL_DISC_LOAD_TYPE) {
+		QQDL_DISC_LOAD_TYPE = qQDL_DISC_LOAD_TYPE;
+	}
+
+	public String getQQDL_DISC_LOAD_CODE() {
+		return QQDL_DISC_LOAD_CODE;
+	}
+
+	public void setQQDL_DISC_LOAD_CODE(String qQDL_DISC_LOAD_CODE) {
+		QQDL_DISC_LOAD_CODE = qQDL_DISC_LOAD_CODE;
+	}
+
+	public BigDecimal getQQDL_FC_DISC_LOAD_AMT() {
+		return QQDL_FC_DISC_LOAD_AMT;
+	}
+
+	public void setQQDL_FC_DISC_LOAD_AMT(BigDecimal qQDL_FC_DISC_LOAD_AMT) {
+		QQDL_FC_DISC_LOAD_AMT = qQDL_FC_DISC_LOAD_AMT;
+	}
+
+	public BigDecimal getQQDL_LC_DISC_LOAD_AMT() {
+		return QQDL_LC_DISC_LOAD_AMT;
+	}
+
+	public void setQQDL_LC_DISC_LOAD_AMT(BigDecimal qQDL_LC_DISC_LOAD_AMT) {
+		QQDL_LC_DISC_LOAD_AMT = qQDL_LC_DISC_LOAD_AMT;
+	}
+
+	public String getQQDL_APPLIED_ON() {
+		return QQDL_APPLIED_ON;
+	}
+
+	public void setQQDL_APPLIED_ON(String qQDL_APPLIED_ON) {
+		QQDL_APPLIED_ON = qQDL_APPLIED_ON;
+	}
+
+	public Integer getQQDL_APPLY_UPTO_SRNO() {
+		return QQDL_APPLY_UPTO_SRNO;
+	}
+
+	public void setQQDL_APPLY_UPTO_SRNO(Integer qQDL_APPLY_UPTO_SRNO) {
+		QQDL_APPLY_UPTO_SRNO = qQDL_APPLY_UPTO_SRNO;
+	}
+
+	public String getQQDL_DEF_YN() {
+		return QQDL_DEF_YN;
+	}
+
+	public void setQQDL_DEF_YN(String qQDL_DEF_YN) {
+		QQDL_DEF_YN = qQDL_DEF_YN;
+	}
+
+	public BigDecimal getQQDL_RATE_PER() {
+		return QQDL_RATE_PER;
+	}
+
+	public void setQQDL_RATE_PER(BigDecimal qQDL_RATE_PER) {
+		QQDL_RATE_PER = qQDL_RATE_PER;
+	}
+
+	public BigDecimal getQQDL_RATE() {
+		return QQDL_RATE;
+	}
+
+	public void setQQDL_RATE(BigDecimal qQDL_RATE) {
+		QQDL_RATE = qQDL_RATE;
+	}
+
+	public Integer getQQDL_SRNO() {
+		return QQDL_SRNO;
+	}
+
+	public void setQQDL_SRNO(Integer qQDL_SRNO) {
+		QQDL_SRNO = qQDL_SRNO;
+	}
+
+	public Integer getQQDL_APPL_PERC() {
+		return QQDL_APPL_PERC;
+	}
+
+	public void setQQDL_APPL_PERC(Integer qQDL_APPL_PERC) {
+		QQDL_APPL_PERC = qQDL_APPL_PERC;
+	}
+
+	public String getQQDL_COVER_CODE() {
+		return QQDL_COVER_CODE;
+	}
+
+	public void setQQDL_COVER_CODE(String qQDL_COVER_CODE) {
+		QQDL_COVER_CODE = qQDL_COVER_CODE;
+	}
+
+	public BigDecimal getQQDL_LC_EMR_VAL() {
+		return QQDL_LC_EMR_VAL;
+	}
+
+	public void setQQDL_LC_EMR_VAL(BigDecimal qQDL_LC_EMR_VAL) {
+		QQDL_LC_EMR_VAL = qQDL_LC_EMR_VAL;
+	}
+
+	public BigDecimal getQQDL_FC_EMR_VAL() {
+		return QQDL_FC_EMR_VAL;
+	}
+
+	public void setQQDL_FC_EMR_VAL(BigDecimal qQDL_FC_EMR_VAL) {
+		QQDL_FC_EMR_VAL = qQDL_FC_EMR_VAL;
+	}
+
+	public String getQQDL_FLEX_01() {
+		return QQDL_FLEX_01;
+	}
+
+	public void setQQDL_FLEX_01(String qQDL_FLEX_01) {
+		QQDL_FLEX_01 = qQDL_FLEX_01;
+	}
+
+	public Date getQQDL_INS_DT() {
+		return QQDL_INS_DT;
+	}
+
+	public void setQQDL_INS_DT(Date qQDL_INS_DT) {
+		QQDL_INS_DT = qQDL_INS_DT;
+	}
+
+	public String getQQDL_INS_ID() {
+		return QQDL_INS_ID;
+	}
+
+	public void setQQDL_INS_ID(String qQDL_INS_ID) {
+		QQDL_INS_ID = qQDL_INS_ID;
+	}
+    
+    
 }

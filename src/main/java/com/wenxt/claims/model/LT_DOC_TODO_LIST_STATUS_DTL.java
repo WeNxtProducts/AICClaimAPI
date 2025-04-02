@@ -13,24 +13,27 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "LT_DOC_TODO_LIST_STATUS_DTL")
 public class LT_DOC_TODO_LIST_STATUS_DTL {
-	
+
 	@Id
-    @Column(name = "DTLSD_TRAN_ID")
-    @SequenceGenerator(name = "docListStatusTranIdSeq", sequenceName = "DTLSD_TRAN_ID_SEQ", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "docListStatusTranIdSeq")
+	@Column(name = "DTLSD_TRAN_ID")
+	@SequenceGenerator(name = "docListStatusTranIdSeq", sequenceName = "DTLSD_TRAN_ID_SEQ", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "docListStatusTranIdSeq")
 	private Integer DTLSD_TRAN_ID;
-	
+
 	@Column(name = "DTLSD_TODO_LIST_ITEM")
 	private String DTLSD_TODO_LIST_ITEM;
-	
+
 	@Column(name = "DTLSD_VALUE")
 	private String DTLSD_VALUE;
-	
+
 	@Column(name = "DTLSD_INS_DT")
 	private Date DTLSD_INS_DT;
-	
+
 	@Column(name = "DTLSD_INS_ID")
 	private String DTLSD_INS_ID;
+
+	@Column(name = "DTLSD_DTLS_TRAN_ID")
+	private Integer DTLSD_DTLS_TRAN_ID;
 
 	public Integer getDTLSD_TRAN_ID() {
 		return DTLSD_TRAN_ID;
@@ -70,6 +73,14 @@ public class LT_DOC_TODO_LIST_STATUS_DTL {
 
 	public void setDTLSD_INS_ID(String dTLSD_INS_ID) {
 		DTLSD_INS_ID = dTLSD_INS_ID;
+	}
+
+	public Integer getDTLSD_DTLS_TRAN_ID() {
+		return DTLSD_DTLS_TRAN_ID;
+	}
+
+	public void setDTLSD_DTLS_TRAN_ID(Integer dTLSD_DTLS_TRAN_ID) {
+		DTLSD_DTLS_TRAN_ID = dTLSD_DTLS_TRAN_ID;
 	}
 
 }

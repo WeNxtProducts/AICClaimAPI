@@ -52,12 +52,18 @@ public class LTQquotDiscLoadController {
 	
 	@PostMapping("/saveQuestionnaire")
 	public String saveQuestionnaire(@RequestBody SaveQuestionnaireRequest getQuestionnaireRequest, HttpServletRequest request) {
-		System.out.println(getQuestionnaireRequest.getSaveQuestions().size());
+//		System.out.println(getQuestionnaireRequest.getSaveQuestions().size());
 		return ltQquotDiscLoadService.saveQuestionnaire(getQuestionnaireRequest.getSaveQuestions(), request);
 	}
 	
 	@PostMapping("/getQuestionnaireWithValues")
-	public String getQuestionnaireWithValues(@RequestParam Integer tranId,HttpServletRequest request) {
-		return ltQquotDiscLoadService.getQuestionnaireWithValues(tranId, request);
+	public String getQuestionnaireWithValues(@RequestBody QueryParametersDTO queryParams,HttpServletRequest request) {
+		System.out.println("IN");
+		return ltQquotDiscLoadService.getQuestionnaireWithValues(queryParams, request);
+	}
+	
+	@PostMapping("/updateQuestionnaireWithValues")
+	public String updateQuestionnaireWithValues(@RequestBody SaveQuestionnaireRequest getQuestionnaireRequest,HttpServletRequest request) {
+		return ltQquotDiscLoadService.updateQuestionnaireWithValues(getQuestionnaireRequest.getSaveQuestions(), request);
 	}
 }

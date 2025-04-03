@@ -306,7 +306,7 @@ public class LTQquotDiscLoadServiceImpl implements LTQquotDiscLoadService {
 							docToDoListStatusDtl.setDTLSD_VALUE(
 									getQuestionnaireRequest.get(i).getInQuestions().get(0).getYes().get(j).getValue());
 							docToDoListStatusDtl.setDTLSD_INS_DT(new Date());
-							docToDoListStatusDtl.setDTLSD_DTLS_TRAN_ID(masterQuestion.getDTLS_QUOT_TRAN_ID());
+							docToDoListStatusDtl.setDTLSD_DTLS_TRAN_ID(saved.getDTLS_TRAN_ID());
 
 							System.out.println("staus id" + masterQuestion.getDTLS_QUOT_TRAN_ID());
 							System.out.println("staus id" + saved.getDTLS_QUOT_TRAN_ID());
@@ -324,7 +324,7 @@ public class LTQquotDiscLoadServiceImpl implements LTQquotDiscLoadService {
 							docToDoListStatusDtl.setDTLSD_VALUE(
 									getQuestionnaireRequest.get(i).getInQuestions().get(0).getNo().get(k).getValue());
 							docToDoListStatusDtl.setDTLSD_INS_DT(new Date());
-							docToDoListStatusDtl.setDTLSD_DTLS_TRAN_ID(masterQuestion.getDTLS_QUOT_TRAN_ID());
+							docToDoListStatusDtl.setDTLSD_DTLS_TRAN_ID(saved.getDTLS_TRAN_ID());
 
 							LT_DOC_TODO_LIST_STATUS_DTL status = docToDoListDtlRepo.save(docToDoListStatusDtl);
 						}
@@ -341,16 +341,92 @@ public class LTQquotDiscLoadServiceImpl implements LTQquotDiscLoadService {
 	}
 
 	@Override
-	public String getQuestionnaireWithValues(Integer tranId, HttpServletRequest request) {
+	public String getQuestionnaireWithValues(QueryParametersDTO queryParames, HttpServletRequest request) {
 
 		JSONObject response = new JSONObject();
+		String docListQueryCheck = "SELECT * FROM LT_DOC_TODO_LIST_STATUS WHERE DTLS_QUOT_TRAN_ID = :tranId";
+		Map<String, Object> queryParamsCheck = new HashMap<>();
+		queryParamsCheck.put("tranId", queryParames.getQueryParameters().get("tranId"));
 
+		List<Map<String, Object>> resultCheck = commonDao.getMapQuery(docListQueryCheck, queryParamsCheck);
+		System.out.println(resultCheck.size());
+		if(resultCheck.size() <= 0) {
+			System.out.println("IF");
+			String docListQuery = "SELECT * FROM LM_DOC_TODO_LIST WHERE DTL_DS_TYPE = :DTL_DS_TYPE AND DTL_DS_CODE = :DTL_DS_CODE AND DTL_DTG_GROUP_CODE = :DTL_DTG_GROUP_CODE";
+
+			String subQuestionsQuery = "SELECT * FROM LM_DOC_TODO_LIST_DTL WHERE DTLD_DTL_REF_NO = :refNo AND DTLD_FLAG = :flag";
+
+			List<Map<String, Object>> result = commonDao.getMapQuery(docListQuery, queryParames.getQueryParameters());
+
+			List<GetQuestionnaireResponse> finalResult = new ArrayList<>();
+			if (!result.isEmpty()) {
+				GetQuestionnaireResponse questionResponse = new GetQuestionnaireResponse();
+				for (int i = 0; i < result.size(); i++) {
+					questionResponse = new GetQuestionnaireResponse();
+					questionResponse.setId(result.get(i).get("DTL_REF_NO"));
+					questionResponse.setLabel(result.get(i).get("DTL_TODO_LIST_ITEM").toString());
+					questionResponse.setQuotTranId(0);
+
+					Map<String, Object> subQuestionParams = new HashMap<>();
+					subQuestionParams.put("refNo", result.get(i).get("DTL_REF_NO"));
+					subQuestionParams.put("flag", "Y");
+
+					List<Map<String, Object>> subQuestionResult = commonDao.getMapQuery(subQuestionsQuery,
+							subQuestionParams);
+
+					SubQuestionResult subQuestionsRes = new SubQuestionResult();
+
+					List<SuQuestionsDTo> YesQuestions = new ArrayList<>();
+					for (int j = 0; j < subQuestionResult.size(); j++) {
+
+						Object qIdValue = subQuestionResult.get(j).get("DTLD_TRAN_ID");
+						int qId = ((BigDecimal) qIdValue).intValue();
+						SuQuestionsDTo subQuestionDTO = new SuQuestionsDTo();
+
+						subQuestionDTO.setId(qId);
+						subQuestionDTO.setQuest(subQuestionResult.get(j).get("DTLD_TODO_LIST_ITEM").toString());
+
+						YesQuestions.add(subQuestionDTO);
+					}
+					subQuestionsRes.setYes(YesQuestions);
+
+					Map<String, Object> noSubQuestionParams = new HashMap<>();
+					noSubQuestionParams.put("refNo", result.get(i).get("DTL_REF_NO"));
+					noSubQuestionParams.put("flag", "N");
+
+					List<Map<String, Object>> noSubQuestionResult = commonDao.getMapQuery(subQuestionsQuery,
+							noSubQuestionParams);
+					List<SuQuestionsDTo> NoQuestions = new ArrayList<>();
+					for (int k = 0; k < noSubQuestionResult.size(); k++) {
+
+						Object qIdValue = subQuestionResult.get(k).get("DTLD_TRAN_ID");
+						int qId = ((BigDecimal) qIdValue).intValue();
+						SuQuestionsDTo subQuestionDTO = new SuQuestionsDTo();
+
+						subQuestionDTO.setId(qId);
+						subQuestionDTO.setQuest(noSubQuestionResult.get(k).get("DTLD_TODO_LIST_ITEM").toString());
+
+						NoQuestions.add(subQuestionDTO);
+					}
+					subQuestionsRes.setNo(NoQuestions);
+					questionResponse.setQuestions(subQuestionsRes);
+					finalResult.add(questionResponse);
+				}
+
+				if (finalResult.size() >= 1) {
+					response.put(statusCode, successCode);
+					response.put(messageCode, "Get Question");
+					response.put(dataCode, finalResult);
+				}
+			}
+		}else {
+			System.out.println("ELSE");
 		String docListQuery = "SELECT * FROM LT_DOC_TODO_LIST_STATUS WHERE DTLS_QUOT_TRAN_ID = :tranId";
 
 		String subQuestionsQuery = "SELECT DTLSD_TRAN_ID,DTLSD_DTLS_TRAN_ID,DTLSD_TODO_LIST_ITEM,DTLSD_VALUE FROM LT_DOC_TODO_LIST_STATUS_DTL WHERE DTLSD_DTLS_TRAN_ID = :sysId";
 
 		Map<String, Object> queryParams = new HashMap<>();
-		queryParams.put("tranId", tranId);
+		queryParams.put("tranId", queryParames.getQueryParameters().get("tranId"));
 
 		List<Map<String, Object>> result = commonDao.getMapQuery(docListQuery, queryParams);
 
@@ -362,49 +438,64 @@ public class LTQquotDiscLoadServiceImpl implements LTQquotDiscLoadService {
 				questionResponse.setId(result.get(i).get("DTLS_TRAN_ID"));
 				questionResponse.setLabel(result.get(i).get("DTLS_TODO_LIST_ITEM").toString());
 				questionResponse.setYesOrNo(result.get(i).get("DTLS_APPR_STS").toString());
+				questionResponse.setQuotTranId((int)queryParames.getQueryParameters().get("tranId"));
 
 				Map<String, Object> subQuestionParams = new HashMap<>();
-				subQuestionParams.put("sysId", result.get(i).get("DTLS_QUOT_TRAN_ID"));
+				subQuestionParams.put("sysId", result.get(i).get("DTLS_TRAN_ID"));
 //				subQuestionParams.put("flag", "Y");
 
 				List<Map<String, Object>> subQuestionResult = commonDao.getMapQuery(subQuestionsQuery,
 						subQuestionParams);
-
+				System.out.println(subQuestionResult.size());
 				SubQuestionResult subQuestionsRes = new SubQuestionResult();
 
 				List<SuQuestionsDTo> YesQuestions = new ArrayList<>();
+				if(subQuestionResult!= null && result.get(i).get("DTLS_APPR_STS").equals("yes")) {
 				for (int j = 0; j < subQuestionResult.size(); j++) {
 
-					Object qIdValue = subQuestionResult.get(j).get("DTLSD_DTLS_TRAN_ID");
+					Object qIdValue = subQuestionResult.get(j).get("DTLSD_TRAN_ID");
 					int qId = ((BigDecimal) qIdValue).intValue();
 					SuQuestionsDTo subQuestionDTO = new SuQuestionsDTo();
 
 					subQuestionDTO.setId(qId);
-					subQuestionDTO.setValue(subQuestionResult.get(j).get("DTLSD_VALUE").toString());
-					subQuestionDTO.setQuest(subQuestionResult.get(j).get("DTLSD_TODO_LIST_ITEM").toString());
+					subQuestionDTO.setValue(subQuestionResult.get(j).get("DTLSD_VALUE") != null 
+				               ? subQuestionResult.get(j).get("DTLSD_VALUE").toString() 
+				                       : "");
+					subQuestionDTO.setQuest(subQuestionResult.get(j).get("DTLSD_TODO_LIST_ITEM") != null 
+				               ? subQuestionResult.get(j).get("DTLSD_TODO_LIST_ITEM").toString() 
+				                       : "");
 
 					YesQuestions.add(subQuestionDTO);
+				}
 				}
 				subQuestionsRes.setYes(YesQuestions);
 
 				Map<String, Object> noSubQuestionParams = new HashMap<>();
-				noSubQuestionParams.put("sysId", result.get(i).get("DTLS_QUOT_TRAN_ID"));
+				noSubQuestionParams.put("sysId", result.get(i).get("DTLS_TRAN_ID"));
 //				noSubQuestionParams.put("flag", "N");
 
 				List<Map<String, Object>> noSubQuestionResult = commonDao.getMapQuery(subQuestionsQuery,
 						noSubQuestionParams);
 				List<SuQuestionsDTo> NoQuestions = new ArrayList<>();
+				if(noSubQuestionResult != null && result.get(i).get("DTLS_APPR_STS").equals("no")) {
 				for (int k = 0; k < noSubQuestionResult.size(); k++) {
 
-					Object qIdValue = subQuestionResult.get(k).get("DTLSD_DTLS_TRAN_ID");
+					Object qIdValue = subQuestionResult.get(k).get("DTLSD_TRAN_ID");
 					int qId = ((BigDecimal) qIdValue).intValue();
 					SuQuestionsDTo subQuestionDTO = new SuQuestionsDTo();
 
 					subQuestionDTO.setId(qId);
-					subQuestionDTO.setValue(subQuestionResult.get(k).get("DTLSD_VALUE").toString());				
-					subQuestionDTO.setQuest(noSubQuestionResult.get(k).get("DTLSD_TODO_LIST_ITEM").toString());
+//					subQuestionDTO.setValue(subQuestionResult.get(k).get("DTLSD_VALUE").toString());				
+//					subQuestionDTO.setQuest(noSubQuestionResult.get(k).get("DTLSD_TODO_LIST_ITEM").toString());
+					subQuestionDTO.setValue(subQuestionResult.get(k).get("DTLSD_VALUE") != null 
+				               ? subQuestionResult.get(k).get("DTLSD_VALUE").toString() 
+				                       : "");
+					subQuestionDTO.setQuest(subQuestionResult.get(k).get("DTLSD_TODO_LIST_ITEM") != null 
+				               ? subQuestionResult.get(k).get("DTLSD_TODO_LIST_ITEM").toString() 
+				                       : "");
 
 					NoQuestions.add(subQuestionDTO);
+				}
 				}
 				subQuestionsRes.setNo(NoQuestions);
 				questionResponse.setQuestions(subQuestionsRes);
@@ -417,7 +508,66 @@ public class LTQquotDiscLoadServiceImpl implements LTQquotDiscLoadService {
 				response.put(dataCode, finalResult);
 			}
 		}
+		}
 
+		return response.toString();
+	}
+
+	@Override
+	public String updateQuestionnaireWithValues(List<GetQuestionnaireResponse> getQuestionnaireRequest, HttpServletRequest request) {
+		JSONObject response = new JSONObject();
+
+		try {
+			for (int i = 0; i < getQuestionnaireRequest.size(); i++) {
+				LtDocTodoListStatus masterQuestion = docToDoListRepo.getById((int)getQuestionnaireRequest.get(i).getId());
+
+//				masterQuestion.setDTLS_QUOT_TRAN_ID(getQuestionnaireRequest.get(i).getQuotTranId());
+				masterQuestion.setDTLS_TODO_LIST_ITEM(getQuestionnaireRequest.get(i).getLabel());
+				masterQuestion.setDTLS_APPR_STS(getQuestionnaireRequest.get(i).getYesOrNo());
+				masterQuestion.setDTLS_MOD_DT(new Date());
+				masterQuestion.setDTLS_DOC_REC_DT(new Date());
+
+				docToDoListRepo.save(masterQuestion);
+
+				if (getQuestionnaireRequest.get(i).getInQuestions() != null) {
+					if (getQuestionnaireRequest.get(i).getInQuestions().get(0).getYes() != null) {
+						for (int j = 0; j < getQuestionnaireRequest.get(i).getInQuestions().get(0).getYes()
+								.size(); j++) {
+							System.out.println(getQuestionnaireRequest.get(i).getInQuestions().get(0).getYes().get(j).getId());
+							LT_DOC_TODO_LIST_STATUS_DTL docToDoListStatusDtl = docToDoListDtlRepo.getById(getQuestionnaireRequest.get(i).getInQuestions().get(0).getYes().get(j).getId());
+							docToDoListStatusDtl.setDTLSD_TODO_LIST_ITEM(
+									getQuestionnaireRequest.get(i).getInQuestions().get(0).getYes().get(j).getQuest());
+							docToDoListStatusDtl.setDTLSD_VALUE(
+									getQuestionnaireRequest.get(i).getInQuestions().get(0).getYes().get(j).getValue());
+//							docToDoListStatusDtl.setDTLSD_INS_DT(new Date());
+							docToDoListStatusDtl.setDTLSD_DTLS_TRAN_ID(masterQuestion.getDTLS_TRAN_ID());
+
+							docToDoListDtlRepo.save(docToDoListStatusDtl);
+						}
+					}
+
+					if (getQuestionnaireRequest.get(i).getInQuestions().get(0).getNo() != null) {
+						for (int k = 0; k < getQuestionnaireRequest.get(i).getInQuestions().get(0).getNo()
+								.size(); k++) {
+							LT_DOC_TODO_LIST_STATUS_DTL docToDoListStatusDtl = docToDoListDtlRepo.getById(getQuestionnaireRequest.get(i).getInQuestions().get(0).getNo().get(k).getId());
+							docToDoListStatusDtl.setDTLSD_TODO_LIST_ITEM(
+									getQuestionnaireRequest.get(i).getInQuestions().get(0).getNo().get(k).getQuest());
+							docToDoListStatusDtl.setDTLSD_VALUE(
+									getQuestionnaireRequest.get(i).getInQuestions().get(0).getNo().get(k).getValue());
+//							docToDoListStatusDtl.setDTLSD_MOD_DT(new Date());
+							docToDoListStatusDtl.setDTLSD_DTLS_TRAN_ID(masterQuestion.getDTLS_TRAN_ID());
+
+							docToDoListDtlRepo.save(docToDoListStatusDtl);
+						}
+					}
+				}
+			}
+			response.put(statusCode, successCode);
+			response.put(messageCode, "Questionnaire Fetched Successfully");
+		} catch (Exception e) {
+			response.put(statusCode, errorCode);
+			response.put(messageCode, e.getLocalizedMessage());
+		}
 		return response.toString();
 	}
 

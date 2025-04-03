@@ -5,6 +5,7 @@ import java.util.List;
 import com.wenxt.claims.model.GetQuestionnaireResponse;
 import com.wenxt.claims.model.LTQquotDiscLoadRequest;
 import com.wenxt.claims.model.QueryParametersDTO;
+import com.wenxt.claims.model.SaveQuestionnaireRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -22,6 +23,8 @@ public interface LTQquotDiscLoadService {
 
 	String saveQuestionnaire(List<GetQuestionnaireResponse> getQuestionnaireRequest, HttpServletRequest request);
 
-	String getQuestionnaireWithValues(Integer tranId, HttpServletRequest request);
+	String getQuestionnaireWithValues(QueryParametersDTO queryParams, HttpServletRequest request);
+
+	String updateQuestionnaireWithValues(List<GetQuestionnaireResponse> list, HttpServletRequest request);
 
 }

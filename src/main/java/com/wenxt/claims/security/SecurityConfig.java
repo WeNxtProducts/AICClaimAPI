@@ -178,6 +178,8 @@ public class SecurityConfig {
 				.and()
 				.authorizeHttpRequests().requestMatchers("/ltQquotDiscLoad/**").permitAll() 
 				.and()
+				.authorizeHttpRequests().requestMatchers("/docList/**").permitAll() 
+				.and()
 				.sessionManagement() 
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS) 
 				.and() 

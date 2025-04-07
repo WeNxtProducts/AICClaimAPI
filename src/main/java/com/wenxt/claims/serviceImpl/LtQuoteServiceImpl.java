@@ -1,5 +1,6 @@
 package com.wenxt.claims.serviceImpl;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -24,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wenxt.claims.model.InsuranceCoverageDTO;
 import com.wenxt.claims.model.LTQuoteRequest;
 import com.wenxt.claims.model.LT_Quote;
+import com.wenxt.claims.model.LtDocTodoListStatus;
 import com.wenxt.claims.model.ProcedureInput;
 import com.wenxt.claims.repository.LTQQuotApplCoverRepository;
 import com.wenxt.claims.repository.LT_QuoteRepository;
@@ -196,35 +198,26 @@ public class LtQuoteServiceImpl implements LtQuoteService {
 	}
 
 	@Override
-	public String getLTQuoteById(Long itQuoteId) throws IllegalArgumentException, IllegalAccessException {
-		JSONObject response = new JSONObject();
+	public String getLTQuoteById(Long itQuoteId, HttpServletRequest request) throws IllegalArgumentException, IllegalAccessException {
+		Map<String, Object> parametermap = new HashMap<String, Object>();
+		JSONObject inputObject = new JSONObject();
 		Optional<LT_Quote> optionalUser = ltQuoteRepository.findById(itQuoteId);
-
-		if (optionalUser.isEmpty()) {
-			response.put(statusCode, errorCode);
-			response.put(messageCode, "LTquoteData not found");
-			return response.toString();
-		}
-
-		LT_Quote quoteData = optionalUser.get();
-		JSONObject dataObject = new JSONObject();
-
-		for (Field field : quoteData.getClass().getDeclaredFields()) {
-			field.setAccessible(true);
-			if (field.isAnnotationPresent(Column.class)) {
-				Column column = field.getAnnotation(Column.class);
-				Object value = field.get(quoteData);
-				if (value != null) {
-					dataObject.put(column.name(), value);
+		LT_Quote claim = optionalUser.get();
+		if (claim != null) {
+			for (int i = 0; i < claim.getClass().getDeclaredFields().length; i++) {
+				Field field = claim.getClass().getDeclaredFields()[i];
+				field.setAccessible(true);
+				String columnName = null;
+				if (field.isAnnotationPresent(Column.class)) {
+					Annotation annotation = field.getAnnotation(Column.class);
+					Column column = (Column) annotation;
+					Object value = field.get(claim);
+					columnName = column.name();
+					inputObject.put(columnName, value);
 				}
 			}
 		}
-
-		response.put(statusCode, successCode);
-		response.put(dataCode, dataObject);
-		response.put(messageCode, "LTquoteData Fetched Successfully");
-
-		return response.toString();
+		return inputObject.toString();
 	}
 
 	@Override

@@ -11,7 +11,7 @@ public interface LtQuoteService {
 
 	String save(LTQuoteRequest ltQuoteRequest, HttpServletRequest request);
 
-	String getLTQuoteById(Long tranId) throws IllegalArgumentException, IllegalAccessException;
+	String getLTQuoteById(Long tranId, HttpServletRequest request) throws IllegalArgumentException, IllegalAccessException;
 
 	String update(LTQuoteRequest ltQuoteRequest, Long tranId, HttpServletRequest request);
 

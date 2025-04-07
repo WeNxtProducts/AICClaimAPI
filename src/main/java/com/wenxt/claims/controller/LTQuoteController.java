@@ -29,8 +29,8 @@ public class LTQuoteController {
 	}
 
 	@PostMapping("/get")
-	public String get(@RequestParam Long tranId) throws IllegalArgumentException, IllegalAccessException {
-		return ltQuoteService.getLTQuoteById(tranId);
+	public String get(@RequestParam Long tranId, HttpServletRequest request) throws IllegalArgumentException, IllegalAccessException {
+		return ltQuoteService.getLTQuoteById(tranId, request);
 	}
 	
 	@PostMapping("/update/{tranId}")

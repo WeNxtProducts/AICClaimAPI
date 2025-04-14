@@ -1,8 +1,14 @@
 package com.wenxt.claims.serviceImpl;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,9 +31,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wenxt.claims.model.InsuranceCoverageDTO;
 import com.wenxt.claims.model.LTQuoteRequest;
 import com.wenxt.claims.model.LT_Quote;
-import com.wenxt.claims.model.LtDocTodoListStatus;
 import com.wenxt.claims.model.ProcedureInput;
 import com.wenxt.claims.repository.LTQQuotApplCoverRepository;
+import com.wenxt.claims.repository.LTQQuotAssuredDLTSRepository;
 import com.wenxt.claims.repository.LT_QuoteRepository;
 import com.wenxt.claims.service.CommonService;
 import com.wenxt.claims.service.LtQuoteService;
@@ -46,6 +52,9 @@ public class LtQuoteServiceImpl implements LtQuoteService {
 	
 	@Autowired
 	private LTQQuotApplCoverRepository ltqQuotApplCoverRepository;
+	
+	@Autowired
+	private LTQQuotAssuredDLTSRepository ltqQuotAssuredDtlsRepo;
 
 	@Value("${spring.message.code}")
 	private String messageCode;
@@ -73,8 +82,8 @@ public class LtQuoteServiceImpl implements LtQuoteService {
 		JSONObject response = new JSONObject();
 		JSONObject data = new JSONObject();
 
-//		String authorizationHeader = request.getHeader("Authorization");
-//		String token = authorizationHeader.substring(7).trim();
+		String authorizationHeader = request.getHeader("Authorization");
+		String token = authorizationHeader.substring(7).trim();
 
 		try {
 			LT_Quote ltQuote = new LT_Quote();
@@ -114,7 +123,7 @@ public class LtQuoteServiceImpl implements LtQuoteService {
 				HttpHeaders headers = new HttpHeaders();
 				RestTemplate restTemplate = new RestTemplate();
 				headers.setContentType(MediaType.APPLICATION_JSON);
-				// headers.set("Authorization", "Bearer " + token);
+				 headers.set("Authorization", "Bearer " + token);
 				HttpEntity<ProcedureInput> requestEntity = new HttpEntity<>(input, headers);
 				ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, requestEntity, String.class);
 				/******* Get QuotNO Procedure *****/
@@ -152,7 +161,7 @@ public class LtQuoteServiceImpl implements LtQuoteService {
 //				HttpHeaders headers = new HttpHeaders();
 //				RestTemplate restTemplate = new RestTemplate();
 				headers.setContentType(MediaType.APPLICATION_JSON);
-				// headers.set("Authorization", "Bearer " + token);
+				 headers.set("Authorization", "Bearer " + token);
 				HttpEntity<ProcedureInput> requestEntity2 = new HttpEntity<>(inputs, headers);
 				ResponseEntity<String> responseEntity2 = restTemplate.postForEntity(url2, requestEntity2, String.class);
 				
@@ -185,6 +194,7 @@ public class LtQuoteServiceImpl implements LtQuoteService {
 				data.put("Id", savedLT_QuoteData.getQUOT_TRAN_ID());
 				response.put("data", data);
 			} catch (Exception e) {
+				e.printStackTrace();
 				response.put("statusCode", errorCode);
 				response.put("message", "An error occurred: " + e.getMessage());
 			}
@@ -331,6 +341,74 @@ public class LtQuoteServiceImpl implements LtQuoteService {
 		}
 		return response.toString();
 	}
+
+	@Override
+	public String createLogin(Integer tranId, HttpServletRequest request) {
+		JSONObject response = new JSONObject();
+		Optional<LT_Quote> optionalUser = ltQuoteRepository.findById((long)tranId);
+		
+		LT_Quote quote = optionalUser.get();
+		
+		if(quote != null) {
+			
+		}
+		
+		return response.toString();
+	}
+
+	@Override
+	public String triggerOTP() {
+		 try {
+
+	            String apiKey = "WLqqRkn9MEEgUkG8zOtyuZFFxQBA6OrQQaSwR2VQ0WeoQDQwr5nQbrp8xhcD"; // ✅ Your Fast2SMS API Key
+	            String message = "Your OTP is: 123456";
+	            String language = "english";
+	            String route = "q"; // ✅ You can also try "q" if "otp" fails
+	            String numbers = "918220496391"; // ✅ Recipient with country code
+
+	            String postData = "message=" + message
+	                    + "&language=" + language
+	                    + "&route=" + route
+	                    + "&numbers=" + numbers;
+
+	            URL url = new URL("https://www.fast2sms.com/dev/bulkV2");
+	            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+	            conn.setDoOutput(true);
+	            conn.setRequestMethod("POST");
+	            conn.setRequestProperty("authorization", apiKey); // ✅ Set API key as header
+	            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+	            OutputStream os = conn.getOutputStream();
+	            os.write(postData.getBytes(StandardCharsets.UTF_8));
+	            os.flush();
+	            os.close();
+
+	            int responseCode = conn.getResponseCode();
+	            System.out.println("Response Code : " + responseCode);
+
+	            BufferedReader in = new BufferedReader(new InputStreamReader(
+	                    responseCode == 200 ? conn.getInputStream() : conn.getErrorStream()));
+	            String inputLine;
+	            StringBuilder response = new StringBuilder();
+	            while ((inputLine = in.readLine()) != null) {
+	                response.append(inputLine);
+	            }
+	            in.close();
+
+	            System.out.println("Response: " + response.toString());
+		 } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+		 
+		 return null;
+		
+	}
+
+//		    public static void main(String[] args) {
+//		        String otp = String.valueOf((int)(Math.random() * 900000) + 100000);
+//		        sendOtp("+91XXXXXXXXXX", otp); // replace with real number
+//		    }
+//	}
 
 	
 }

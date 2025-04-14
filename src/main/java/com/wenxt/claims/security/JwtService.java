@@ -28,21 +28,26 @@ public class JwtService {
 	public static final String SECRET = "5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437";
 
 	public String generateToken(AuthRequest userName) {
+		System.out.println("IN");
 		Map<String, Object> claims = new HashMap<>();
 		claims.put("Division", userName.getDivision());
 		claims.put("Department", userName.getDepartment());
 		claims.put("Company", userName.getCompany());
 		claims.put("Currency", userName.getBaseCurrency());
+		claims.put("type", "THIRD");
 		Optional<LM_MENU_USERS> userDetail = userrrepo.findByUserId(userName.getUsername());
-			claims.put("Role", userDetail.get().getUser_group_id());
 
-			claims.put("Language", userDetail.get().getUser_dflt_lang_code());
+		claims.put("Role", userDetail.get().getUser_group_id());
+		claims.put("Language", userDetail.get().getUser_dflt_lang_code());
+		
+		System.out.println(claims);
 		return createToken(claims, userName.getUsername());
 	}
 
 	private String createToken(Map<String, Object> claims, String userName) {
 		return Jwts.builder().setClaims(claims).setSubject(userName).setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))
+//				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))
+				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 8))
 				.signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
 	}
 
@@ -92,27 +97,26 @@ public class JwtService {
 	}
 	
 	public AuthRequest getLoggedInDetails(String token) {
-				 try {
-					 AuthRequest loggedInDetails = new AuthRequest();
-			            Claims tokenDetails = Jwts.parser()
-			                                .setSigningKey(SECRET)
-			                                .parseClaimsJws(token)
-			                                .getBody();
-			            // Access specific claims
-			            loggedInDetails.setUsername(tokenDetails.get("sub", String.class));
-			            loggedInDetails.setDivision(tokenDetails.get("Division", String.class));
-			            loggedInDetails.setDepartment(tokenDetails.get("Department", String.class));
-			            loggedInDetails.setBaseCurrency(tokenDetails.get("Currency", String.class));
-			            loggedInDetails.setCompany(tokenDetails.get("Company", String.class));
-			            loggedInDetails.setRole(tokenDetails.get("Role", String.class));
-			            return loggedInDetails;
-			        } catch (SignatureException e) {
-			            System.out.println("Invalid JWT signature");
-			        } catch (Exception e) {
-			            System.out.println("Token parsing failed: " + e.getMessage());
-			        }
-				 return null;
-			}
-		
+		 try {
+			 AuthRequest loggedInDetails = new AuthRequest();
+	            Claims claims = Jwts.parser()
+	                                .setSigningKey(SECRET)
+	                                .parseClaimsJws(token)
+	                                .getBody();
+	            
+	            // Access specific claims
+	            loggedInDetails.setUsername(claims.get("userId", String.class));
+	            loggedInDetails.setDivision(claims.get("division", String.class));
+	            loggedInDetails.setDepartment(claims.get("department", String.class));
+	            loggedInDetails.setBaseCurrency(claims.get("baseCurrency", String.class));
+	            
+	            return loggedInDetails;
+	        } catch (SignatureException e) {
+	            System.out.println("Invalid JWT signature");
+	        } catch (Exception e) {
+	            System.out.println("Token parsing failed: " + e.getMessage());
+	        }
+		 return null;
+	}
 
 }

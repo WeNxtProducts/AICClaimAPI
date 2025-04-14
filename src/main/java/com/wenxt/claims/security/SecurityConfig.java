@@ -14,7 +14,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter; 
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 
 @Configuration
 @EnableWebSecurity
@@ -170,15 +171,15 @@ public class SecurityConfig {
 				.and()
 				.authorizeHttpRequests().requestMatchers("/pensPymtDtls/**").authenticated() 
 				.and()
-				.authorizeHttpRequests().requestMatchers("/ltQuoteDetails/**").permitAll()
+				.authorizeHttpRequests().requestMatchers("/ltQuoteDetails/**").authenticated()
 				.and()
-				.authorizeHttpRequests().requestMatchers("/ltQquotAssuredDtls/**").permitAll() 
+				.authorizeHttpRequests().requestMatchers("/ltQquotAssuredDtls/**").authenticated() 
 				.and()
-				.authorizeHttpRequests().requestMatchers("/ltQuoteBeneficiary/**").permitAll() 
+				.authorizeHttpRequests().requestMatchers("/ltQuoteBeneficiary/**").authenticated() 
 				.and()
-				.authorizeHttpRequests().requestMatchers("/ltQquotDiscLoad/**").permitAll() 
+				.authorizeHttpRequests().requestMatchers("/ltQquotDiscLoad/**").authenticated() 
 				.and()
-				.authorizeHttpRequests().requestMatchers("/docList/**").permitAll() 
+				.authorizeHttpRequests().requestMatchers("/docList/**").authenticated() 
 				.and()
 				.sessionManagement() 
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS) 

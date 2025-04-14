@@ -17,7 +17,7 @@ public interface LtQuoteService {
 
 	String delete(Long tranId, HttpServletRequest servletRequest);
 
-	String updateLtQuotCoverData(List<InsuranceCoverageDTO> coverages);
+	String updateLtQuotCoverData(List<InsuranceCoverageDTO> coverages, HttpServletRequest request);
 
 
 }

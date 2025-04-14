@@ -14,6 +14,7 @@ import com.wenxt.claims.model.InsuranceCoverageDTO;
 import com.wenxt.claims.model.LTQuoteRequest;
 import com.wenxt.claims.service.LtQuoteService;
 
+import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
@@ -44,9 +45,9 @@ public class LTQuoteController {
 	}
 	
 	@PostMapping("/updateLtQuotCoverData")
-    public String updateLtQuotCoverData(@RequestBody List<InsuranceCoverageDTO> coverages) {
+    public String updateLtQuotCoverData(@RequestBody List<InsuranceCoverageDTO> coverages, HttpServletRequest request) {
 		
-		return ltQuoteService.updateLtQuotCoverData(coverages);
+		return ltQuoteService.updateLtQuotCoverData(coverages, request);
       
     }
 

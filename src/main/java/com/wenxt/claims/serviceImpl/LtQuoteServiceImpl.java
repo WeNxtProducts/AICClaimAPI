@@ -1,15 +1,11 @@
 package com.wenxt.claims.serviceImpl;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -28,13 +24,20 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wenxt.claims.model.EmailRequestModel;
 import com.wenxt.claims.model.InsuranceCoverageDTO;
 import com.wenxt.claims.model.LTQuoteRequest;
 import com.wenxt.claims.model.LT_Quote;
+import com.wenxt.claims.model.LoginRequestModel;
 import com.wenxt.claims.model.ProcedureInput;
+import com.wenxt.claims.model.QuoteLoginRequest;
 import com.wenxt.claims.repository.LTQQuotApplCoverRepository;
 import com.wenxt.claims.repository.LTQQuotAssuredDLTSRepository;
 import com.wenxt.claims.repository.LT_QuoteRepository;
+import com.wenxt.claims.security.JwtService;
+import com.wenxt.claims.security.LM_MENU_USERS;
+import com.wenxt.claims.security.StaticJwtGenerator;
+import com.wenxt.claims.security.UserMasterRepository;
 import com.wenxt.claims.service.CommonService;
 import com.wenxt.claims.service.LtQuoteService;
 
@@ -49,12 +52,18 @@ public class LtQuoteServiceImpl implements LtQuoteService {
 
 	@Autowired
 	private LT_QuoteRepository ltQuoteRepository;
-	
+
 	@Autowired
 	private LTQQuotApplCoverRepository ltqQuotApplCoverRepository;
-	
+
 	@Autowired
 	private LTQQuotAssuredDLTSRepository ltqQuotAssuredDtlsRepo;
+	
+	@Autowired
+	private UserMasterRepository userMasterRepo;
+	
+	@Autowired
+	private StaticJwtGenerator service;
 
 	@Value("${spring.message.code}")
 	private String messageCode;
@@ -73,7 +82,7 @@ public class LtQuoteServiceImpl implements LtQuoteService {
 
 	@Value("${spring.error.code}")
 	private String errorCode;
-	
+
 	@Value("${string.baseApi.path}")
 	private String baseDocPath;
 
@@ -104,11 +113,11 @@ public class LtQuoteServiceImpl implements LtQuoteService {
 					Integer calculateAge = ltQuoteRepository.calculateAge(formattedDob);
 					ltQuote.setQUOT_AGE(calculateAge);
 				}
-		        Date insDate = new Date();
-		        SimpleDateFormat formatters = new SimpleDateFormat("dd-MM-yy");
-		        String formattedDates = formatters.format(insDate);
-		        ltQuote.setQUOT_INS_DT(insDate);
-		        ltQuote.setQUOT_MOD_DT(insDate);
+				Date insDate = new Date();
+				SimpleDateFormat formatters = new SimpleDateFormat("dd-MM-yy");
+				String formattedDates = formatters.format(insDate);
+				ltQuote.setQUOT_INS_DT(insDate);
+				ltQuote.setQUOT_MOD_DT(insDate);
 				System.out.println(ltQuote.getQUOT_FC_SA());
 				ltQuote.setQUOT_LC_SA(ltQuote.getQUOT_FC_SA());
 				LT_Quote savedLT_QuoteData = ltQuoteRepository.save(ltQuote);
@@ -123,7 +132,7 @@ public class LtQuoteServiceImpl implements LtQuoteService {
 				HttpHeaders headers = new HttpHeaders();
 				RestTemplate restTemplate = new RestTemplate();
 				headers.setContentType(MediaType.APPLICATION_JSON);
-				 headers.set("Authorization", "Bearer " + token);
+				headers.set("Authorization", "Bearer " + token);
 				HttpEntity<ProcedureInput> requestEntity = new HttpEntity<>(input, headers);
 				ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, requestEntity, String.class);
 				/******* Get QuotNO Procedure *****/
@@ -133,13 +142,13 @@ public class LtQuoteServiceImpl implements LtQuoteService {
 				response.put(messageCode, "LTQuote Details created successfully");
 				data.put("Id", savedLT_QuoteData.getQUOT_TRAN_ID());
 				response.put("data", data);
-				
-		        Date date = new Date();
-		        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-		        String formattedDate = formatter.format(date);
-		        
-		        System.out.println(formattedDate);
-				
+
+				Date date = new Date();
+				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+				String formattedDate = formatter.format(date);
+
+				System.out.println(formattedDate);
+
 				Map<String, Object> inputMaps = new HashMap<>();
 				inputMaps.put("P_DNS_TYPE", "1");
 				inputMaps.put("P_DNS_CODE", "QT");
@@ -153,38 +162,33 @@ public class LtQuoteServiceImpl implements LtQuoteService {
 				inputMaps.put("P_CLAIM_YEAR", null);
 				inputMaps.put("P_CLAIM_TYPE", null);
 				inputMaps.put("P_CUST_CODE", null);
+				
+				
 				/**** . Calculate Quotation Premium ****/
 				ProcedureInput inputs = new ProcedureInput();
 				inputs.setInParams(inputMaps);
 
 				String url2 = baseDocPath + "common/invokeProcedure?procedureName=" + "WNP_GEN_DOC_NO";
-//				HttpHeaders headers = new HttpHeaders();
-//				RestTemplate restTemplate = new RestTemplate();
 				headers.setContentType(MediaType.APPLICATION_JSON);
-				 headers.set("Authorization", "Bearer " + token);
+				headers.set("Authorization", "Bearer " + token);
 				HttpEntity<ProcedureInput> requestEntity2 = new HttpEntity<>(inputs, headers);
 				ResponseEntity<String> responseEntity2 = restTemplate.postForEntity(url2, requestEntity2, String.class);
-				
+
 				System.out.println(responseEntity2.getBody());
-				
+
 				JSONObject res = new JSONObject(responseEntity2.getBody());
-				
-				 String responseBody = res.toString();
 
-			        // Parse JSON using ObjectMapper
-			        ObjectMapper objectMapper = new ObjectMapper();
-			        JsonNode rootNode = objectMapper.readTree(responseBody);
+				String responseBody = res.toString();
 
-			        // Extract P_DOC_NO
-			        String pDocNo = rootNode.path("Data").path("P_DOC_NO").asText();
-			        
-//			        System.out.println("P_DOC_NO: " + pDocNo);
-				
-//				System.out.println("DATA: " + dataRes);
-				
+				ObjectMapper objectMapper = new ObjectMapper();
+				JsonNode rootNode = objectMapper.readTree(responseBody);
+
+				// Extract P_DOC_NO
+				String pDocNo = rootNode.path("Data").path("P_DOC_NO").asText();
+
 				LT_Quote quote = ltQuoteRepository.getById(savedLT_QuoteData.getQUOT_TRAN_ID());
 				quote.setQUOT_NO(pDocNo);
-				
+
 				ltQuoteRepository.save(quote);
 				/******* Get QuotNO Procedure *****/
 				dataObj = new JSONObject();
@@ -208,7 +212,8 @@ public class LtQuoteServiceImpl implements LtQuoteService {
 	}
 
 	@Override
-	public String getLTQuoteById(Long itQuoteId, HttpServletRequest request) throws IllegalArgumentException, IllegalAccessException {
+	public String getLTQuoteById(Long itQuoteId, HttpServletRequest request)
+			throws IllegalArgumentException, IllegalAccessException {
 		Map<String, Object> parametermap = new HashMap<String, Object>();
 		JSONObject inputObject = new JSONObject();
 		Optional<LT_Quote> optionalUser = ltQuoteRepository.findById(itQuoteId);
@@ -289,7 +294,7 @@ public class LtQuoteServiceImpl implements LtQuoteService {
 				return response.toString();
 			}
 		} catch (Exception e) {
-			
+
 			JSONObject response = new JSONObject();
 			response.put(statusCode, errorCode);
 			response.put(messageCode, "Error deleting record with ID " + tranId + ": " + e.getMessage());
@@ -298,8 +303,11 @@ public class LtQuoteServiceImpl implements LtQuoteService {
 	}
 
 	@Override
-	public String updateLtQuotCoverData(List<InsuranceCoverageDTO> coverages) {
+	public String updateLtQuotCoverData(List<InsuranceCoverageDTO> coverages, HttpServletRequest request) {
 		JSONObject response = new JSONObject();
+		
+		String authorizationHeader = request.getHeader("Authorization");
+		String token = authorizationHeader.substring(7).trim();
 		try {
 			for (InsuranceCoverageDTO coverageDTO : coverages) {
 				ltqQuotApplCoverRepository.findById(coverageDTO.getQqacTranId()).ifPresent(coverData -> {
@@ -325,10 +333,10 @@ public class LtQuoteServiceImpl implements LtQuoteService {
 			HttpHeaders headers = new HttpHeaders();
 			RestTemplate restTemplate = new RestTemplate();
 			headers.setContentType(MediaType.APPLICATION_JSON);
-			// headers.set("Authorization", "Bearer " + token);
+			 headers.set("Authorization", "Bearer " + token);
 			HttpEntity<ProcedureInput> requestEntity = new HttpEntity<>(input, headers);
 			ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, requestEntity, String.class);
-			
+
 			Integer result = ltqQuotApplCoverRepository.getSumAssured(coverages.get(0).getId());
 			response.put(statusCode, successCode);
 			response.put(messageCode, "Insurance coverages updated successfully!");
@@ -336,79 +344,96 @@ public class LtQuoteServiceImpl implements LtQuoteService {
 			return response.toString();
 		} catch (Exception e) {
 			e.printStackTrace();
-			 response.put("statusCode", errorCode);
-	            response.put("messageCode", "Failed to update insurance coverages!");
+			response.put("statusCode", errorCode);
+			response.put("messageCode", "Failed to update insurance coverages!");
 		}
 		return response.toString();
 	}
 
 	@Override
-	public String createLogin(Integer tranId, HttpServletRequest request) {
+	public String createLogin(QuoteLoginRequest quoteLoginRequest, HttpServletRequest request) {
+
+		//creating loginRequest to access existing Login API in Base API.
+		LoginRequestModel loginModel = new LoginRequestModel();
+		loginModel.setUserName(quoteLoginRequest.getCustomerCode());
+		loginModel.setPassword(quoteLoginRequest.getOtp());
+		loginModel.setCompanyCode("001");
+		loginModel.setDivisionCode("101");
+		loginModel.setDepartmentCode("10101");
+		loginModel.setUserName(quoteLoginRequest.getUserName());
+		loginModel.setLoginType("Q");
+
+		String url = baseDocPath + "/auth/login";
+		HttpHeaders headers = new HttpHeaders();
+		RestTemplate restTemplate = new RestTemplate();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<LoginRequestModel> requestEntity = new HttpEntity<>(loginModel, headers);
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, requestEntity, String.class);
+
+		return responseEntity.getBody().toString();
+	}
+
+	@Override
+	public String triggerOTP(String userName, HttpServletRequest request) {
+
 		JSONObject response = new JSONObject();
-		Optional<LT_Quote> optionalUser = ltQuoteRepository.findById((long)tranId);
-		
-		LT_Quote quote = optionalUser.get();
-		
-		if(quote != null) {
+		Optional<LM_MENU_USERS> entity = userMasterRepo.findById(userName);
+
+		try {
+//			String authorizationHeader = request.getHeader("Authorization");
+			String token = service.getStaticToken();
+			System.out.println("TOKEN: " + token);
+
+			SecureRandom random = new SecureRandom();
+			int otp = 100000 + random.nextInt(900000);
+			String otpString = String.valueOf(otp); //randomly generating OTP
+
+			//send the OTP to user Email
+			EmailRequestModel emailModel = new EmailRequestModel();
+			List<String> toIds = new ArrayList<>();
+			toIds.add("timothygodwin@wenxttech.com");
+
+			emailModel.setToIds(toIds);
+			emailModel.setSubject("OTP - LOGIN");
+
+			Map<String, Object> content = new HashMap<>();
+			content.put("name", "Timothy");
+			content.put("otp", otpString);
+
+			emailModel.setContent(content);
+			String tokenUrl = baseDocPath + "/auth/static-token";
+			RestTemplate restTemplateToken = new RestTemplate();
+			ResponseEntity<String> responseEntityToken = restTemplateToken.getForEntity(tokenUrl, String.class);
 			
+			JSONObject object = new JSONObject(responseEntityToken.getBody());
+
+			String url = baseDocPath + "/emailTemplate/sendMail?templateId=124";
+			HttpHeaders headers = new HttpHeaders();
+			RestTemplate restTemplate = new RestTemplate();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			headers.set("Authorization", "Bearer " + object.getString("Data"));
+			HttpEntity<EmailRequestModel> requestEntity = new HttpEntity<>(emailModel, headers);
+			ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, requestEntity, String.class);
+			
+			if(entity.isPresent()) {
+				LM_MENU_USERS user = entity.get();
+				user.setUser_passwd(otpString);
+				
+				userMasterRepo.save(user);
+			}
+
+			response.put(statusCode, successCode);
+			response.put(messageCode, "OTP TRiggered Successfully, Please check your mail");
+			response.put("OTP", otpString);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.put(statusCode, errorCode);
+			response.put(messageCode, e.getLocalizedMessage());
 		}
-		
+
 		return response.toString();
+
 	}
 
-	@Override
-	public String triggerOTP() {
-		 try {
-
-	            String apiKey = "WLqqRkn9MEEgUkG8zOtyuZFFxQBA6OrQQaSwR2VQ0WeoQDQwr5nQbrp8xhcD"; // ✅ Your Fast2SMS API Key
-	            String message = "Your OTP is: 123456";
-	            String language = "english";
-	            String route = "q"; // ✅ You can also try "q" if "otp" fails
-	            String numbers = "918220496391"; // ✅ Recipient with country code
-
-	            String postData = "message=" + message
-	                    + "&language=" + language
-	                    + "&route=" + route
-	                    + "&numbers=" + numbers;
-
-	            URL url = new URL("https://www.fast2sms.com/dev/bulkV2");
-	            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-	            conn.setDoOutput(true);
-	            conn.setRequestMethod("POST");
-	            conn.setRequestProperty("authorization", apiKey); // ✅ Set API key as header
-	            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-
-	            OutputStream os = conn.getOutputStream();
-	            os.write(postData.getBytes(StandardCharsets.UTF_8));
-	            os.flush();
-	            os.close();
-
-	            int responseCode = conn.getResponseCode();
-	            System.out.println("Response Code : " + responseCode);
-
-	            BufferedReader in = new BufferedReader(new InputStreamReader(
-	                    responseCode == 200 ? conn.getInputStream() : conn.getErrorStream()));
-	            String inputLine;
-	            StringBuilder response = new StringBuilder();
-	            while ((inputLine = in.readLine()) != null) {
-	                response.append(inputLine);
-	            }
-	            in.close();
-
-	            System.out.println("Response: " + response.toString());
-		 } catch (Exception e) {
-	            e.printStackTrace();
-	        }
-		 
-		 return null;
-		
-	}
-
-//		    public static void main(String[] args) {
-//		        String otp = String.valueOf((int)(Math.random() * 900000) + 100000);
-//		        sendOtp("+91XXXXXXXXXX", otp); // replace with real number
-//		    }
-//	}
-
-	
 }

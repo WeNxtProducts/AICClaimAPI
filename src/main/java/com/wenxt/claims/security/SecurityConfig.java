@@ -171,6 +171,8 @@ public class SecurityConfig {
 				.and()
 				.authorizeHttpRequests().requestMatchers("/pensPymtDtls/**").authenticated() 
 				.and()
+				.authorizeHttpRequests().requestMatchers("/ltQuoteDetails/triggerOTP").authenticated()
+				.and()
 				.authorizeHttpRequests().requestMatchers("/ltQuoteDetails/**").authenticated()
 				.and()
 				.authorizeHttpRequests().requestMatchers("/ltQquotAssuredDtls/**").authenticated() 

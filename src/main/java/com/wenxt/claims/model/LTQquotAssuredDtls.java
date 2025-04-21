@@ -25,7 +25,7 @@ public class LTQquotAssuredDtls {
     private Long QQAD_TRAN_ID;
 
     @Column(name = "QQAD_QUOT_TRAN_ID", nullable = false, precision = 15)
-    private BigDecimal QQAD_QUOT_TRAN_ID;
+    private Integer QQAD_QUOT_TRAN_ID;
 
     @Column(name = "QQAD_RES_COUNTRY_CODE", length = 12)
     private String QQAD_RES_COUNTRY_CODE;
@@ -207,11 +207,11 @@ public class LTQquotAssuredDtls {
 		QQAD_TRAN_ID = qQAD_TRAN_ID;
 	}
 
-	public BigDecimal getQQAD_QUOT_TRAN_ID() {
+	public Integer getQQAD_QUOT_TRAN_ID() {
 		return QQAD_QUOT_TRAN_ID;
 	}
 
-	public void setQQAD_QUOT_TRAN_ID(BigDecimal qQAD_QUOT_TRAN_ID) {
+	public void setQQAD_QUOT_TRAN_ID(Integer qQAD_QUOT_TRAN_ID) {
 		QQAD_QUOT_TRAN_ID = qQAD_QUOT_TRAN_ID;
 	}
 

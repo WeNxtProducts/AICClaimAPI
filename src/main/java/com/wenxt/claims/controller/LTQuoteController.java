@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wenxt.claims.model.InsuranceCoverageDTO;
 import com.wenxt.claims.model.LTQuoteRequest;
+import com.wenxt.claims.model.QuoteLoginRequest;
 import com.wenxt.claims.service.LtQuoteService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -44,10 +45,20 @@ public class LTQuoteController {
 	}
 	
 	@PostMapping("/updateLtQuotCoverData")
-    public String updateLtQuotCoverData(@RequestBody List<InsuranceCoverageDTO> coverages) {
+    public String updateLtQuotCoverData(@RequestBody List<InsuranceCoverageDTO> coverages, HttpServletRequest request) {
 		
-		return ltQuoteService.updateLtQuotCoverData(coverages);
+		return ltQuoteService.updateLtQuotCoverData(coverages, request);
       
     }
+	
+	@PostMapping("/createLogin")
+	public String createLogin(@RequestBody QuoteLoginRequest quoteLoginRequest, HttpServletRequest request) {
+		return ltQuoteService.createLogin(quoteLoginRequest, request);
+	}
+	
+	@PostMapping("/triggerOTP")
+	public String triggerOTP(@RequestParam String userName, HttpServletRequest request) {
+		return ltQuoteService.triggerOTP(userName, request);
+	}
 
 }

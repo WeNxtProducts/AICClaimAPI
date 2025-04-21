@@ -46,6 +46,9 @@ public class LTQquotDiscLoadServiceImpl implements LTQquotDiscLoadService {
 
 	@Autowired
 	private DocToDoListStatusDtlRepository docToDoListDtlRepo;
+	
+	@Autowired
+	private LtDocToDoListRepo docToDoListRepos;
 
 	@Autowired
 	private CommonDao commonDao;
@@ -77,18 +80,18 @@ public class LTQquotDiscLoadServiceImpl implements LTQquotDiscLoadService {
 		String token = authorizationHeader.substring(7).trim();
 
 		try {
-			LTQquotDiscLoad ltQuote = new LTQquotDiscLoad();
+			LtDocTodoListStatus ltQuote = new LtDocTodoListStatus();
 			Map<String, Map<String, String>> fieldMaps = new HashMap<>();
 			fieldMaps.put("frontForm", ltQquotDiscLoadRequest.getQuotDiscLoadDetails().getFormFields());
 			for (Map.Entry<String, Map<String, String>> entry : fieldMaps.entrySet()) {
-				commonService.setFields(ltQuote, LTQquotDiscLoad.class, entry.getValue());
+				commonService.setFields(ltQuote, LtDocTodoListStatus.class, entry.getValue());
 			}
 			try {
 				System.out.println(ltQuote);
-				LTQquotDiscLoad savedLT_QuotDiscData = ltQquotDiscLoadReposiroty.save(ltQuote);
+				LtDocTodoListStatus savedLT_QuotDiscData = docToDoListRepos.save(ltQuote);
 				response.put(statusCode, successCode);
 				response.put(messageCode, "LTQuotDiscLoad Details created successfully");
-				data.put("Id", savedLT_QuotDiscData.getQQDL_TRAN_ID());
+				data.put("Id", savedLT_QuotDiscData.getDTLS_TRAN_ID());
 				response.put("data", data);
 			} catch (Exception e) {
 				response.put("statusCode", errorCode);

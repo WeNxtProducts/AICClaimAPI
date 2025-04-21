@@ -186,6 +186,13 @@ public class LtQuoteServiceImpl implements LtQuoteService {
 				// Extract P_DOC_NO
 				String pDocNo = rootNode.path("Data").path("P_DOC_NO").asText();
 
+			        // Extract P_DOC_NO
+//			        String pDocNo = rootNode.path("Data").path("P_DOC_NO").asText();
+			        
+			        System.out.println("P_DOC_NO: " + pDocNo + savedLT_QuoteData.getQUOT_TRAN_ID());
+				
+//				System.out.println("DATA: " + dataRes);
+				
 				LT_Quote quote = ltQuoteRepository.getById(savedLT_QuoteData.getQUOT_TRAN_ID());
 				quote.setQUOT_NO(pDocNo);
 
@@ -196,6 +203,7 @@ public class LtQuoteServiceImpl implements LtQuoteService {
 				response.put(statusCode, successCode);
 				response.put(messageCode, "LTQuote Details created successfully");
 				data.put("Id", savedLT_QuoteData.getQUOT_TRAN_ID());
+				data.put("POL_NO", pDocNo);
 				response.put("data", data);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -304,10 +312,12 @@ public class LtQuoteServiceImpl implements LtQuoteService {
 
 	@Override
 	public String updateLtQuotCoverData(List<InsuranceCoverageDTO> coverages, HttpServletRequest request) {
-		JSONObject response = new JSONObject();
-		
 		String authorizationHeader = request.getHeader("Authorization");
 		String token = authorizationHeader.substring(7).trim();
+		JSONObject response = new JSONObject();
+		
+//		String authorizationHeader = request.getHeader("Authorization");
+//		String token = authorizationHeader.substring(7).trim();
 		try {
 			for (InsuranceCoverageDTO coverageDTO : coverages) {
 				ltqQuotApplCoverRepository.findById(coverageDTO.getQqacTranId()).ifPresent(coverData -> {
@@ -435,5 +445,73 @@ public class LtQuoteServiceImpl implements LtQuoteService {
 		return response.toString();
 
 	}
+
+//	@Override
+//	public String createLogin(Integer tranId, HttpServletRequest request) {
+//		JSONObject response = new JSONObject();
+//		Optional<LT_Quote> optionalUser = ltQuoteRepository.findById((long)tranId);
+//		
+//		LT_Quote quote = optionalUser.get();
+//		
+//		if(quote != null) {
+//			
+//		}
+//		
+//		return response.toString();
+//	}
+//
+//	@Override
+//	public String triggerOTP() {
+//		 try {
+//
+//	            String apiKey = "WLqqRkn9MEEgUkG8zOtyuZFFxQBA6OrQQaSwR2VQ0WeoQDQwr5nQbrp8xhcD"; // ✅ Your Fast2SMS API Key
+//	            String message = "Your OTP is: 123456";
+//	            String language = "english";
+//	            String route = "q"; // ✅ You can also try "q" if "otp" fails
+//	            String numbers = "918220496391"; // ✅ Recipient with country code
+//
+//	            String postData = "message=" + message
+//	                    + "&language=" + language
+//	                    + "&route=" + route
+//	                    + "&numbers=" + numbers;
+//
+//	            URL url = new URL("https://www.fast2sms.com/dev/bulkV2");
+//	            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//	            conn.setDoOutput(true);
+//	            conn.setRequestMethod("POST");
+//	            conn.setRequestProperty("authorization", apiKey); // ✅ Set API key as header
+//	            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+//
+//	            OutputStream os = conn.getOutputStream();
+//	            os.write(postData.getBytes(StandardCharsets.UTF_8));
+//	            os.flush();
+//	            os.close();
+//
+//	            int responseCode = conn.getResponseCode();
+//	            System.out.println("Response Code : " + responseCode);
+//
+//	            BufferedReader in = new BufferedReader(new InputStreamReader(
+//	                    responseCode == 200 ? conn.getInputStream() : conn.getErrorStream()));
+//	            String inputLine;
+//	            StringBuilder response = new StringBuilder();
+//	            while ((inputLine = in.readLine()) != null) {
+//	                response.append(inputLine);
+//	            }
+//	            in.close();
+//
+//	            System.out.println("Response: " + response.toString());
+//		 } catch (Exception e) {
+//	            e.printStackTrace();
+//	        }
+//		 
+//		 return null;
+//		
+//	}
+//
+////		    public static void main(String[] args) {
+////		        String otp = String.valueOf((int)(Math.random() * 900000) + 100000);
+////		        sendOtp("+91XXXXXXXXXX", otp); // replace with real number
+////		    }
+////	}
 
 }

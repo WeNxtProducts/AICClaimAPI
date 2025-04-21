@@ -15,6 +15,7 @@ import com.wenxt.claims.model.LTQuoteRequest;
 import com.wenxt.claims.model.QuoteLoginRequest;
 import com.wenxt.claims.service.LtQuoteService;
 
+import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController

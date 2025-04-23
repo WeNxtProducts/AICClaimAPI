@@ -1,9 +1,11 @@
 package com.wenxt.claims.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wenxt.claims.model.QuickQuoteRequest;
@@ -15,11 +17,12 @@ import jakarta.servlet.http.HttpServletRequest;
 @RequestMapping("/claimIntimation")
 public class ClaimIntimationController {
 	
+	@Autowired
 	private ClaimIntimationService claimIntimationService;
 	
 	@PostMapping("/save")
 	public String save(@RequestBody QuickQuoteRequest quickQuoteRequest, HttpServletRequest request) {
-		return claimIntimationService.save(quickQuoteRequest.getClaimIntimation(), request);
+		return claimIntimationService.save(quickQuoteRequest, request);
 	}
 	
 	@PostMapping("/update/{tranId}")
@@ -28,8 +31,12 @@ public class ClaimIntimationController {
 	}
 	
 	@PostMapping("/get")
-	public String get() {
-		return claimIntimationService.get();
+	public String get(@RequestParam Integer tranId, HttpServletRequest request) {
+		try {
+		return claimIntimationService.get(tranId, request);
+		}catch(Exception e) {
+			return e.getMessage();
+		}
 	}
 	
 	@PostMapping("/delete/{tranId}")

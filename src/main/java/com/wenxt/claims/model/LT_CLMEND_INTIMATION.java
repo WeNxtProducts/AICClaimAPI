@@ -4,16 +4,21 @@ import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "LT_CLMEND_INTIMATION", schema = "LIFE_DEV")
 public class LT_CLMEND_INTIMATION {
 
-    @Id
-    @Column(name = "CI_CLM_END")
-    private String CI_CLM_END;
+	@Id
+    @SequenceGenerator(name = "ClaimTranIdSeq", sequenceName = "CI_TRAN_ID", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ClaimTranIdSeq")
+	@Column(name = "CI_TRAN_ID")
+    private Integer CI_TRAN_ID;
 
     @Column(name = "CI_TYPE")
     private String CI_TYPE;
@@ -38,13 +43,19 @@ public class LT_CLMEND_INTIMATION {
 
     @Column(name = "CI_INS_ID")
     private String CI_INS_ID;
+    
+    @Column(name = "CI_POL_NO")
+    private String CI_POL_NO;
+    
+    @Column(name = "CI_EMAIL")
+    private String CI_EMAIL;
 
-	public String getCI_CLM_END() {
-		return CI_CLM_END;
+	public Integer getCI_TRAN_ID() {
+		return CI_TRAN_ID;
 	}
 
-	public void setCI_CLM_END(String cI_CLM_END) {
-		CI_CLM_END = cI_CLM_END;
+	public void setCI_TRAN_ID(Integer cI_TRAN_ID) {
+		CI_TRAN_ID = cI_TRAN_ID;
 	}
 
 	public String getCI_TYPE() {
@@ -109,6 +120,22 @@ public class LT_CLMEND_INTIMATION {
 
 	public void setCI_INS_ID(String cI_INS_ID) {
 		CI_INS_ID = cI_INS_ID;
+	}
+
+	public String getCI_POL_NO() {
+		return CI_POL_NO;
+	}
+
+	public void setCI_POL_NO(String cI_POL_NO) {
+		CI_POL_NO = cI_POL_NO;
+	}
+
+	public String getCI_EMAIL() {
+		return CI_EMAIL;
+	}
+
+	public void setCI_EMAIL(String cI_EMAIL) {
+		CI_EMAIL = cI_EMAIL;
 	}
    
 }

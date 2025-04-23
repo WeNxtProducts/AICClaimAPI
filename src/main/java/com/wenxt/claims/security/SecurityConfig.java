@@ -183,6 +183,8 @@ public class SecurityConfig {
 				.and()
 				.authorizeHttpRequests().requestMatchers("/docList/**").authenticated() 
 				.and()
+				.authorizeHttpRequests().requestMatchers("/claimIntimation/**").authenticated()
+				.and()
 				.sessionManagement() 
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS) 
 				.and() 

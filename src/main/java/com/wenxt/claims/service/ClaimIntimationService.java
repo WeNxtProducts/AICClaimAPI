@@ -7,11 +7,11 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public interface ClaimIntimationService {
 
-	String save(FormFieldsDTO claimIntimation, HttpServletRequest request);
+	String save(QuickQuoteRequest claimIntimation, HttpServletRequest request);
 
 	String update(QuickQuoteRequest quickQuoteRequest, Integer tranId, HttpServletRequest request);
 
-	String get();
+	String get(Integer tranId, HttpServletRequest request)throws Exception;
 
 	String delete(Integer tranId, HttpServletRequest request);
 

@@ -19,6 +19,9 @@ public class LT_CLMEND_INTIMATION {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ClaimTranIdSeq")
 	@Column(name = "CI_TRAN_ID")
     private Integer CI_TRAN_ID;
+	
+	@Column(name = "CI_CLM_END")
+	private String CI_CLM_END;
 
     @Column(name = "CI_TYPE")
     private String CI_TYPE;
@@ -56,6 +59,14 @@ public class LT_CLMEND_INTIMATION {
 
 	public void setCI_TRAN_ID(Integer cI_TRAN_ID) {
 		CI_TRAN_ID = cI_TRAN_ID;
+	}
+
+	public String getCI_CLM_END() {
+		return CI_CLM_END;
+	}
+
+	public void setCI_CLM_END(String cI_CLM_END) {
+		CI_CLM_END = cI_CLM_END;
 	}
 
 	public String getCI_TYPE() {

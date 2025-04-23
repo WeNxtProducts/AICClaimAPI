@@ -2,6 +2,7 @@ package com.wenxt.claims.serviceImpl;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -61,6 +62,7 @@ public class ClaimIntimationServiceImpl implements ClaimIntimationService {
 				commonService.setFields(claimIntim, LT_CLMEND_INTIMATION.class, entry.getValue());
 			}
 			try {
+				claimIntim.setCI_INS_DT(new Date());
 				LT_CLMEND_INTIMATION claimInt = claimIntimRepo.save(claimIntim);
 
 				response.put(statusCode, successCode);
@@ -123,11 +125,14 @@ public class ClaimIntimationServiceImpl implements ClaimIntimationService {
 
 	@Override
 	public String get(Integer tranId, HttpServletRequest request)throws Exception {
+		JSONObject response = new JSONObject();
 		Map<String, Object> parametermap = new HashMap<String, Object>();
 		JSONObject inputObject = new JSONObject();
 		Optional<LT_CLMEND_INTIMATION> optionalUser = claimIntimRepo.findById(tranId);
 		LT_CLMEND_INTIMATION claimIntimation = optionalUser.get();
 		if (claimIntimation != null) {
+			response.put(statusCode, successCode);
+			response.put(messageCode, "Claim Intimation Details Fetched Successfully");
 			for (int i = 0; i < claimIntimation.getClass().getDeclaredFields().length; i++) {
 				Field field = claimIntimation.getClass().getDeclaredFields()[i];
 				field.setAccessible(true);
@@ -140,8 +145,10 @@ public class ClaimIntimationServiceImpl implements ClaimIntimationService {
 					inputObject.put(columnName, value);
 				}
 			}
+			response.put(dataCode, inputObject);
 		}
-		return inputObject.toString();
+//		System.out.println(inputObject);
+		return response.toString();
 	}
 
 	@Override

@@ -47,6 +47,11 @@ public class LtPolicyController {
 			return e.getMessage();
 		}
 	}
+	
+	@PostMapping("/getPolicy")
+	public String getPolicy(@RequestParam Integer tranId) {
+		return policyService.getPolicy(tranId);
+	}
 
 	@PostMapping("/assignTask")
 	public String assignTask(HttpServletRequest request) {

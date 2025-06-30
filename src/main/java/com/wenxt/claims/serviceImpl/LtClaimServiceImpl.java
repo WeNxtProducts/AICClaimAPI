@@ -120,6 +120,7 @@ public class LtClaimServiceImpl implements LtClaimService {
 			claim.setCH_LOSS_DT(dateConverter(claimsRequestDTO.getCH_LOSS_DT()));
 			claim.setCH_INTIM_DT(dateConverter(claimsRequestDTO.getCH_INTIM_DT()));
 			claim.setCH_INS_DT(new Date());
+			claim.setCH_PEMP_ID(claimsRequestDTO.getCH_PEMP_ID());
 
 			Map<String, Object> claimHdrFields = new HashMap<>();
 			claimHdrFields.put("Claim_Basis", claimsRequestDTO.getCH_CLAIM_BAS());

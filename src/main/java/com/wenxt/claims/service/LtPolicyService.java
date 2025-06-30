@@ -39,4 +39,6 @@ public interface LtPolicyService {
 
 	String polSearch(SearchRequestDTO searchRequest, HttpServletRequest request);
 
+	String getPolicy(Integer tranId);
+
 }

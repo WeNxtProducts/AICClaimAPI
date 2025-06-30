@@ -24,6 +24,9 @@ public class ClaimRequestDTO {
 	
 	@JsonProperty("CH_INTIM_DT")
 	private String CH_INTIM_DT;
+	
+	@JsonProperty("CH_PEMP_ID")
+	private String CH_PEMP_ID;
 
 	public String getCH_CLAIM_TYPE() {
 		return CH_CLAIM_TYPE;
@@ -79,6 +82,14 @@ public class ClaimRequestDTO {
 
 	public void setCH_INTIM_DT(String cH_INTIM_DT) {
 		CH_INTIM_DT = cH_INTIM_DT;
+	}
+
+	public String getCH_PEMP_ID() {
+		return CH_PEMP_ID;
+	}
+
+	public void setCH_PEMP_ID(String cH_PEMP_ID) {
+		CH_PEMP_ID = cH_PEMP_ID;
 	}
 
 }

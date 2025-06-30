@@ -939,4 +939,35 @@ public class LtPolicyServiceImpl implements LtPolicyService {
 		return response.toString();
 	}
 
+	@Override
+	public String getPolicy(Integer tranId) {
+		JSONObject response = new JSONObject();
+		try {
+		Map<String, Object> parametermap = new HashMap<String, Object>();
+		JSONObject inputObject = new JSONObject();
+		Optional<LT_POLICY> optionalUser = ltPolicyRepo.findById(tranId);
+		LT_POLICY policy = optionalUser.get();
+		if (policy != null) {
+			for (int i = 0; i < policy.getClass().getDeclaredFields().length; i++) {
+				Field field = policy.getClass().getDeclaredFields()[i];
+				field.setAccessible(true);
+				String columnName = null;
+				if (field.isAnnotationPresent(Column.class)) {
+					Annotation annotation = field.getAnnotation(Column.class);
+					Column column = (Column) annotation;
+					Object value = field.get(policy);
+					columnName = column.name();
+					inputObject.put(columnName, value);
+				}
+			}
+		}
+		response.put(statusCode, successCode);
+		response.put(dataCode, inputObject);
+		}catch(Exception e) {
+			response.put(statusCode, errorCode);
+			response.put(messageCode, e.getLocalizedMessage());
+		}
+		return response.toString();
+	}
+
 }

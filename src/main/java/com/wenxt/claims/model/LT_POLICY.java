@@ -690,6 +690,12 @@ public class LT_POLICY implements Serializable{
     @Column(name = "POL_PREM_CALC_YN")
     private String POL_PREM_CALC_YN;
     
+    @Column(name = "POL_MOBILE_NO")
+    private String POL_MOBILE_NO;
+    
+    @Column(name = "POL_EMAIL_ID")
+    private String POL_EMAIL_ID;
+    
 	public Integer getPOL_TRAN_ID() {
 		return POL_TRAN_ID;
 	}
@@ -2480,6 +2486,22 @@ public class LT_POLICY implements Serializable{
 
 	public void setPOL_PREM_CALC_YN(String pOL_PREM_CALC_YN) {
 		POL_PREM_CALC_YN = pOL_PREM_CALC_YN;
+	}
+
+	public String getPOL_MOBILE_NO() {
+		return POL_MOBILE_NO;
+	}
+
+	public void setPOL_MOBILE_NO(String pOL_MOBILE_NO) {
+		POL_MOBILE_NO = pOL_MOBILE_NO;
+	}
+
+	public String getPOL_EMAIL_ID() {
+		return POL_EMAIL_ID;
+	}
+
+	public void setPOL_EMAIL_ID(String pOL_EMAIL_ID) {
+		POL_EMAIL_ID = pOL_EMAIL_ID;
 	}
 
 }

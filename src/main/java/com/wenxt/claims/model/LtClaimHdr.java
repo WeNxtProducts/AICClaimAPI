@@ -55,6 +55,10 @@ public class LtClaimHdr {
     @JsonProperty("CH_ASSR_CODE")
     @Column(name = "CH_ASSR_CODE")
     private String CH_ASSR_CODE;
+    
+    @JsonProperty("CH_PEMP_ID")
+    @Column(name = "CH_PEMP_ID")
+    private String CH_PEMP_ID;
 
 	public Integer getCH_TRAN_ID() {
 		return CH_TRAN_ID;
@@ -150,6 +154,14 @@ public class LtClaimHdr {
 
 	public void setCH_ASSR_CODE(String cH_ASSR_CODE) {
 		CH_ASSR_CODE = cH_ASSR_CODE;
+	}
+
+	public String getCH_PEMP_ID() {
+		return CH_PEMP_ID;
+	}
+
+	public void setCH_PEMP_ID(String cH_PEMP_ID) {
+		CH_PEMP_ID = cH_PEMP_ID;
 	}
 
 }
